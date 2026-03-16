@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NilayaEstates — Investor Design Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Kannada:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN SYSTEM ─────────────────────────────────────── */
+:root {
+  --forest:   #1A3C34;
+  --forest2:  #122B25;
+  --forest3:  #0D1F1B;
+  --gold:     #C9A84C;
+  --gold2:    #E8C96A;
+  --gold3:    #F5E6B8;
+  --cream:    #FAF7F2;
+  --terra:    #C4622D;
+  --terra2:   #E07848;
+  --sand:     #E8DCC8;
+  --charcoal: #2C2C2C;
+  --mid:      #5C7068;
+  --light:    #8FA89F;
+  --white:    #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  overflow-x: hidden;
+}
+
+/* ─── INVESTOR BANNER ────────────────────────────────────── */
+.investor-banner {
+  background: var(--forest3);
+  color: var(--gold);
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+  position: sticky; top: 0; z-index: 1000;
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+}
+.investor-banner span { color: rgba(255,255,255,0.5); margin: 0 8px; }
+
+/* ─── SECTION: LOGO CONCEPTS ────────────────────────────── */
+.logo-section {
+  background: var(--forest3);
+  padding: 80px 40px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.logo-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.08), transparent 60%),
+              radial-gradient(ellipse at 70% 20%, rgba(26,60,52,0.4), transparent 50%);
+}
+
+.section-eyebrow {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  position: relative;
+}
+.section-eyebrow::before, .section-eyebrow::after {
+  content: '───';
+  margin: 0 12px;
+  opacity: 0.4;
+}
+
+.section-title-white {
+  font-family: 'Cormorant Garant', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 8px;
+  position: relative;
+}
+.section-subtitle {
+  text-align: center;
+  color: var(--light);
+  font-size: 14px;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.logo-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 16px;
+  padding: 36px 28px 28px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.logo-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.logo-card:hover { 
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+.logo-card:hover::before { opacity: 1; }
+
+.logo-recommended {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--gold);
+  color: var(--forest3);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.logo-display {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  min-height: 70px;
+}
+
+/* LOGO CONCEPT A — Geometric Roof + Wordmark */
+.logo-a-icon {
+  width: 56px; height: 56px;
+  position: relative; flex-shrink: 0;
+}
+.logo-a-icon svg { width: 100%; height: 100%; }
+
+.logo-a-text .name {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.logo-a-text .name em {
+  font-style: normal;
+  color: var(--gold);
+}
+.logo-a-text .tagline {
+  font-size: 8.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-top: 5px;
+}
+
+/* LOGO CONCEPT B — Circle Monogram */
+.logo-b-icon {
+  width: 58px; height: 58px; flex-shrink: 0;
+}
+
+/* LOGO CONCEPT C — Leaf + Pillar */
+.logo-c-icon {
+  width: 56px; height: 56px; flex-shrink: 0;
+}
+
+.logo-card-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.logo-card-desc {
+  font-size: 13px;
+  color: var(--light);
+  line-height: 1.7;
+}
+.logo-card-name-suggestion {
+  margin-top: 14px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+}
+.logo-card-name-suggestion strong {
+  color: var(--gold3);
+  font-weight: 500;
+}
+
+/* ─── NAV ───────────────────────────────────────────────── */
+nav {
+  background: rgba(26,60,52,0.97);
+  backdrop-filter: blur(20px);
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  position: sticky; top: 33px; z-index: 900;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-logo-icon { width: 38px; height: 38px; }
+.nav-logo-text .brand {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+.nav-logo-text .brand em { font-style: normal; color: var(--gold); }
+.nav-logo-text .sub {
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--light);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  background: var(--gold);
+  color: var(--forest3) !important;
+  padding: 9px 22px !important;
+  border-radius: 6px;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  transition: all 0.2s !important;
+}
+.nav-cta:hover { background: var(--gold2) !important; }
+.nav-cta::after { display: none !important; }
+
+/* ─── HERO ──────────────────────────────────────────────── */
+.hero {
+  min-height: 92vh;
+  background: var(--forest2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Animated background pattern */
+.hero-bg-pattern {
+  position: absolute; inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(26,60,52,0.8) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(13,31,27,0.6) 0%, transparent 70%);
+}
+
+/* Grid lines texture */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: 
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Diagonal accent */
+.hero-diagonal {
+  position: absolute;
+  bottom: -2px; left: 0; right: 0; height: 120px;
+  background: var(--cream);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+
+.hero-content {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-left {}
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+.hero-label-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-headline {
+  font-family: 'Cormorant Garant', serif;
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+.hero-headline em {
+  font-style: italic;
+  color: var(--gold);
+}
+.hero-headline .kn {
+  font-family: 'Noto Sans Kannada', sans-serif;
+  font-size: 0.55em;
+  display: block;
+  color: var(--light);
+  font-weight: 400;
+  margin-bottom: 4px;
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--light);
+  line-height: 1.8;
+  margin-bottom: 40px;
+  max-width: 480px;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--forest3);
+  padding: 15px 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover {
+  background: var(--gold2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(201,168,76,0.3);
+}
+
+.btn-secondary {
+  border: 1px solid rgba(255,255,255,0.25);
+  color: var(--white);
+  padding: 15px 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Hero stats */
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 52px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+.stat {}
+.stat-num {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--light);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* Hero right — property card mockup */
+.hero-right {
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.hero-card-stack {
+  position: relative;
+  padding: 20px 0 20px 20px;
+}
+
+.property-card-back {
+  position: absolute;
+  top: 0; right: -10px;
+  width: 88%;
+  height: 100%;
+  background: rgba(201,168,76,0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(201,168,76,0.15);
+}
+
+.property-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.card-img {
+  height: 220px;
+  background: linear-gradient(135deg, #1f4438 0%, #2d6b54 40%, #1a3c34 70%, #0d2820 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimoga landscape illustration */
+.card-img::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 90%, rgba(34,85,34,0.6) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 85%, rgba(25,70,25,0.5) 0%, transparent 35%),
+    radial-gradient(ellipse at 80% 88%, rgba(40,100,40,0.4) 0%, transparent 30%),
+    linear-gradient(to bottom, #1a4a6a 0%, #2d7a6a 35%, #1f6040 60%, #143d28 100%);
+}
+.card-img::after {
+  content: 'SHIMOGGA · PRIME PLOT';
+  position: absolute; bottom: 14px; left: 16px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+}
+
+/* Sun/sky in card */
+.card-sun {
+  position: absolute;
+  top: 30px; right: 40px;
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd700, #ff8c00);
+  opacity: 0.7;
+  box-shadow: 0 0 30px rgba(255,200,0,0.4);
+}
+
+/* Mountains silhouette */
+.card-mountains {
+  position: absolute;
+  bottom: 40px; left: 0; right: 0;
+  height: 80px;
+}
+
+.card-badge {
+  position: absolute; top: 16px; left: 16px;
+  background: var(--terra);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+.card-body { padding: 20px; }
+.card-title {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.card-location {
+  font-size: 12px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.card-specs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.card-spec {
+  font-size: 11px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.card-spec strong {
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 500;
+}
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.card-price {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.card-price-label { font-size: 10px; color: var(--light); }
+.card-btn {
+  background: var(--gold);
+  color: var(--forest3);
+  border: none;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Floating tag */
+.floating-tag {
+  position: absolute;
+  top: -16px; right: 30px;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--charcoal);
+}
+.floating-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SERVICES STRIP ─────────────────────────────────────── */
+.services-strip {
+  background: var(--cream);
+  padding: 70px 48px;
+}
+.services-strip-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Cormorant Garant', serif;
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 600;
+  color: var(--forest);
+  margin-bottom: 8px;
+}
+.section-desc {
+  font-size: 15px;
+  color: var(--mid);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.service-item {
+  background: var(--white);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  overflow: hidden;
+}
+.service-item::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--terra));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.service-item:hover {
+  background: var(--forest);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(26,60,52,0.15);
+  z-index: 2;
+}
+.service-item:hover::before { transform: scaleX(1); }
+.service-item:hover .svc-icon-wrap { background: rgba(201,168,76,0.15); }
+.service-item:hover .svc-title { color: var(--gold); }
+.service-item:hover .svc-desc { color: var(--light); }
+.service-item:hover .svc-arrow { color: var(--gold); }
+
+.svc-icon-wrap {
+  width: 48px; height: 48px;
+  background: var(--cream);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+  transition: background 0.3s;
+}
+.svc-title {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--forest);
+  margin-bottom: 6px;
+  transition: color 0.3s;
+}
+.svc-desc {
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 1.6;
+  transition: color 0.3s;
+}
+.svc-arrow {
+  margin-top: 14px;
+  color: var(--terra);
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+/* ─── FEATURED LISTINGS ──────────────────────────────────── */
+.listings-section {
+  background: var(--forest);
+  padding: 80px 48px;
+  position: relative;
+}
+.listings-section::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--terra), var(--gold));
+}
+
+.listings-header {
+  max-width: 1200px;
+  margin: 0 auto 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.listings-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 24px;
+}
+
+.listing-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.listing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+  border-color: rgba(201,168,76,0.3);
+}
+
+.listing-img {
+  position: relative;
+  overflow: hidden;
+}
+.listing-img-inner {
+  height: 200px;
+  transition: transform 0.5s;
+}
+.listing-card:hover .listing-img-inner { transform: scale(1.05); }
+
+.listing-img-inner.plot-bg {
+  background: linear-gradient(135deg, #1f5040 0%, #2d7a5a 50%, #1a4030 100%);
+}
+.listing-img-inner.apt-bg {
+  background: linear-gradient(135deg, #1a3050 0%, #2d5080 50%, #1a2840 100%);
+}
+.listing-img-inner.farm-bg {
+  background: linear-gradient(135deg, #2a4020 0%, #4a6830 50%, #1a3010 100%);
+}
+
+.listing-tag {
+  position: absolute; top: 14px; left: 14px;
+  background: var(--terra);
+  color: white; font-size: 10px; font-weight: 600;
+  padding: 4px 10px; border-radius: 20px; letter-spacing: 1px;
+}
+.listing-tag.apt { background: #2563EB; }
+.listing-tag.farm { background: #16a34a; }
+
+.listing-save {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 8px; padding: 6px;
+  font-size: 16px; cursor: pointer;
+}
+
+.listing-body { padding: 18px; }
+.listing-title {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 19px; font-weight: 600;
+  color: var(--white); margin-bottom: 4px;
+}
+.listing-loc { font-size: 12px; color: var(--light); margin-bottom: 14px; }
+.listing-specs {
+  display: flex; gap: 12px; margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.listing-spec { font-size: 11px; color: var(--light); }
+.listing-spec strong { color: rgba(255,255,255,0.8); font-size: 12px; }
+.listing-footer {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.listing-price {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 22px; font-weight: 700; color: var(--gold);
+}
+.listing-price small { font-size: 11px; color: var(--light); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+.listing-wa {
+  background: #25D366;
+  color: white; font-size: 11px; font-weight: 600;
+  padding: 7px 14px; border-radius: 6px;
+  display: flex; align-items: center; gap: 5px;
+  cursor: pointer;
+}
+
+/* Featured card bigger */
+.listing-card.featured .listing-img-inner { height: 280px; }
+
+/* ─── INTERIOR / CONSTRUCTION ────────────────────────────── */
+.construction-section {
+  background: var(--cream);
+  padding: 80px 48px;
+}
+.construction-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.package-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.package-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 22px;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.package-card.gold-card {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, #FFFBF0, #FFF8E7);
+}
+.package-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 8px 24px rgba(201,168,76,0.15);
+}
+.pack-badge {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--terra); font-weight: 600; margin-bottom: 8px;
+}
+.pack-name {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 20px; font-weight: 700; color: var(--forest);
+}
+.pack-price { font-size: 13px; color: var(--mid); margin-top: 4px; }
+.pack-features {
+  margin-top: 12px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pack-feature { font-size: 11px; color: var(--mid); display: flex; align-items: center; gap: 5px; }
+.pack-feature::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+/* ─── AGENT CRM PREVIEW ──────────────────────────────────── */
+.crm-section {
+  background: var(--forest3);
+  padding: 80px 48px;
+}
+.crm-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.crm-phone-mockup {
+  position: relative;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.phone-frame {
+  background: #111;
+  border-radius: 40px;
+  padding: 12px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
+  border: 2px solid #333;
+}
+.phone-screen {
+  background: var(--forest);
+  border-radius: 30px;
+  overflow: hidden;
+  height: 520px;
+}
+.phone-notch {
+  background: #111;
+  height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 0 0 20px 20px;
+  margin: 0 60px;
+}
+.phone-notch-inner { width: 80px; height: 16px; background: #222; border-radius: 10px; }
+
+.phone-content { padding: 16px; }
+.phone-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.phone-greeting { font-size: 11px; color: var(--light); }
+.phone-title {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 18px; color: var(--white); font-weight: 600;
+}
+.phone-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gold); color: var(--forest3);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+}
+
+.phone-search {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 11px; color: var(--light);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.phone-add-btn {
+  background: var(--gold);
+  color: var(--forest3);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12px; font-weight: 600;
+  text-align: center; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+
+.phone-listing-item {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  display: flex; gap: 10px; align-items: flex-start;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.pli-thumb {
+  width: 44px; height: 44px; border-radius: 8px;
+  flex-shrink: 0;
+}
+.pli-thumb.p1 { background: linear-gradient(135deg, #1f5040, #2d7a5a); }
+.pli-thumb.p2 { background: linear-gradient(135deg, #1a3050, #2d5080); }
+.pli-thumb.p3 { background: linear-gradient(135deg, #2a4020, #4a6830); }
+.pli-title { font-size: 11px; color: var(--white); font-weight: 500; margin-bottom: 2px; }
+.pli-loc { font-size: 9px; color: var(--light); margin-bottom: 4px; }
+.pli-price { font-size: 11px; color: var(--gold); font-weight: 600; }
+.pli-status {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 9px; font-weight: 600;
+  padding: 3px 8px; border-radius: 10px;
+}
+.pli-status.avail { background: rgba(34,197,94,0.15); color: #22c55e; }
+.pli-status.hold { background: rgba(234,179,8,0.15); color: #eab308; }
+.pli-status.neg { background: rgba(59,130,246,0.15); color: #60a5fa; }
+
+/* ─── MATERIALS SECTION ──────────────────────────────────── */
+.materials-section {
+  background: var(--sand);
+  padding: 80px 48px;
+}
+.materials-inner { max-width: 1200px; margin: 0 auto; }
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-top: 48px;
+}
+.material-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 20px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+.material-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+.material-icon { font-size: 28px; margin-bottom: 8px; }
+.material-name { font-size: 12px; font-weight: 600; color: var(--forest); margin-bottom: 3px; }
+.material-price { font-size: 10px; color: var(--mid); }
+
+/* ─── TESTIMONIAL / TRUST ────────────────────────────────── */
+.trust-section {
+  background: var(--white);
+  padding: 70px 48px;
+  border-top: 1px solid #eee;
+}
+.trust-inner { max-width: 1200px; margin: 0 auto; }
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: 48px;
+}
+.trust-card {
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: 16px;
+  background: var(--cream);
+}
+.trust-num {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 52px; font-weight: 700;
+  color: var(--forest); line-height: 1;
+  margin-bottom: 4px;
+}
+.trust-num sup { font-size: 24px; color: var(--gold); }
+.trust-label { font-size: 13px; color: var(--mid); }
+
+/* ─── FOOTER ─────────────────────────────────────────────── */
+footer {
+  background: var(--forest3);
+  padding: 60px 48px 30px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 30px;
+}
+.footer-brand {}
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.footer-logo-text {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 22px; font-weight: 700; color: var(--white);
+}
+.footer-logo-text em { font-style: normal; color: var(--gold); }
+.footer-desc {
+  font-size: 13px; color: var(--light); line-height: 1.7; margin-bottom: 20px;
+}
+.footer-contacts {}
+.footer-contact-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 10px; font-size: 13px; color: var(--light);
+}
+.footer-contact-item strong { color: var(--white); display: block; font-size: 11px; }
+
+.footer-col {}
+.footer-col-title {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px; font-weight: 600;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { text-decoration: none; font-size: 13px; color: var(--light); transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.3);
+}
+.footer-badges { display: flex; gap: 10px; }
+.footer-badge {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 10px; color: rgba(255,255,255,0.3);
+}
+
+/* ─── QR STRIP ───────────────────────────────────────────── */
+.qr-strip {
+  background: linear-gradient(135deg, var(--forest), #1f5040);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  border-top: 3px solid var(--gold);
+}
+.qr-box {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  width: 90px; height: 90px;
+  display: flex; align-items: center; justify-content: center;
+}
+/* SVG QR placeholder */
+.qr-placeholder {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 2px;
+  width: 66px; height: 66px;
+}
+.qr-placeholder-cell {
+  background: #111;
+  border-radius: 1px;
+}
+.qr-placeholder-cell.w { background: white; }
+
+.qr-text {}
+.qr-title {
+  font-family: 'Cormorant Garant', serif;
+  font-size: 26px; font-weight: 600; color: var(--white);
+  margin-bottom: 4px;
+}
+.qr-desc { font-size: 13px; color: var(--light); }
+.qr-links { display: flex; gap: 12px; margin-top: 14px; }
+.store-badge {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 8px 16px;
+  font-size: 12px; color: var(--white); font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  cursor: pointer; transition: all 0.3s;
+}
+.store-badge:hover { background: rgba(255,255,255,0.15); }
+
+/* ─── MOBILE RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .hero-right { display: none; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .listings-grid { grid-template-columns: 1fr; }
+  .construction-inner, .crm-inner { grid-template-columns: 1fr; }
+  .materials-grid { grid-template-columns: repeat(3,1fr); }
+  .trust-grid { grid-template-columns: repeat(2,1fr); }
+  .footer-top { grid-template-columns: 1fr; }
+  nav { padding: 0 20px; }
+  .hero-content { padding: 0 24px; }
+}
+
+/* ─── SCROLL ANIMATIONS ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── DESIGN NOTE BOX ────────────────────────────────────── */
+.design-note {
+  background: rgba(201,168,76,0.08);
+  border: 1px dashed rgba(201,168,76,0.4);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin: 0 48px;
+}
+</style>
+</head>
+<body>
+
+<!-- INVESTOR BANNER -->
+<div class="investor-banner">
+  🏗️ INVESTOR PREVIEW — DESIGN CONCEPT ONLY
+  <span>|</span>
+  [Company Name] Real Estate Platform
+  <span>|</span>
+  Bengaluru & Shivamogga
+  <span>|</span>
+  Confidential · Not for Public Distribution
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION A: LOGO CONCEPTS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="logo-section">
+  <div class="section-eyebrow">Brand Identity Options</div>
+  <h2 class="section-title-white">Logo Concept Proposals</h2>
+  <p class="section-subtitle">Three distinct logo directions — each with a company name suggestion. Select one for further development.</p>
+
+  <div class="logo-grid">
+
+    <!-- LOGO A: Geometric Arch + Classic Wordmark ★ RECOMMENDED -->
+    <div class="logo-card">
+      <div class="logo-recommended">★ Recommended</div>
+      <div class="logo-display">
+        <div class="logo-a-icon">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Geometric arch / house shape with land below -->
+            <rect x="4" y="42" width="48" height="3" fill="#C9A84C" rx="1.5"/>
+            <!-- Main structure -->
+            <path d="M28 8 L8 30 L48 30 Z" stroke="#C9A84C" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+            <path d="M28 16 L14 30 L42 30 Z" fill="rgba(201,168,76,0.15)" stroke="none"/>
+            <!-- Inner arch accent -->
+            <path d="M19 30 Q19 21 28 21 Q37 21 37 30" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+            <!-- Pillar left -->
+            <rect x="20" y="30" width="4" height="12" fill="#C9A84C" rx="1"/>
+            <!-- Pillar right -->
+            <rect x="32" y="30" width="4" height="12" fill="#C9A84C" rx="1"/>
+            <!-- Door -->
+            <rect x="24" y="36" width="8" height="6" rx="1" fill="rgba(201,168,76,0.4)"/>
+          </svg>
+        </div>
+        <div class="logo-a-text">
+          <div class="name">Nilaya<em>Estates</em></div>
+          <div class="tagline">Building Dreams · Building Karnataka</div>
+        </div>
+      </div>
+      <div class="logo-card-label">Concept A — Heritage Arch</div>
+      <div class="logo-card-desc">Combines a classical arch with a roof silhouette. Communicates permanence, trust, and premium real estate. The gold palette evokes prosperity. Works beautifully on signboards, hoardings, and digital.</div>
+      <div class="logo-card-name-suggestion">Name suggestion: <strong>NilayaEstates</strong> — "Nilaya" (ನಿಲಯ) means abode/home in Kannada & Sanskrit. Culturally resonant, easy to pronounce in both Shivamogga and Bengaluru markets.</div>
+    </div>
+
+    <!-- LOGO B: Leaf + Building Monogram -->
+    <div class="logo-card">
+      <div class="logo-display">
+        <div class="logo-b-icon">
+          <svg viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Circle base -->
+            <circle cx="29" cy="29" r="26" stroke="#C9A84C" stroke-width="2"/>
+            <!-- Building blocks -->
+            <rect x="16" y="26" width="8" height="14" rx="1" fill="#C9A84C" opacity="0.9"/>
+            <rect x="26" y="20" width="10" height="20" rx="1" fill="#C9A84C"/>
+            <rect x="38" y="24" width="7" height="16" rx="1" fill="#C9A84C" opacity="0.7"/>
+            <!-- Windows -->
+            <rect x="18" y="29" width="2" height="2" rx="0.5" fill="#1A3C34"/>
+            <rect x="22" y="29" width="2" height="2" rx="0.5" fill="#1A3C34"/>
+            <rect x="28" y="23" width="2" height="2" rx="0.5" fill="#1A3C34"/>
+            <rect x="32" y="23" width="2" height="2" rx="0.5" fill="#1A3C34"/>
+            <rect x="28" y="28" width="2" height="2" rx="0.5" fill="#1A3C34"/>
+            <rect x="32" y="28" width="2" height="2" rx="0.5" fill="#1A3C34"/>
+            <!-- Leaf accent -->
+            <path d="M10 18 Q14 10 20 14 Q14 18 10 18Z" fill="#C9A84C" opacity="0.6"/>
+            <!-- Ground line -->
+            <line x1="10" y1="40" x2="48" y2="40" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="logo-a-text">
+          <div class="name">Vriddhi<em>Realty</em></div>
+          <div class="tagline">Growth · Property · Prosperity</div>
+        </div>
+      </div>
+      <div class="logo-card-label">Concept B — Growth Skyline</div>
+      <div class="logo-card-desc">An ascending skyline within a circle badge — communicates growth, urban development, and reliability. The circular badge format works well for stamps, seals, and app icons. Modern yet grounded.</div>
+      <div class="logo-card-name-suggestion">Name suggestion: <strong>VriddhiRealty</strong> — "Vriddhi" (ವೃದ್ಧಿ) means growth and prosperity. Strong brand positioning for investors and development projects.</div>
+    </div>
+
+    <!-- LOGO C: Leaf + Pillar (Nature + Structure) -->
+    <div class="logo-card">
+      <div class="logo-display">
+        <div class="logo-c-icon">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Central pillar / tree trunk -->
+            <rect x="25" y="16" width="6" height="30" rx="2" fill="#C9A84C"/>
+            <!-- Left leaf -->
+            <path d="M28 28 Q14 22 12 10 Q24 12 28 28Z" fill="#C9A84C" opacity="0.85"/>
+            <!-- Right leaf -->
+            <path d="M28 28 Q42 22 44 10 Q32 12 28 28Z" fill="#C9A84C" opacity="0.6"/>
+            <!-- Ground platform -->
+            <rect x="10" y="44" width="36" height="3" rx="1.5" fill="#C9A84C" opacity="0.5"/>
+            <!-- Roots -->
+            <path d="M25 44 Q20 48 16 47" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <path d="M31 44 Q36 48 40 47" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <!-- Star/sparkle top -->
+            <circle cx="28" cy="13" r="3" fill="#C9A84C"/>
+            <circle cx="28" cy="13" r="1.5" fill="#1A3C34"/>
+          </svg>
+        </div>
+        <div class="logo-a-text">
+          <div class="name">Suvaasa<em>Homes</em></div>
+          <div class="tagline">Nature · Luxury · Living</div>
+        </div>
+      </div>
+      <div class="logo-card-label">Concept C — Living Roots</div>
+      <div class="logo-card-desc">Tree-meets-pillar symbolism — perfect for the Shivamogga market which is known for the Western Ghats and lush nature. Connects real estate to the land and environment. Works well for farmhouse and plot segments.</div>
+      <div class="logo-card-name-suggestion">Name suggestion: <strong>SuvaasaHomes</strong> — "Suvaasa" (ಸುವಾಸ) means pleasant abode / good dwelling. Warm, approachable, and memorable for residential real estate.</div>
+    </div>
+
+  </div>
+
+  <p style="text-align:center; margin-top:32px; font-size:12px; color:rgba(255,255,255,0.3); letter-spacing:1px;">
+    Final company name, brand colours and logo will be refined with a professional brand designer after concept selection.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- NAVIGATION -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 38 38" fill="none">
+      <rect x="2" y="30" width="34" height="2" fill="#C9A84C" rx="1"/>
+      <path d="M19 4 L4 22 L34 22 Z" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M13 22 Q13 15 19 15 Q25 15 25 22" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+      <rect x="14" y="22" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+      <rect x="21" y="22" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+      <rect x="17" y="26" width="4" height="4" rx="0.5" fill="rgba(201,168,76,0.4)"/>
+    </svg>
+    <div class="nav-logo-text">
+      <div class="brand">Nilaya<em>Estates</em></div>
+      <div class="sub">Bengaluru · Shivamogga</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Buy Plots</a></li>
+    <li><a href="#">Apartments</a></li>
+    <li><a href="#">Construction</a></li>
+    <li><a href="#">Interiors</a></li>
+    <li><a href="#">Materials</a></li>
+    <li><a href="#">Legal</a></li>
+    <li><a href="#" class="nav-cta">WhatsApp Us ↗</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-label">
+        <div class="hero-label-dot"></div>
+        Shivamogga & Bengaluru's Most Trusted Platform
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="kn">ನಿಮ್ಮ ಕನಸಿನ ಮನೆ, ನಮ್ಮ ಬದ್ಧತೆ</span>
+        Find Your <em>Perfect</em><br>Property in<br>Karnataka
+      </h1>
+
+      <p class="hero-desc">
+        Plots, apartments, farmhouses, construction and interiors — everything under one roof. 
+        Serving Shivamogga, Thirthahalli, Sagara and Bengaluru with trusted expertise.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">🔍 Search Properties</a>
+        <a href="#" class="btn-secondary">📞 Talk to an Expert</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Active Listings</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Districts Covered</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Customer Satisfaction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-card-stack">
+        <div class="property-card-back"></div>
+
+        <div class="floating-tag">
+          <div class="floating-dot"></div>
+          Just Listed — Shivamogga
+        </div>
+
+        <div class="property-card">
+          <div class="card-img">
+            <div class="card-sun"></div>
+            <div class="card-badge">AVAILABLE</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Prime Plot — Thirthahalli Road</div>
+            <div class="card-location">📍 Shivamogga District, Karnataka</div>
+            <div class="card-specs">
+              <div class="card-spec">📐 <strong>30×40 ft</strong> Area</div>
+              <div class="card-spec">🛣️ <strong>40ft</strong> Road</div>
+              <div class="card-spec">✅ <strong>RERA</strong> Approved</div>
+            </div>
+            <div class="card-footer">
+              <div>
+                <div class="card-price-label">Starting from</div>
+                <div class="card-price">₹18.5 L</div>
+              </div>
+              <button class="card-btn">💬 WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-diagonal"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SERVICES -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="services-strip">
+  <div class="services-strip-inner">
+    <div class="eyebrow reveal">Everything Real Estate</div>
+    <h2 class="section-title reveal">One Platform. All Services.</h2>
+    <p class="section-desc reveal">From finding a plot to constructing your home — we handle every step of your real estate journey across Shivamogga and Bengaluru.</p>
+
+    <div class="services-grid reveal">
+      <div class="service-item">
+        <div class="svc-icon-wrap">🏞️</div>
+        <div class="svc-title">Buy / Sell Plots</div>
+        <div class="svc-desc">Verified plots in Shivamogga, Bengaluru & surrounding taluks. Survey number, GPS location & owner verified.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">🏢</div>
+        <div class="svc-title">Apartments</div>
+        <div class="svc-desc">1BHK to 3BHK apartments in Bengaluru. Top builders, RERA listed, home loan assistance.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">🏗️</div>
+        <div class="svc-title">House Construction</div>
+        <div class="svc-desc">Full turnkey construction with interior. Economy to luxury packages with cost estimator.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">🛋️</div>
+        <div class="svc-title">Interior Design</div>
+        <div class="svc-desc">Modular kitchens, wardrobes, false ceilings for new and existing homes. 3D preview available.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">🧱</div>
+        <div class="svc-title">Building Materials</div>
+        <div class="svc-desc">Wholesale supply: Sand, M-Sand, Bricks, Steel, Cement. Bulk enquiry with delivery to site.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">📣</div>
+        <div class="svc-title">Developer Marketing</div>
+        <div class="svc-desc">Post layouts, plots and apartment projects. Reach thousands of buyers across Karnataka.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">⚖️</div>
+        <div class="svc-title">Legal Services</div>
+        <div class="svc-desc">Title verification, mutation, encumbrance, property disputes. Empanelled lawyers ready to help.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+      <div class="service-item">
+        <div class="svc-icon-wrap">🌿</div>
+        <div class="svc-title">Farmhouse Construction</div>
+        <div class="svc-desc">Weekend homes and farm estates in Malnad region — Sagara, Thirthahalli, Hosanagara.</div>
+        <div class="svc-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- FEATURED LISTINGS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="listings-section">
+  <div class="listings-header reveal">
+    <div>
+      <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Property Showcase</div>
+      <h2 class="section-title-white" style="margin-bottom:0;text-align:left;">Featured Listings</h2>
+    </div>
+    <a href="#" style="color:var(--gold);font-size:13px;text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:2px;">View All Properties →</a>
+  </div>
+
+  <div class="listings-grid reveal">
+
+    <!-- Featured big card -->
+    <div class="listing-card featured">
+      <div class="listing-img">
+        <div class="listing-img-inner plot-bg"></div>
+        <div class="listing-tag">PLOTS</div>
+        <div class="listing-save">🤍</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-title">Riverside Layout — Tunga Nagar</div>
+        <div class="listing-loc">📍 Shivamogga City, Karnataka</div>
+        <div class="listing-specs">
+          <div class="listing-spec">📐 <strong>30×50</strong> ft</div>
+          <div class="listing-spec">🛣️ <strong>40ft</strong> Road</div>
+          <div class="listing-spec">💧 <strong>BWSSB</strong> Water</div>
+          <div class="listing-spec">⚡ <strong>BESCOM</strong> Power</div>
+        </div>
+        <div class="listing-footer">
+          <div>
+            <div style="font-size:10px;color:var(--light);">Price per sq ft</div>
+            <div class="listing-price">₹850 <small>/sqft</small></div>
+          </div>
+          <div class="listing-wa">💬 WhatsApp</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        <div class="listing-img-inner apt-bg"></div>
+        <div class="listing-tag apt">2 BHK APT</div>
+        <div class="listing-save">🤍</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-title">Prestige View Apartments</div>
+        <div class="listing-loc">📍 Electronic City, Bengaluru</div>
+        <div class="listing-specs">
+          <div class="listing-spec">🏠 <strong>1180</strong> sqft</div>
+          <div class="listing-spec">🏢 <strong>7th</strong> Floor</div>
+        </div>
+        <div class="listing-footer">
+          <div class="listing-price">₹62 L</div>
+          <div class="listing-wa">💬 WhatsApp</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        <div class="listing-img-inner farm-bg"></div>
+        <div class="listing-tag farm">FARMHOUSE</div>
+        <div class="listing-save">🤍</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-title">Malnad Eco Farmhouse</div>
+        <div class="listing-loc">📍 Sagara Taluk, Shivamogga</div>
+        <div class="listing-specs">
+          <div class="listing-spec">🌿 <strong>2 Acres</strong></div>
+          <div class="listing-spec">🏡 <strong>1200</strong> sqft built</div>
+        </div>
+        <div class="listing-footer">
+          <div class="listing-price">₹48 L</div>
+          <div class="listing-wa">💬 WhatsApp</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CONSTRUCTION PACKAGES -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="construction-section">
+  <div class="construction-inner">
+    <div class="reveal">
+      <div class="eyebrow">Construction Service</div>
+      <h2 class="section-title">Build Your Dream Home<br>With Full Interior</h2>
+      <p class="section-desc">Complete turnkey construction in Shivamogga and Bengaluru — from foundation to furnishing. Choose your package.</p>
+      <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mid);">✅ Licensed Engineers</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mid);">✅ 5-Year Warranty</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mid);">✅ Cost Transparency</div>
+      </div>
+      <a href="#" class="btn-primary" style="display:inline-flex;margin-top:28px;">Get Free Estimate →</a>
+    </div>
+    <div class="package-cards reveal">
+      <div class="package-card">
+        <div class="pack-badge">Economy</div>
+        <div class="pack-name">Essential</div>
+        <div class="pack-price">From ₹1,650/sqft</div>
+        <div class="pack-features">
+          <div class="pack-feature">Basic finishes</div>
+          <div class="pack-feature">Standard fixtures</div>
+          <div class="pack-feature">2-year warranty</div>
+        </div>
+      </div>
+      <div class="package-card gold-card">
+        <div class="pack-badge" style="color:var(--gold);">★ Most Popular</div>
+        <div class="pack-name">Premium</div>
+        <div class="pack-price">From ₹2,200/sqft</div>
+        <div class="pack-features">
+          <div class="pack-feature">Modular kitchen</div>
+          <div class="pack-feature">Italian tiles</div>
+          <div class="pack-feature">5-year warranty</div>
+        </div>
+      </div>
+      <div class="package-card">
+        <div class="pack-badge">Luxury</div>
+        <div class="pack-name">Elite</div>
+        <div class="pack-price">From ₹3,200/sqft</div>
+        <div class="pack-features">
+          <div class="pack-feature">Full interior design</div>
+          <div class="pack-feature">Smart home ready</div>
+          <div class="pack-feature">Lifetime support</div>
+        </div>
+      </div>
+      <div class="package-card">
+        <div class="pack-badge">Special</div>
+        <div class="pack-name">Farmhouse</div>
+        <div class="pack-price">Custom Pricing</div>
+        <div class="pack-features">
+          <div class="pack-feature">Eco-friendly design</div>
+          <div class="pack-feature">Vastu compliant</div>
+          <div class="pack-feature">Site assessment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AGENT CRM PREVIEW -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="crm-section">
+  <div class="crm-inner">
+    <div class="crm-phone-mockup reveal">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+          <div class="phone-content">
+            <div class="phone-header">
+              <div>
+                <div class="phone-greeting">Good Morning, Agent</div>
+                <div class="phone-title">Property CRM</div>
+              </div>
+              <div class="phone-avatar">RK</div>
+            </div>
+            <div class="phone-search">🔍  Search by location, survey no...</div>
+            <div class="phone-add-btn">＋ Add New Property Sighting</div>
+            <div class="phone-listing-item">
+              <div class="pli-thumb p1"></div>
+              <div style="flex:1;">
+                <div class="pli-title">Plot — Sagar Road</div>
+                <div class="pli-loc">📍 Shivamogga · 30×40ft</div>
+                <div class="pli-price">₹22L · Owner: Ramesh</div>
+              </div>
+              <div class="pli-status avail">Available</div>
+            </div>
+            <div class="phone-listing-item">
+              <div class="pli-thumb p2"></div>
+              <div style="flex:1;">
+                <div class="pli-title">Site — Hosanagara NH</div>
+                <div class="pli-loc">📍 Hosanagara · 50×80ft</div>
+                <div class="pli-price">₹38L · Agent: Kumar</div>
+              </div>
+              <div class="pli-status hold">Hold</div>
+            </div>
+            <div class="phone-listing-item">
+              <div class="pli-thumb p3"></div>
+              <div style="flex:1;">
+                <div class="pli-title">Apt — Whitefield BLR</div>
+                <div class="pli-loc">📍 Bengaluru · 2BHK</div>
+                <div class="pli-price">₹68L · Builder: XYZ</div>
+              </div>
+              <div class="pli-status neg">Negotiation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="section-eyebrow" style="text-align:left;color:var(--gold);">Internal Agent Tool</div>
+      <h2 class="section-title-white" style="text-align:left;margin-bottom:14px;">Property CRM — <em style="font-style:italic;color:var(--gold);">Built for Field Agents</em></h2>
+      <p style="font-size:15px;color:var(--light);line-height:1.8;margin-bottom:32px;">When an agent spots a property for sale — they capture it instantly on their phone. GPS location, photos, owner details, price. Later when a customer asks, the answer is one search away.</p>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:rgba(201,168,76,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📍</div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;">GPS-Powered Field Entry</div>
+            <div style="font-size:12px;color:var(--light);line-height:1.6;">Capture property location automatically. Works offline — syncs when back in network. Critical for Malnad region with patchy coverage.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:rgba(201,168,76,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🔍</div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;">Instant Search for Customer Queries</div>
+            <div style="font-size:12px;color:var(--light);line-height:1.6;">Search your entire inventory by area, price, taluk or owner name. Share property card to WhatsApp in one tap.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:36px;height:36px;background:rgba(201,168,76,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📲</div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;">One-Tap QR & WhatsApp Share</div>
+            <div style="font-size:12px;color:var(--light);line-height:1.6;">Generate a unique QR code for any listing. Agent can print it for site boards or share it digitally in seconds.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- MATERIALS SECTION -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="materials-section">
+  <div class="materials-inner">
+    <div class="reveal">
+      <div class="eyebrow">Wholesale Supply</div>
+      <h2 class="section-title">Construction Materials</h2>
+      <p class="section-desc">Direct wholesale pricing for contractors, builders and individuals. Bulk enquiry — delivered to your site in Shivamogga & Bengaluru.</p>
+    </div>
+    <div class="materials-grid reveal">
+      <div class="material-card">
+        <div class="material-icon">🏖️</div>
+        <div class="material-name">River Sand</div>
+        <div class="material-price">Enquiry based</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🪨</div>
+        <div class="material-name">M-Sand</div>
+        <div class="material-price">₹55–65/cft</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🧱</div>
+        <div class="material-name">Bricks</div>
+        <div class="material-price">₹8–12/unit</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">⚙️</div>
+        <div class="material-name">TMT Steel</div>
+        <div class="material-price">Wholesale rate</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🏗️</div>
+        <div class="material-name">Cement</div>
+        <div class="material-price">₹340–380/bag</div>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">🪵</div>
+        <div class="material-name">Granite/Stone</div>
+        <div class="material-price">₹90–140/sqft</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px;">
+      <a href="#" class="btn-primary" style="display:inline-flex;">📦 Request Bulk Quote</a>
+      <p style="margin-top:12px;font-size:11px;color:var(--mid);">* Prices are indicative. Actual rates depend on quantity, grade and delivery location. Sand prices subject to government permit availability.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TRUST METRICS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="eyebrow reveal">Why Clients Trust Us</div>
+    <h2 class="section-title reveal">Numbers That Speak</h2>
+    <div class="trust-grid reveal">
+      <div class="trust-card">
+        <div class="trust-num">500<sup>+</sup></div>
+        <div class="trust-label">Properties Listed</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-num">12<sup>+</sup></div>
+        <div class="trust-label">Years in Shivamogga</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-num">3<sup>K+</sup></div>
+        <div class="trust-label">Happy Families</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-num">4<sup>★</sup></div>
+        <div class="trust-label">Customer Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- QR & APP STRIP -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="qr-strip">
+  <div class="qr-box">
+    <!-- Simple QR pattern -->
+    <svg width="66" height="66" viewBox="0 0 66 66" fill="none">
+      <rect width="66" height="66" fill="white"/>
+      <!-- TL finder -->
+      <rect x="4" y="4" width="20" height="20" rx="2" fill="#111"/>
+      <rect x="7" y="7" width="14" height="14" rx="1" fill="white"/>
+      <rect x="10" y="10" width="8" height="8" fill="#111"/>
+      <!-- TR finder -->
+      <rect x="42" y="4" width="20" height="20" rx="2" fill="#111"/>
+      <rect x="45" y="7" width="14" height="14" rx="1" fill="white"/>
+      <rect x="48" y="10" width="8" height="8" fill="#111"/>
+      <!-- BL finder -->
+      <rect x="4" y="42" width="20" height="20" rx="2" fill="#111"/>
+      <rect x="7" y="45" width="14" height="14" rx="1" fill="white"/>
+      <rect x="10" y="48" width="8" height="8" fill="#111"/>
+      <!-- Data dots -->
+      <rect x="28" y="4" width="4" height="4" fill="#111"/>
+      <rect x="34" y="4" width="4" height="4" fill="#111"/>
+      <rect x="28" y="10" width="4" height="4" fill="#111"/>
+      <rect x="38" y="10" width="4" height="4" fill="#111"/>
+      <rect x="4" y="28" width="4" height="4" fill="#111"/>
+      <rect x="10" y="34" width="4" height="4" fill="#111"/>
+      <rect x="16" y="28" width="4" height="4" fill="#111"/>
+      <rect x="28" y="28" width="4" height="4" fill="#111"/>
+      <rect x="34" y="28" width="4" height="4" fill="#111"/>
+      <rect x="40" y="34" width="4" height="4" fill="#111"/>
+      <rect x="46" y="28" width="4" height="4" fill="#111"/>
+      <rect x="52" y="34" width="4" height="4" fill="#111"/>
+      <rect x="58" y="28" width="4" height="4" fill="#111"/>
+      <rect x="28" y="46" width="4" height="4" fill="#111"/>
+      <rect x="34" y="52" width="4" height="4" fill="#111"/>
+      <rect x="40" y="46" width="4" height="4" fill="#111"/>
+      <rect x="46" y="52" width="4" height="4" fill="#111"/>
+      <rect x="52" y="46" width="4" height="4" fill="#111"/>
+      <rect x="58" y="58" width="4" height="4" fill="#111"/>
+    </svg>
+  </div>
+  <div class="qr-text">
+    <div class="qr-title">Scan · Connect · Explore</div>
+    <div class="qr-desc">Every property listing has its own QR code — scan from a site board or pamphlet to instantly open the property page, see photos, and connect with the agent on WhatsApp.</div>
+    <div class="qr-links">
+      <div class="store-badge">🤖 Android App</div>
+      <div class="store-badge">🍎 iOS App</div>
+      <div class="store-badge">🌐 Web Platform</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="32" height="32" viewBox="0 0 38 38" fill="none">
+            <rect x="2" y="30" width="34" height="2" fill="#C9A84C" rx="1"/>
+            <path d="M19 4 L4 22 L34 22 Z" stroke="#C9A84C" stroke-width="2" fill="none"/>
+            <path d="M13 22 Q13 15 19 15 Q25 15 25 22" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+            <rect x="14" y="22" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+            <rect x="21" y="22" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+          </svg>
+          <div class="footer-logo-text">Nilaya<em>Estates</em></div>
+        </div>
+        <div class="footer-desc">Shivamogga's most trusted real estate company. Serving Bengaluru and the Malnad region with expertise in plots, apartments, construction, interiors and more.</div>
+        <div class="footer-contacts">
+          <div class="footer-contact-item">📞 <div><strong>Bengaluru Office</strong>90197 93641</div></div>
+          <div class="footer-contact-item">📞 <div><strong>Shivamogga / Thirthahalli</strong>+91 82777 55555</div></div>
+          <div class="footer-contact-item">✉️ <div><strong>Email</strong>[company@email.com]</div></div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Properties</div>
+        <ul class="footer-links">
+          <li><a href="#">Plots in Shivamogga</a></li>
+          <li><a href="#">Plots in Bengaluru</a></li>
+          <li><a href="#">Apartments BLR</a></li>
+          <li><a href="#">Farmhouses</a></li>
+          <li><a href="#">Developer Layouts</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#">House Construction</a></li>
+          <li><a href="#">Interior Design</a></li>
+          <li><a href="#">Building Materials</a></li>
+          <li><a href="#">Legal Services</a></li>
+          <li><a href="#">Farmhouse Build</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Post Your Property</a></li>
+          <li><a href="#">Agent Login</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2025 [Company Name]. All rights reserved. | Bengaluru & Shivamogga, Karnataka</div>
+      <div class="footer-badges">
+        <div class="footer-badge">RERA Compliant</div>
+        <div class="footer-badge">ISO Certified</div>
+        <div class="footer-badge">GST Registered</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Design note at bottom -->
+<div style="background:#0D1F1B;padding:16px 48px;text-align:center;">
+  <p style="font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px;">
+    ⚠️ INVESTOR PREVIEW ONLY — Company name, logo, contact details, prices and content are placeholders for design review purposes only.
+    Final brand identity, company name and all data will be updated before development begins.
+    Design prepared by: Senior Solution Architect & Senior Web Designer.
+  </p>
+</div>
+
+<script>
+// Scroll reveal animation
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+// Service card hover - text color for dark bg
+document.querySelectorAll('.service-item').forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    this.querySelector('.svc-icon-wrap').style.background = 'rgba(201,168,76,0.12)';
+  });
+  card.addEventListener('mouseleave', function() {
+    this.querySelector('.svc-icon-wrap').style.background = '';
+  });
+});
+</script>
+</body>
+</html>

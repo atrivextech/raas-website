@@ -1,0 +1,139 @@
+═══════════════════════════════════════════════════════════
+  RAAS WEBSITE DEPLOYMENT CHECKLIST
+═══════════════════════════════════════════════════════════
+
+PRE-DEPLOYMENT
+□ All files downloaded/ready
+□ Hostinger account active
+□ Domain name configured
+□ Backup of all files created
+
+UPLOAD TO HOSTINGER
+□ Logged into Hostinger panel
+□ Accessed File Manager
+□ Navigated to public_html folder
+□ Uploaded index.html
+□ Uploaded admin.html
+□ Uploaded .htaccess
+□ Created css folder
+□ Uploaded css/style.css
+□ Uploaded css/admin.css
+□ Created js folder
+□ Uploaded js/app.js
+□ Uploaded js/admin.js
+□ Verified folder structure is correct
+
+FILE PERMISSIONS
+□ Set folders to 755 (css, js)
+□ Set files to 644 (all HTML, CSS, JS files)
+
+SECURITY CONFIGURATION
+□ Changed admin username in js/admin.js
+□ Changed admin password in js/admin.js
+□ Enabled SSL/HTTPS in Hostinger
+□ Verified HTTPS is working
+
+CUSTOMIZATION
+□ Updated phone number in index.html
+□ Updated email address in index.html
+□ Updated company address in footer
+□ Updated social media links (if applicable)
+□ Customized colors (if needed)
+
+TESTING - HOMEPAGE
+□ Homepage loads correctly
+□ Navigation menu works
+□ All sections visible
+□ Hero section displays properly
+□ Services section shows
+□ Footer displays correctly
+□ Mobile responsive (test on phone)
+□ All links work
+
+TESTING - ADMIN PANEL
+□ Admin page loads (yourdomain.com/admin.html)
+□ Can login with new credentials
+□ Login form validation works
+□ Dashboard displays after login
+□ Add property form visible
+□ Can add a test property
+□ Test property appears in list
+□ Can delete test property
+□ Logout button works
+
+TESTING - PROPERTIES
+□ Added test property shows on homepage
+□ Property card displays correctly
+□ Property image shows (if added)
+□ Property details are correct
+□ Filter buttons work
+□ "Enquire" button links to phone
+
+CONTENT POPULATION
+□ Added real property #1
+□ Added real property #2
+□ Added real property #3
+□ Added property images
+□ Verified all properties display correctly
+□ Deleted test properties
+
+FINAL CHECKS
+□ Tested on Chrome
+□ Tested on Firefox
+□ Tested on Safari
+□ Tested on mobile device
+□ Tested on tablet
+□ All contact links work
+□ Phone number clickable
+□ Email link works
+□ WhatsApp link works (if added)
+
+SEO & PERFORMANCE
+□ Page loads in under 3 seconds
+□ Images optimized/compressed
+□ Meta description added (optional)
+□ Favicon added (optional)
+□ Google Analytics added (optional)
+
+BACKUP & DOCUMENTATION
+□ Saved admin credentials securely
+□ Backed up all website files
+□ Documented any customizations
+□ Saved Hostinger login details
+□ Saved FTP credentials (if used)
+
+POST-LAUNCH
+□ Announced website launch
+□ Shared link on social media
+□ Added to business cards
+□ Submitted to Google Search Console (optional)
+□ Set up regular backup schedule
+□ Planned content update schedule
+
+═══════════════════════════════════════════════════════════
+
+IMPORTANT NOTES:
+
+1. Admin Credentials Location: js/admin.js (lines 2-5)
+2. Contact Info Location: index.html (search for phone/email)
+3. Colors Location: css/style.css (lines 1-12)
+4. Backup Frequency: Weekly recommended
+5. Update Properties: Monthly or as needed
+
+═══════════════════════════════════════════════════════════
+
+EMERGENCY CONTACTS:
+
+Hostinger Support: support@hostinger.com (24/7)
+Live Chat: Available in Hostinger panel
+Knowledge Base: https://support.hostinger.com
+
+═══════════════════════════════════════════════════════════
+
+Date Deployed: _______________
+Deployed By: _______________
+Domain: _______________
+Admin Username: _______________
+Admin Password: _______________ (keep secure!)
+
+═══════════════════════════════════════════════════════════

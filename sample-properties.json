@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "name": "RAAS Garden Heights",
+    "type": "plot",
+    "location": "Shivamogga",
+    "price": "22",
+    "area": "1200",
+    "status": "available",
+    "description": "Premium residential plots in a gated community with RERA approval. Perfect for building your dream home.",
+    "image": ""
+  },
+  {
+    "id": 2,
+    "name": "RAAS Pinnacle Residency",
+    "type": "apartment",
+    "location": "Electronic City, Bengaluru",
+    "price": "58",
+    "area": "1450",
+    "status": "premium",
+    "description": "Luxury 2 & 3 BHK apartments with modern amenities including swimming pool, gym, and 24/7 security.",
+    "image": ""
+  },
+  {
+    "id": 3,
+    "name": "RAAS Malnad Greens",
+    "type": "villa",
+    "location": "Thirthahalli, Malnad Region",
+    "price": "18",
+    "area": "2400",
+    "status": "available",
+    "description": "Eco-friendly villa layouts surrounded by nature. Highway access with all modern facilities.",
+    "image": ""
+  }
+]

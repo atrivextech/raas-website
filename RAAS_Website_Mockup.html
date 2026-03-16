@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAAS Builders & Developers — Website Design Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&family=Noto+Sans+Kannada:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN SYSTEM ── */
+:root {
+  --navy:   #12243A;
+  --navy2:  #0C1C2E;
+  --navy3:  #07111D;
+  --gold:   #B8922A;
+  --gold2:  #D4AD52;
+  --gold3:  #EDD98A;
+  --gold4:  #F8F0D8;
+  --cream:  #FAF8F4;
+  --ivory:  #F3EFE6;
+  --warm:   #E8DFC8;
+  --terr:   #8B4513;
+  --slate:  #4A5C6A;
+  --mid:    #7A8D9A;
+  --light:  #B2C0C8;
+  --white:  #FFFFFF;
+  --dark:   #1A1A1A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
+
+/* ── BANNER ── */
+.banner{background:var(--navy3);padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:24px;position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(184,146,42,0.25)}
+.banner-text{color:var(--gold2);font-size:10px;letter-spacing:3.5px;text-transform:uppercase;font-weight:500}
+.banner-dot{color:rgba(255,255,255,0.2);font-size:8px}
+.banner-kannada{color:rgba(255,255,255,0.45);font-family:'Noto Sans Kannada',sans-serif;font-size:11px}
+
+/* ── SECTION: LOGO CONCEPTS ── */
+.logo-section{background:var(--navy3);padding:80px 40px 70px;position:relative;overflow:hidden}
+.logo-section::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 60%,rgba(184,146,42,0.07),transparent 55%),
+             radial-gradient(ellipse at 80% 20%,rgba(18,36,58,0.6),transparent 50%)}
+
+.eyebrow{text-align:center;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative}
+.eyebrow::before,.eyebrow::after{content:'──';margin:0 14px;opacity:0.35}
+.section-h{font-family:'Cormorant Garant',serif;font-size:clamp(28px,4vw,46px);font-weight:600;color:var(--white);text-align:center;margin-bottom:6px;position:relative}
+.section-sub{text-align:center;color:var(--mid);font-size:13px;margin-bottom:64px;position:relative}
+.section-sub-k{font-family:'Noto Sans Kannada',sans-serif;font-size:12px;color:var(--light);opacity:0.7;margin-top:3px}
+
+.logo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1020px;margin:0 auto}
+.logo-card{background:rgba(255,255,255,0.035);border:1px solid rgba(184,146,42,0.15);border-radius:16px;padding:44px 32px 36px;text-align:center;transition:all 0.4s ease;cursor:pointer;position:relative;overflow:hidden}
+.logo-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(184,146,42,0.04),transparent);border-radius:16px;opacity:0;transition:opacity 0.4s}
+.logo-card:hover::before{opacity:1}
+.logo-card:hover{border-color:rgba(184,146,42,0.4);transform:translateY(-6px);box-shadow:0 24px 48px rgba(0,0,0,0.3),0 0 0 1px rgba(184,146,42,0.1)}
+.logo-card.recommended{border-color:rgba(184,146,42,0.5);background:rgba(184,146,42,0.06)}
+.recommended-badge{position:absolute;top:16px;right:16px;background:var(--gold);color:var(--navy3);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:20px;font-weight:600}
+.logo-display{height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.logo-name{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:8px;font-weight:500}
+.logo-desc{font-size:12px;color:var(--mid);line-height:1.65;margin-bottom:6px}
+.logo-desc-k{font-family:'Noto Sans Kannada',sans-serif;font-size:11px;color:var(--light);opacity:0.6;line-height:1.6}
+
+/* SVG logos */
+svg text{font-family:'Cormorant Garant',serif}
+
+/* ── NAV ── */
+.nav-section{background:var(--cream);padding:60px 40px 20px}
+.eyebrow-dark{text-align:center;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.eyebrow-dark::before,.eyebrow-dark::after{content:'──';margin:0 14px;opacity:0.3;color:var(--gold)}
+.section-h-dark{font-family:'Cormorant Garant',serif;font-size:clamp(24px,3.5vw,40px);font-weight:600;color:var(--navy);text-align:center;margin-bottom:6px}
+.nav-mock{max-width:1100px;margin:40px auto 0;background:var(--navy);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(18,36,58,0.25)}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:72px;border-bottom:1px solid rgba(184,146,42,0.12)}
+.nav-logo-area{display:flex;align-items:center;gap:14px}
+.nav-logo-icon{width:44px;height:44px}
+.nav-logo-text{display:flex;flex-direction:column}
+.nav-company{font-family:'Cormorant Garant',serif;color:var(--white);font-size:18px;font-weight:600;letter-spacing:0.5px;line-height:1.1}
+.nav-company-k{font-family:'Noto Sans Kannada',sans-serif;color:var(--gold2);font-size:11px;font-weight:400;letter-spacing:0.5px;opacity:0.85}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;letter-spacing:0.5px;transition:color 0.3s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2)}
+.nav-links .lang-toggle{background:rgba(184,146,42,0.12);border:1px solid rgba(184,146,42,0.25);border-radius:20px;padding:5px 14px;color:var(--gold2);font-size:12px;cursor:pointer}
+.nav-cta{background:var(--gold);color:var(--navy3);font-size:13px;font-weight:600;letter-spacing:0.5px;padding:10px 22px;border-radius:8px;text-decoration:none;transition:background 0.3s}
+.nav-cta:hover{background:var(--gold2)}
+
+/* ── HERO ── */
+.hero-section{background:var(--cream);padding:40px 40px 60px}
+.hero-mock{max-width:1100px;margin:0 auto;background:var(--navy);border-radius:0 0 16px 16px;overflow:hidden;box-shadow:0 24px 60px rgba(18,36,58,0.2)}
+.hero-inner{position:relative;min-height:560px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--navy3) 0%,var(--navy) 40%,rgba(18,36,58,0.85) 100%)}
+.hero-bg::after{content:'';position:absolute;right:0;top:0;width:52%;height:100%;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560"><rect width="600" height="560" fill="%230C1C2E"/><rect x="80" y="180" width="100" height="300" rx="4" fill="%2312243A"/><rect x="200" y="120" width="120" height="360" rx="4" fill="%230F1E30"/><rect x="340" y="80" width="90" height="400" rx="4" fill="%2312243A"/><rect x="450" y="150" width="80" height="330" rx="4" fill="%230F1E30"/><rect x="80" y="160" width="100" height="20" rx="2" fill="%23B8922A" opacity="0.3"/><rect x="200" y="100" width="120" height="20" rx="2" fill="%23B8922A" opacity="0.2"/><rect x="340" y="60" width="90" height="20" rx="2" fill="%23B8922A" opacity="0.35"/><rect x="0" y="490" width="600" height="70" fill="%230C1C2E"/><rect x="0" y="490" width="600" height="2" fill="%23B8922A" opacity="0.2"/></svg>') center/cover no-repeat}
+.hero-content{position:relative;z-index:2;padding:64px 48px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(184,146,42,0.12);border:1px solid rgba(184,146,42,0.25);border-radius:24px;padding:7px 18px;margin-bottom:28px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+.hero-badge-text{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);font-weight:500}
+.hero-h1{font-family:'Cormorant Garant',serif;font-size:clamp(36px,4.5vw,58px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:10px}
+.hero-h1 em{color:var(--gold2);font-style:normal}
+.hero-h1-k{font-family:'Noto Sans Kannada',sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;color:var(--gold3);line-height:1.4;margin-bottom:20px;opacity:0.9}
+.hero-p{font-size:14px;color:var(--light);line-height:1.75;margin-bottom:8px;max-width:420px}
+.hero-p-k{font-family:'Noto Sans Kannada',sans-serif;font-size:12px;color:rgba(178,192,200,0.7);line-height:1.7;margin-bottom:36px;max-width:420px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--navy3);padding:14px 28px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.5px;display:flex;align-items:center;gap:8px;transition:all 0.3s}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px)}
+.btn-secondary{background:transparent;border:1px solid rgba(184,146,42,0.4);color:var(--gold3);padding:14px 28px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;transition:all 0.3s}
+.btn-secondary:hover{border-color:var(--gold2);color:var(--white)}
+.hero-stats{display:flex;gap:32px;margin-top:44px;padding-top:36px;border-top:1px solid rgba(255,255,255,0.08)}
+.stat-item{text-align:left}
+.stat-num{font-family:'Cormorant Garant',serif;font-size:32px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px}
+.stat-num span{color:var(--gold2)}
+.stat-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);display:block}
+.stat-lbl-k{font-family:'Noto Sans Kannada',sans-serif;font-size:10px;color:var(--mid);opacity:0.7;display:block}
+
+/* ── SEARCH BAR ── */
+.hero-search{position:relative;z-index:2;margin:0 0 0 auto;padding:40px 48px 40px 0;display:flex;align-items:center}
+.search-card{background:rgba(255,255,255,0.05);border:1px solid rgba(184,146,42,0.18);border-radius:16px;padding:28px;width:340px;backdrop-filter:blur(8px)}
+.search-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:20px;display:block}
+.search-tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(0,0,0,0.2);border-radius:8px;padding:4px}
+.s-tab{flex:1;text-align:center;padding:8px;border-radius:6px;font-size:12px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s}
+.s-tab.active{background:var(--gold);color:var(--navy3);font-weight:600}
+.s-tab-k{font-family:'Noto Sans Kannada',sans-serif;font-size:10px;display:block;opacity:0.8}
+.search-input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;color:var(--white);font-size:13px;width:100%;margin-bottom:12px;font-family:'Jost',sans-serif}
+.search-input::placeholder{color:rgba(255,255,255,0.35)}
+.search-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.search-select{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;color:rgba(255,255,255,0.7);font-size:12px;font-family:'Jost',sans-serif;width:100%}
+.search-btn{width:100%;background:var(--gold);color:var(--navy3);border:none;border-radius:8px;padding:13px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Jost',sans-serif;letter-spacing:0.5px;transition:background 0.3s}
+.search-btn:hover{background:var(--gold2)}
+
+/* ── SERVICES STRIP ── */
+.services-section{background:var(--ivory);padding:70px 40px}
+.services-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;max-width:1100px;margin:44px auto 0}
+.svc-card{background:var(--white);border-radius:14px;padding:28px 16px 22px;text-align:center;border:1px solid rgba(18,36,58,0.06);transition:all 0.35s;cursor:pointer}
+.svc-card:hover{border-color:var(--gold);box-shadow:0 12px 36px rgba(184,146,42,0.12);transform:translateY(-5px)}
+.svc-icon{width:52px;height:52px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--navy),var(--slate));border-radius:14px}
+.svc-name{font-size:12px;font-weight:600;color:var(--navy);letter-spacing:0.3px;margin-bottom:4px}
+.svc-name-k{font-family:'Noto Sans Kannada',sans-serif;font-size:11px;color:var(--slate);opacity:0.8}
+.svc-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:8px}
+
+/* ── PROPERTIES ── */
+.properties-section{background:var(--cream);padding:80px 40px}
+.prop-filter{display:flex;gap:10px;justify-content:center;margin-top:36px;margin-bottom:48px;flex-wrap:wrap}
+.pf-chip{padding:9px 22px;border-radius:24px;font-size:12px;font-weight:500;letter-spacing:0.5px;cursor:pointer;border:1px solid rgba(18,36,58,0.15);color:var(--slate);transition:all 0.25s}
+.pf-chip:hover,.pf-chip.active{background:var(--navy);color:var(--gold2);border-color:var(--navy)}
+.pf-chip-k{font-family:'Noto Sans Kannada',sans-serif;font-size:10px;display:block;opacity:0.75;margin-top:1px}
+.prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto}
+.prop-card{background:var(--white);border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(18,36,58,0.07);transition:all 0.35s;cursor:pointer}
+.prop-card:hover{transform:translateY(-8px);box-shadow:0 20px 48px rgba(18,36,58,0.16)}
+.prop-img{height:200px;position:relative;overflow:hidden}
+.prop-img-bg{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.prop-card:hover .prop-img-bg{transform:scale(1.05)}
+.prop-badge{position:absolute;top:14px;left:14px;background:var(--navy);color:var(--gold2);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:20px;font-weight:600}
+.prop-badge.available{background:rgba(21,128,61,0.9);color:var(--white)}
+.prop-badge.sold{background:rgba(185,28,28,0.85);color:var(--white)}
+.prop-fav{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+.prop-body{padding:22px}
+.prop-type{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:500}
+.prop-type-k{font-family:'Noto Sans Kannada',sans-serif;font-size:10px;color:var(--slate);opacity:0.7}
+.prop-title{font-family:'Cormorant Garant',serif;font-size:20px;font-weight:600;color:var(--navy);margin-bottom:4px;line-height:1.3}
+.prop-title-k{font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:var(--slate);opacity:0.8;margin-bottom:14px;line-height:1.5}
+.prop-location{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid);margin-bottom:16px}
+.prop-specs{display:flex;gap:16px;padding:14px 0;border-top:1px solid var(--ivory);border-bottom:1px solid var(--ivory);margin-bottom:16px}
+.spec-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--slate)}
+.prop-footer{display:flex;align-items:center;justify-content:space-between}
+.prop-price{font-family:'Cormorant Garant',serif;font-size:22px;font-weight:700;color:var(--navy)}
+.prop-price span{font-size:13px;color:var(--mid);font-family:'Jost',sans-serif;font-weight:400}
+.prop-enquire{background:var(--navy);color:var(--gold2);font-size:11px;font-weight:600;padding:9px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;transition:background 0.3s}
+.prop-enquire:hover{background:var(--gold);color:var(--navy)}
+
+/* property card SVG placeholders */
+.prop-svg-bg{width:100%;height:100%}
+
+/* ── WHY RAAS ── */
+.why-section{background:var(--navy);padding:90px 40px;position:relative;overflow:hidden}
+.why-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(184,146,42,0.06),transparent 60%),radial-gradient(ellipse at 90% 20%,rgba(18,36,58,0.5),transparent 50%)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;max-width:1100px;margin:60px auto 0;align-items:center;position:relative}
+.why-visual{position:relative}
+.why-img-frame{border-radius:20px;overflow:hidden;box-shadow:0 32px 64px rgba(0,0,0,0.4)}
+.why-stats-overlay{position:absolute;bottom:-20px;right:-20px;background:var(--gold);border-radius:14px;padding:22px 28px;box-shadow:0 16px 40px rgba(0,0,0,0.3)}
+.why-stats-num{font-family:'Cormorant Garant',serif;font-size:36px;font-weight:700;color:var(--navy3);line-height:1}
+.why-stats-lbl{font-size:11px;color:var(--navy);font-weight:500;letter-spacing:0.5px}
+.why-stats-lbl-k{font-family:'Noto Sans Kannada',sans-serif;font-size:10px;color:var(--navy2);opacity:0.7}
+.why-content{}
+.why-points{display:grid;gap:24px;margin-top:36px}
+.why-pt{display:flex;gap:18px;align-items:flex-start}
+.why-pt-icon{width:48px;height:48px;min-width:48px;border-radius:14px;background:rgba(184,146,42,0.1);border:1px solid rgba(184,146,42,0.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.why-pt-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px}
+.why-pt-title-k{font-family:'Noto Sans Kannada',sans-serif;font-size:12px;color:var(--gold3);opacity:0.85;margin-bottom:5px}
+.why-pt-desc{font-size:12px;color:var(--mid);line-height:1.7}
+
+/* ── TESTIMONIALS ── */
+.test-section{background:var(--ivory);padding:80px 40px}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:50px auto 0}
+.test-card{background:var(--white);border-radius:18px;padding:32px;border:1px solid rgba(18,36,58,0.06);position:relative}
+.test-card::before{content:'"';position:absolute;top:16px;left:24px;font-family:'Cormorant Garant',serif;font-size:72px;color:var(--gold);opacity:0.2;line-height:1}
+.test-stars{color:var(--gold);font-size:14px;margin-bottom:16px}
+.test-text{font-size:13px;color:var(--slate);line-height:1.75;margin-bottom:8px;font-style:italic}
+.test-text-k{font-family:'Noto Sans Kannada',sans-serif;font-size:12px;color:var(--slate);opacity:0.7;line-height:1.7;margin-bottom:20px;font-style:normal}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--slate));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garant',serif;font-size:18px;color:var(--gold2);font-weight:700}
+.test-name{font-size:13px;font-weight:600;color:var(--navy)}
+.test-name-k{font-family:'Noto Sans Kannada',sans-serif;font-size:11px;color:var(--slate);opacity:0.8}
+.test-role{font-size:11px;color:var(--mid);letter-spacing:0.5px}
+
+/* ── AREAS ── */
+.areas-section{background:var(--cream);padding:80px 40px}
+.areas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:50px auto 0}
+.area-card{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;height:200px;transition:transform 0.35s}
+.area-card:hover{transform:scale(1.03)}
+.area-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:22px 20px;background:linear-gradient(to top,rgba(7,17,29,0.9) 0%,rgba(7,17,29,0.2) 60%,transparent 100%)}
+.area-name{font-family:'Cormorant Garant',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:3px}
+.area-name-k{font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:var(--gold3);opacity:0.9;margin-bottom:6px}
+.area-count{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2)}
+
+/* ── CTA ── */
+.cta-section{background:linear-gradient(135deg,var(--navy3),var(--navy));padding:100px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200"><path d="M0,160 C300,80 600,240 900,120 C1050,60 1150,140 1200,100 L1200,200 L0,200Z" fill="%23B8922A" opacity="0.04"/></svg>') bottom/cover no-repeat}
+.cta-title{font-family:'Cormorant Garant',serif;font-size:clamp(32px,5vw,60px);font-weight:700;color:var(--white);margin-bottom:8px}
+.cta-title em{color:var(--gold2);font-style:normal}
+.cta-title-k{font-family:'Noto Sans Kannada',sans-serif;font-size:clamp(18px,2.8vw,32px);color:var(--gold3);opacity:0.85;margin-bottom:18px;font-weight:400}
+.cta-sub{color:var(--mid);font-size:15px;margin-bottom:6px}
+.cta-sub-k{font-family:'Noto Sans Kannada',sans-serif;font-size:13px;color:var(--light);opacity:0.6;margin-bottom:44px}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+.footer{background:var(--navy3);padding:70px 40px 36px;border-top:1px solid rgba(184,146,42,0.1)}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:48px}
+.footer-brand-name{font-family:'Cormorant Garant',serif;font-size:24px;font-weight:700;color:var(--white);margin-bottom:4px}
+.footer-brand-name-k{font-family:'Noto Sans Kannada',sans-serif;font-size:14px;color:var(--gold2);margin-bottom:14px;opacity:0.9}
+.footer-brand-desc{font-size:12px;color:var(--mid);line-height:1.75;margin-bottom:6px}
+.footer-brand-desc-k{font-family:'Noto Sans Kannada',sans-serif;font-size:11px;color:var(--mid);opacity:0.65;line-height:1.7;margin-bottom:22px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--mid);margin-bottom:10px}
+.footer-contact-item-k{font-family:'Noto Sans Kannada',sans-serif;font-size:11px;opacity:0.75}
+.footer-h{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:20px;font-weight:600}
+.footer-links{list-style:none;display:grid;gap:10px}
+.footer-links a{color:var(--mid);text-decoration:none;font-size:12px;transition:color 0.2s}
+.footer-links a:hover{color:var(--gold2)}
+.footer-links-k{font-family:'Noto Sans Kannada',sans-serif;font-size:11px;display:block;opacity:0.6;margin-top:2px}
+.footer-bottom{max-width:1100px;margin:0 auto;padding-top:28px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.5px}
+.footer-copy-k{font-family:'Noto Sans Kannada',sans-serif;font-size:10px;color:rgba(255,255,255,0.2)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:11px;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:0.5px}
+.footer-legal a:hover{color:var(--gold2)}
+.footer-social{display:flex;gap:10px}
+.social-btn{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all 0.3s}
+.social-btn:hover{background:rgba(184,146,42,0.15);border-color:rgba(184,146,42,0.3)}
+
+/* ── UTILITIES ── */
+.section-wrap{max-width:1100px;margin:0 auto}
+.divider{width:48px;height:2px;background:var(--gold);margin:16px auto 0}
+.tag-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px auto 0;max-width:700px}
+.tag{background:rgba(184,146,42,0.1);border:1px solid rgba(184,146,42,0.2);color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:20px}
+</style>
+</head>
+<body>
+
+<!-- ── BANNER ── -->
+<div class="banner">
+  <span class="banner-text">Design Preview — RAAS Builders & Developers</span>
+  <span class="banner-dot">●</span>
+  <span class="banner-kannada">ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್ — ವೆಬ್‌ಸೈಟ್ ಡಿಸೈನ್ ಪ್ರಿವ್ಯೂ</span>
+  <span class="banner-dot">●</span>
+  <span class="banner-text">Bilingual · English + ಕನ್ನಡ</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — LOGO CONCEPTS
+════════════════════════════════════════════════════════════ -->
+<section class="logo-section">
+  <p class="eyebrow">Brand Identity · ಬ್ರಾಂಡ್ ಐಡೆಂಟಿಟಿ</p>
+  <h2 class="section-h">Logo Concepts for RAAS</h2>
+  <p class="section-sub">
+    Three distinctive directions for RAAS Builders & Developers<br>
+    <span class="section-sub-k">ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್‌ಗಾಗಿ ಮೂರು ವಿಶಿಷ್ಟ ಲೋಗೋ ಸಂಕಲ್ಪಗಳು</span>
+  </p>
+
+  <div class="logo-grid">
+
+    <!-- LOGO 1 — Geometric Arch -->
+    <div class="logo-card recommended">
+      <span class="recommended-badge">✦ Recommended</span>
+      <div class="logo-display">
+        <svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#D4AD52"/>
+              <stop offset="100%" style="stop-color:#B8922A"/>
+            </linearGradient>
+          </defs>
+          <!-- Arch symbol -->
+          <path d="M18,72 L18,38 Q18,14 38,14 Q58,14 58,38 L58,72" fill="none" stroke="url(#g1)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="12" y1="72" x2="64" y2="72" stroke="url(#g1)" stroke-width="3" stroke-linecap="round"/>
+          <!-- Inner arch -->
+          <path d="M26,72 L26,40 Q26,22 38,22 Q50,22 50,40 L50,72" fill="none" stroke="rgba(212,173,82,0.3)" stroke-width="1.5"/>
+          <!-- Star accent -->
+          <circle cx="38" cy="10" r="3" fill="#D4AD52"/>
+          <line x1="38" y1="4" x2="38" y2="7" stroke="#D4AD52" stroke-width="1.5"/>
+          <line x1="32" y1="10" x2="34.5" y2="10" stroke="#D4AD52" stroke-width="1.5"/>
+          <line x1="41.5" y1="10" x2="44" y2="10" stroke="#D4AD52" stroke-width="1.5"/>
+          <!-- Wordmark -->
+          <text x="82" y="46" font-size="32" font-weight="700" fill="#FFFFFF" font-family="Cormorant Garant, serif" letter-spacing="4">RAAS</text>
+          <text x="82" y="62" font-size="10.5" fill="#B8922A" font-family="Jost, sans-serif" letter-spacing="3" font-weight="400">BUILDERS &amp; DEVELOPERS</text>
+          <text x="82" y="78" font-size="10" fill="rgba(178,192,200,0.65)" font-family="Noto Sans Kannada, sans-serif">ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್</text>
+          <!-- Divider -->
+          <line x1="82" y1="49" x2="248" y2="49" stroke="rgba(184,146,42,0.2)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <p class="logo-name">Option A — Arch & Crown</p>
+      <p class="logo-desc">A golden arch symbolising solid foundations and aspirational living. Clean, timeless, deeply premium. Works beautifully on all surfaces.</p>
+      <p class="logo-desc-k">ಬಂಗಾರದ ಕಮಾನು ಗಟ್ಟಿ ತಳಪಾಯ ಮತ್ತು ಮಹತ್ವಾಕಾಂಕ್ಷಿ ಜೀವನವನ್ನು ಸಂಕೇತಿಸುತ್ತದೆ</p>
+    </div>
+
+    <!-- LOGO 2 — Monogram + Pillars -->
+    <div class="logo-card">
+      <div class="logo-display">
+        <svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g2" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#B8922A"/>
+              <stop offset="100%" style="stop-color:#EDD98A"/>
+            </linearGradient>
+          </defs>
+          <!-- Three pillars -->
+          <rect x="10" y="28" width="12" height="50" rx="2" fill="url(#g2)"/>
+          <rect x="28" y="18" width="12" height="60" rx="2" fill="url(#g2)"/>
+          <rect x="46" y="28" width="12" height="50" rx="2" fill="url(#g2)"/>
+          <!-- Capital tops -->
+          <rect x="8" y="24" width="16" height="5" rx="1.5" fill="#D4AD52"/>
+          <rect x="26" y="14" width="16" height="5" rx="1.5" fill="#D4AD52"/>
+          <rect x="44" y="24" width="16" height="5" rx="1.5" fill="#D4AD52"/>
+          <!-- Base -->
+          <rect x="6" y="78" width="66" height="4" rx="2" fill="url(#g2)"/>
+          <!-- Wordmark -->
+          <text x="86" y="46" font-size="30" font-weight="700" fill="#FFFFFF" font-family="Cormorant Garant, serif" letter-spacing="5">RAAS</text>
+          <text x="86" y="62" font-size="9.5" fill="#B8922A" font-family="Jost, sans-serif" letter-spacing="3.5">BUILDERS &amp; DEVELOPERS</text>
+          <text x="86" y="77" font-size="9.5" fill="rgba(178,192,200,0.55)" font-family="Noto Sans Kannada, sans-serif">ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್</text>
+          <line x1="86" y1="50" x2="250" y2="50" stroke="rgba(184,146,42,0.15)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <p class="logo-name">Option B — Three Pillars</p>
+      <p class="logo-desc">Three pillars representing strength, integrity and growth. Classical architectural symbolism with a modern serif wordmark.</p>
+      <p class="logo-desc-k">ಮೂರು ಸ್ತಂಭಗಳು ಶಕ್ತಿ, ಸಮಗ್ರತೆ ಮತ್ತು ಬೆಳವಣಿಗೆಯನ್ನು ಪ್ರತಿನಿಧಿಸುತ್ತವೆ</p>
+    </div>
+
+    <!-- LOGO 3 — Diamond monogram -->
+    <div class="logo-card">
+      <div class="logo-display">
+        <svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#EDD98A"/>
+              <stop offset="100%" style="stop-color:#B8922A"/>
+            </linearGradient>
+          </defs>
+          <!-- Diamond frame -->
+          <polygon points="38,8 72,42 38,76 4,42" fill="none" stroke="url(#g3)" stroke-width="2.5"/>
+          <polygon points="38,18 62,42 38,66 14,42" fill="rgba(184,146,42,0.07)" stroke="rgba(184,146,42,0.2)" stroke-width="1"/>
+          <!-- R monogram inside diamond -->
+          <text x="38" y="50" font-size="26" font-weight="700" fill="url(#g3)" font-family="Cormorant Garant, serif" text-anchor="middle">R</text>
+          <!-- Corner dots -->
+          <circle cx="38" cy="8" r="2.5" fill="#D4AD52"/>
+          <circle cx="72" cy="42" r="2.5" fill="#D4AD52"/>
+          <circle cx="38" cy="76" r="2.5" fill="#D4AD52"/>
+          <circle cx="4" cy="42" r="2.5" fill="#D4AD52"/>
+          <!-- Wordmark -->
+          <text x="90" y="38" font-size="28" font-weight="700" fill="#FFFFFF" font-family="Cormorant Garant, serif" letter-spacing="4">RAAS</text>
+          <text x="90" y="55" font-size="9.5" fill="#B8922A" font-family="Jost, sans-serif" letter-spacing="3">BUILDERS &amp; DEVELOPERS</text>
+          <text x="90" y="70" font-size="9.5" fill="rgba(178,192,200,0.55)" font-family="Noto Sans Kannada, sans-serif">ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್</text>
+        </svg>
+      </div>
+      <p class="logo-name">Option C — Diamond Monogram</p>
+      <p class="logo-desc">A geometric diamond with an R monogram — conveying precision, luxury and exclusivity. Distinctive icon that works as a standalone stamp.</p>
+      <p class="logo-desc-k">ಜ್ಯಾಮಿತೀಯ ವಜ್ರ ಮತ್ತು R ಮೊನೊಗ್ರಾಂ — ನಿಖರತೆ ಮತ್ತು ಐಷಾರಾಮಿ ಗುಣಮಟ್ಟ</p>
+    </div>
+
+  </div>
+
+  <!-- Color palette -->
+  <div style="max-width:700px;margin:60px auto 0;text-align:center">
+    <p class="eyebrow" style="margin-bottom:24px">Brand Colour Palette · ಬ್ರಾಂಡ್ ಬಣ್ಣ ಪ್ಯಾಲೆಟ್</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <div style="text-align:center">
+        <div style="width:64px;height:64px;border-radius:14px;background:#12243A;margin:0 auto 8px;border:2px solid rgba(255,255,255,0.1)"></div>
+        <div style="font-size:10px;color:#B2C0C8;letter-spacing:1px">NAVY<br>#12243A</div>
+      </div>
+      <div style="text-align:center">
+        <div style="width:64px;height:64px;border-radius:14px;background:#B8922A;margin:0 auto 8px"></div>
+        <div style="font-size:10px;color:#B2C0C8;letter-spacing:1px">GOLD<br>#B8922A</div>
+      </div>
+      <div style="width:64px;height:64px;border-radius:14px;background:#D4AD52;margin:0 auto 8px"></div>
+      <div style="text-align:center">
+        <div style="width:64px;height:64px;border-radius:14px;background:#D4AD52;margin:0 auto 8px"></div>
+        <div style="font-size:10px;color:#B2C0C8;letter-spacing:1px">GOLD 2<br>#D4AD52</div>
+      </div>
+      <div style="text-align:center">
+        <div style="width:64px;height:64px;border-radius:14px;background:#FAF8F4;margin:0 auto 8px;border:2px solid rgba(255,255,255,0.1)"></div>
+        <div style="font-size:10px;color:#B2C0C8;letter-spacing:1px">CREAM<br>#FAF8F4</div>
+      </div>
+      <div style="text-align:center">
+        <div style="width:64px;height:64px;border-radius:14px;background:#4A5C6A;margin:0 auto 8px"></div>
+        <div style="font-size:10px;color:#B2C0C8;letter-spacing:1px">SLATE<br>#4A5C6A</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — NAVIGATION
+════════════════════════════════════════════════════════════ -->
+<section class="nav-section">
+  <p class="eyebrow-dark">Navigation · ನ್ಯಾವಿಗೇಶನ್</p>
+  <h2 class="section-h-dark">Website Header & Navigation</h2>
+  <div class="divider"></div>
+
+  <div class="nav-mock">
+    <nav class="nav-bar">
+      <div class="nav-logo-area">
+        <!-- Mini logo in nav -->
+        <svg class="nav-logo-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="10" fill="#12243A"/>
+          <path d="M10,34 L10,18 Q10,10 22,10 Q34,10 34,18 L34,34" fill="none" stroke="#B8922A" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M14,34 L14,20 Q14,14 22,14 Q30,14 30,20 L30,34" fill="none" stroke="rgba(184,146,42,0.3)" stroke-width="1.5"/>
+          <line x1="7" y1="34" x2="37" y2="34" stroke="#B8922A" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="22" cy="7" r="2" fill="#D4AD52"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span class="nav-company">RAAS</span>
+          <span class="nav-company-k">ರಾಸ್ ಬಿಲ್ಡರ್ಸ್</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Properties / ಆಸ್ತಿ</a></li>
+        <li><a href="#">Projects / ಯೋಜನೆ</a></li>
+        <li><a href="#">Services / ಸೇವೆ</a></li>
+        <li><a href="#">About / ಬಗ್ಗೆ</a></li>
+        <li><a href="#">Contact / ಸಂಪರ್ಕ</a></li>
+        <li><span class="lang-toggle">🇮🇳 ಕನ್ನಡ</span></li>
+      </ul>
+      <a href="#" class="nav-cta">Enquire Now / ಈಗಲೇ ಕೇಳಿ</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — HERO
+════════════════════════════════════════════════════════════ -->
+<section class="hero-section">
+  <p class="eyebrow-dark" style="margin-bottom:16px">Hero Section · ಮುಖ್ಯ ವಿಭಾಗ</p>
+  <h2 class="section-h-dark">Homepage Hero Banner</h2>
+  <div class="divider" style="margin-bottom:30px"></div>
+
+  <div class="hero-mock">
+    <div class="hero-inner">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span class="hero-badge-text">Trusted Since 2010 · ಶ್ರೇಷ್ಠ ರಿಯಲ್ ಎಸ್ಟೇಟ್</span>
+        </div>
+        <h1 class="hero-h1">Build Your <em>Dream</em><br>With RAAS</h1>
+        <div class="hero-h1-k">ನಿಮ್ಮ ಕನಸನ್ನು ನಿರ್ಮಿಸಿ — ರಾಸ್‌ನೊಂದಿಗೆ</div>
+        <p class="hero-p">Premium plots, apartments & construction services across Bengaluru, Shivamogga and the Malnad region.</p>
+        <p class="hero-p-k">ಬೆಂಗಳೂರು, ಶಿವಮೊಗ್ಗ ಮತ್ತು ಮಲೆನಾಡು ಪ್ರದೇಶದಲ್ಲಿ ಉತ್ತಮ ನಿವೇಶನ, ಅಪಾರ್ಟ್‌ಮೆಂಟ್ ಮತ್ತು ನಿರ್ಮಾಣ ಸೇವೆಗಳು.</p>
+        <div class="hero-btns">
+          <a href="#" class="btn-primary">🏠 View Properties / ಆಸ್ತಿ ನೋಡಿ</a>
+          <a href="#" class="btn-secondary">📞 Talk to an Expert</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">500<span>+</span></div>
+            <span class="stat-lbl">Plots Sold</span>
+            <span class="stat-lbl-k">ನಿವೇಶನ ಮಾರಾಟ</span>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">14<span>+</span></div>
+            <span class="stat-lbl">Years Active</span>
+            <span class="stat-lbl-k">ವರ್ಷಗಳ ಅನುಭವ</span>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">12<span></span></div>
+            <span class="stat-lbl">Districts Covered</span>
+            <span class="stat-lbl-k">ಜಿಲ್ಲೆಗಳಲ್ಲಿ ಸೇವೆ</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-search">
+        <div class="search-card">
+          <span class="search-label">Find Your Property · ನಿಮ್ಮ ಆಸ್ತಿ ಹುಡುಕಿ</span>
+          <div class="search-tabs">
+            <div class="s-tab active">Buy <span class="s-tab-k">ಖರೀದಿ</span></div>
+            <div class="s-tab">Rent <span class="s-tab-k">ಬಾಡಿಗೆ</span></div>
+            <div class="s-tab">Sell <span class="s-tab-k">ಮಾರಾಟ</span></div>
+          </div>
+          <input class="search-input" placeholder="📍 Location — Bengaluru, Shivamogga...">
+          <div class="search-row">
+            <select class="search-select">
+              <option>Type / ಪ್ರಕಾರ</option>
+              <option>Plot / ನಿವೇಶನ</option>
+              <option>Apartment / ಅಪಾರ್ಟ್‌ಮೆಂಟ್</option>
+              <option>House / ಮನೆ</option>
+              <option>Commercial / ವಾಣಿಜ್ಯ</option>
+            </select>
+            <select class="search-select">
+              <option>Budget / ಬಜೆಟ್</option>
+              <option>Under 20L</option>
+              <option>20L – 50L</option>
+              <option>50L – 1Cr</option>
+              <option>1Cr+</option>
+            </select>
+          </div>
+          <button class="search-btn">🔍 Search Properties / ಹುಡುಕಿ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4 — SERVICES
+════════════════════════════════════════════════════════════ -->
+<section class="services-section">
+  <p class="eyebrow-dark">Our Services · ನಮ್ಮ ಸೇವೆಗಳು</p>
+  <h2 class="section-h-dark">Everything Under One Roof</h2>
+  <p style="text-align:center;color:var(--slate);font-size:13px;margin-top:6px;font-family:'Noto Sans Kannada',sans-serif">ಎಲ್ಲವೂ ಒಂದೇ ಛಾವಣಿಯ ಅಡಿಯಲ್ಲಿ</p>
+  <div class="divider"></div>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="12" width="20" height="14" rx="2" stroke="#D4AD52" stroke-width="1.8"/><path d="M2 14L14 4L26 14" stroke="#D4AD52" stroke-width="1.8" stroke-linecap="round"/><rect x="10" y="18" width="8" height="8" rx="1" stroke="#B8922A" stroke-width="1.5"/></svg>
+      </div>
+      <div class="svc-name">Plot / Layouts</div>
+      <div class="svc-name-k">ನಿವೇಶನ / ಬಡಾವಣೆ</div>
+      <div class="svc-tag">B2C + B2B</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="20" height="18" rx="2" stroke="#D4AD52" stroke-width="1.8"/><line x1="4" y1="13" x2="24" y2="13" stroke="#B8922A" stroke-width="1.2"/><line x1="4" y1="18" x2="24" y2="18" stroke="#B8922A" stroke-width="1.2"/><rect x="8" y="2" width="4" height="7" rx="1" fill="#D4AD52" opacity="0.6"/><rect x="16" y="2" width="4" height="7" rx="1" fill="#D4AD52" opacity="0.6"/></svg>
+      </div>
+      <div class="svc-name">Apartments</div>
+      <div class="svc-name-k">ಅಪಾರ್ಟ್‌ಮೆಂಟ್</div>
+      <div class="svc-tag">B2C</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 22V12L14 6L22 12V22" stroke="#D4AD52" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="16" width="8" height="6" rx="1" stroke="#B8922A" stroke-width="1.5"/><line x1="2" y1="22" x2="26" y2="22" stroke="#D4AD52" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-name">Construction</div>
+      <div class="svc-name-k">ನಿರ್ಮಾಣ</div>
+      <div class="svc-tag">B2C Service</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="6" width="22" height="16" rx="2" stroke="#D4AD52" stroke-width="1.8"/><path d="M8 10H20M8 14H16M8 18H12" stroke="#B8922A" stroke-width="1.5" stroke-linecap="round"/><circle cx="21" cy="20" r="5" fill="#12243A" stroke="#D4AD52" stroke-width="1.5"/><path d="M19 20L21 22L24 18" stroke="#D4AD52" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-name">Interior Design</div>
+      <div class="svc-name-k">ಅಂತರಿಕ ವಿನ್ಯಾಸ</div>
+      <div class="svc-tag">Premium</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="5" y="8" width="8" height="16" rx="1" stroke="#D4AD52" stroke-width="1.8"/><rect x="15" y="4" width="8" height="20" rx="1" stroke="#D4AD52" stroke-width="1.8"/><line x1="3" y1="24" x2="25" y2="24" stroke="#B8922A" stroke-width="1.5"/></svg>
+      </div>
+      <div class="svc-name">Materials Supply</div>
+      <div class="svc-name-k">ನಿರ್ಮಾಣ ಸಾಮಗ್ರಿ</div>
+      <div class="svc-tag">B2B</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="12" r="5" stroke="#D4AD52" stroke-width="1.8"/><path d="M6 24C6 19.6 9.6 16 14 16C18.4 16 22 19.6 22 24" stroke="#D4AD52" stroke-width="1.8" stroke-linecap="round"/><path d="M19 6L21 4M22 10H25M21 14L23 16" stroke="#B8922A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-name">Legal Consultation</div>
+      <div class="svc-name-k">ಕಾನೂನು ಸಲಹೆ</div>
+      <div class="svc-tag">Advisory</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5 — FEATURED PROPERTIES
+════════════════════════════════════════════════════════════ -->
+<section class="properties-section">
+  <p class="eyebrow-dark">Featured Listings · ವಿಶೇಷ ಆಸ್ತಿಗಳು</p>
+  <h2 class="section-h-dark">Properties Available Now</h2>
+  <p style="text-align:center;color:var(--slate);font-size:12px;margin-top:5px;font-family:'Noto Sans Kannada',sans-serif">ಈಗ ಲಭ್ಯವಿರುವ ಆಸ್ತಿಗಳು</p>
+  <div class="divider"></div>
+  <div class="prop-filter">
+    <div class="pf-chip active">All / ಎಲ್ಲ</div>
+    <div class="pf-chip">Plots / ನಿವೇಶನ</div>
+    <div class="pf-chip">Apartments / ಅಪಾರ್ಟ್‌ಮೆಂಟ್</div>
+    <div class="pf-chip">Houses / ಮನೆ</div>
+    <div class="pf-chip">Commercial / ವಾಣಿಜ್ಯ</div>
+    <div class="pf-chip">Shivamogga / ಶಿವಮೊಗ್ಗ</div>
+    <div class="pf-chip">Bengaluru / ಬೆಂಗಳೂರು</div>
+  </div>
+  <div class="prop-grid section-wrap">
+
+    <!-- Card 1 -->
+    <div class="prop-card">
+      <div class="prop-img">
+        <svg class="prop-svg-bg" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#0C1C2E"/>
+          <rect x="40" y="60" width="80" height="120" rx="4" fill="#12243A"/>
+          <rect x="140" y="40" width="100" height="140" rx="4" fill="#0F1E30"/>
+          <rect x="260" y="70" width="70" height="110" rx="4" fill="#12243A"/>
+          <rect x="0" y="170" width="380" height="30" fill="#07111D"/>
+          <rect x="40" y="56" width="80" height="6" rx="2" fill="#B8922A" opacity="0.4"/>
+          <rect x="140" y="36" width="100" height="6" rx="2" fill="#B8922A" opacity="0.5"/>
+          <rect x="260" y="66" width="70" height="6" rx="2" fill="#B8922A" opacity="0.3"/>
+          <circle cx="300" cy="30" r="18" fill="#1A3C34" opacity="0.4"/>
+          <circle cx="310" cy="22" r="10" fill="#2A5240" opacity="0.3"/>
+        </svg>
+        <span class="prop-badge available">● Available</span>
+        <span class="prop-fav">🤍</span>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type">Plot · ನಿವೇಶನ</div>
+        <div class="prop-title">RAAS Garden Heights</div>
+        <div class="prop-title-k">ರಾಸ್ ಗಾರ್ಡನ್ ಹೈಟ್ಸ್ — ಶಿವಮೊಗ್ಗ</div>
+        <div class="prop-location">📍 Shivamogga · ಶಿವಮೊಗ್ಗ</div>
+        <div class="prop-specs">
+          <div class="spec-item">📐 1,200 sq.ft</div>
+          <div class="spec-item">🗺️ RERA Approved</div>
+          <div class="spec-item">🌳 Gated</div>
+        </div>
+        <div class="prop-footer">
+          <div class="prop-price">₹22 Lakhs <span>onwards</span></div>
+          <a href="#" class="prop-enquire">Enquire / ಕೇಳಿ</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="prop-card">
+      <div class="prop-img">
+        <svg class="prop-svg-bg" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#1A2535"/>
+          <rect x="20" y="30" width="340" height="150" rx="6" fill="#12243A"/>
+          <rect x="20" y="30" width="340" height="8" rx="3" fill="#B8922A" opacity="0.5"/>
+          <rect x="40" y="50" width="60" height="80" rx="3" fill="#0C1C2E"/>
+          <rect x="120" y="50" width="60" height="80" rx="3" fill="#0C1C2E"/>
+          <rect x="200" y="50" width="60" height="80" rx="3" fill="#0C1C2E"/>
+          <rect x="280" y="50" width="60" height="80" rx="3" fill="#0C1C2E"/>
+          <rect x="40" y="145" width="300" height="30" rx="2" fill="#0F1E30"/>
+          <circle cx="190" cy="20" r="8" fill="#B8922A" opacity="0.6"/>
+        </svg>
+        <span class="prop-badge">● Premium</span>
+        <span class="prop-fav">❤️</span>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type">Apartment · ಅಪಾರ್ಟ್‌ಮೆಂಟ್</div>
+        <div class="prop-title">RAAS Pinnacle Residency</div>
+        <div class="prop-title-k">ರಾಸ್ ಪಿನ್ನಕಲ್ ರೆಸಿಡೆನ್ಸಿ — ಬೆಂಗಳೂರು</div>
+        <div class="prop-location">📍 Electronic City, Bengaluru</div>
+        <div class="prop-specs">
+          <div class="spec-item">🛏️ 2 & 3 BHK</div>
+          <div class="spec-item">🏊 Amenities</div>
+          <div class="spec-item">🔐 Secured</div>
+        </div>
+        <div class="prop-footer">
+          <div class="prop-price">₹58 Lakhs <span>onwards</span></div>
+          <a href="#" class="prop-enquire">Enquire / ಕೇಳಿ</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="prop-card">
+      <div class="prop-img">
+        <svg class="prop-svg-bg" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="380" height="200" fill="#0A1520"/>
+          <polygon points="190,20 320,100 320,180 60,180 60,100" fill="#12243A"/>
+          <rect x="150" y="110" width="80" height="70" rx="2" fill="#0C1C2E"/>
+          <rect x="170" y="110" width="40" height="40" rx="2" fill="#0F1E30"/>
+          <rect x="60" y="165" width="260" height="5" fill="#B8922A" opacity="0.3"/>
+          <rect x="80" y="120" width="40" height="60" rx="2" fill="#0C1C2E"/>
+          <rect x="260" y="120" width="40" height="60" rx="2" fill="#0C1C2E"/>
+          <polygon points="190,15 195,30 185,30" fill="#B8922A" opacity="0.7"/>
+        </svg>
+        <span class="prop-badge available">● New Launch</span>
+        <span class="prop-fav">🤍</span>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type">Villa Layout · ವಿಲ್ಲಾ ಬಡಾವಣೆ</div>
+        <div class="prop-title">RAAS Malnad Greens</div>
+        <div class="prop-title-k">ರಾಸ್ ಮಲೆನಾಡ್ ಗ್ರೀನ್ಸ್ — ತೀರ್ಥಹಳ್ಳಿ</div>
+        <div class="prop-location">📍 Thirthahalli, Malnad Region</div>
+        <div class="prop-specs">
+          <div class="spec-item">📐 2,400 sq.ft</div>
+          <div class="spec-item">🌿 Eco Layout</div>
+          <div class="spec-item">🗺️ Highway Access</div>
+        </div>
+        <div class="prop-footer">
+          <div class="prop-price">₹18 Lakhs <span>onwards</span></div>
+          <a href="#" class="prop-enquire">Enquire / ಕೇಳಿ</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 6 — WHY RAAS
+════════════════════════════════════════════════════════════ -->
+<section class="why-section">
+  <p class="eyebrow">Why RAAS · ರಾಸ್ ಏಕೆ ಆಯ್ಕೆ ಮಾಡಬೇಕು</p>
+  <h2 class="section-h">Trust Built Over Decades</h2>
+  <p class="section-sub">Rooted in Karnataka, committed to your dream<br><span class="section-sub-k">ಕರ್ನಾಟಕದ ನೆಲದಲ್ಲಿ ಬೇರೂರಿ, ನಿಮ್ಮ ಕನಸಿಗೆ ಬದ್ಧ</span></p>
+
+  <div class="why-grid">
+    <div class="why-visual">
+      <div class="why-img-frame">
+        <svg width="100%" viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="380" fill="#0C1C2E"/>
+          <rect x="0" y="260" width="480" height="120" fill="#07111D"/>
+          <rect x="60" y="80" width="120" height="220" rx="6" fill="#12243A"/>
+          <rect x="200" y="40" width="140" height="260" rx="6" fill="#0F1E30"/>
+          <rect x="360" y="100" width="80" height="200" rx="6" fill="#12243A"/>
+          <rect x="60" y="74" width="120" height="8" rx="3" fill="#B8922A" opacity="0.5"/>
+          <rect x="200" y="34" width="140" height="8" rx="3" fill="#B8922A" opacity="0.6"/>
+          <rect x="360" y="94" width="80" height="8" rx="3" fill="#B8922A" opacity="0.4"/>
+          <!-- windows -->
+          <rect x="76" y="100" width="30" height="25" rx="2" fill="#1E4060" opacity="0.8"/>
+          <rect x="118" y="100" width="30" height="25" rx="2" fill="#1E4060" opacity="0.5"/>
+          <rect x="76" y="140" width="30" height="25" rx="2" fill="#1E4060" opacity="0.9"/>
+          <rect x="216" y="60" width="40" height="30" rx="2" fill="#1E4060" opacity="0.7"/>
+          <rect x="270" y="60" width="40" height="30" rx="2" fill="#1E4060" opacity="0.6"/>
+          <!-- green trees -->
+          <ellipse cx="30" cy="250" rx="25" ry="35" fill="#1A3C34" opacity="0.7"/>
+          <ellipse cx="460" cy="240" rx="20" ry="30" fill="#1A3C34" opacity="0.5"/>
+          <!-- RAAS text overlay -->
+          <text x="240" y="330" font-size="48" font-weight="700" fill="rgba(184,146,42,0.08)" font-family="Cormorant Garant,serif" text-anchor="middle" letter-spacing="8">RAAS</text>
+        </svg>
+      </div>
+      <div class="why-stats-overlay">
+        <div class="why-stats-num">500+</div>
+        <div class="why-stats-lbl">Happy Families</div>
+        <div class="why-stats-lbl-k">ಸಂತೃಪ್ತ ಕುಟುಂಬಗಳು</div>
+      </div>
+    </div>
+    <div class="why-content">
+      <p class="eyebrow" style="text-align:left;margin-bottom:10px">Our Promise · ನಮ್ಮ ವಾಗ್ದಾನ</p>
+      <h3 style="font-family:'Cormorant Garant',serif;font-size:36px;color:var(--white);font-weight:600;line-height:1.2;margin-bottom:6px">Why Choose <span style="color:var(--gold2)">RAAS</span>?</h3>
+      <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:14px;color:var(--gold3);opacity:0.85;margin-bottom:4px">ರಾಸ್ ಅನ್ನು ಏಕೆ ಆಯ್ಕೆ ಮಾಡಬೇಕು?</p>
+      <p style="font-size:13px;color:var(--mid);line-height:1.8;margin-bottom:6px">We are not just builders — we are your long-term partners in building the life you deserve, with integrity at the core of every project.</p>
+      <p style="font-family:'Noto Sans Kannada',sans-serif;font-size:12px;color:var(--mid);opacity:0.7;line-height:1.7">ನಾವು ಕೇವಲ ನಿರ್ಮಾಣಕಾರರಲ್ಲ — ನಾವು ನಿಮ್ಮ ಕನಸಿನ ಜೀವನವನ್ನು ನಿರ್ಮಿಸಲು ನಿಮ್ಮ ದೀರ್ಘಕಾಲಿನ ಪಾಲುದಾರರು.</p>
+      <div class="why-points">
+        <div class="why-pt">
+          <div class="why-pt-icon">🏛️</div>
+          <div>
+            <div class="why-pt-title">14+ Years of Trust</div>
+            <div class="why-pt-title-k">14+ ವರ್ಷಗಳ ವಿಶ್ವಾಸ</div>
+            <div class="why-pt-desc">Deep local roots in Karnataka — we know every pocket of land in Shivamogga and Malnad.</div>
+          </div>
+        </div>
+        <div class="why-pt">
+          <div class="why-pt-icon">📜</div>
+          <div>
+            <div class="why-pt-title">100% Legal Clarity</div>
+            <div class="why-pt-title-k">100% ಕಾನೂನು ಸ್ಪಷ್ಟತೆ</div>
+            <div class="why-pt-desc">RERA compliant, clear title deeds, in-house legal counsel. No surprises, ever.</div>
+          </div>
+        </div>
+        <div class="why-pt">
+          <div class="why-pt-icon">🤝</div>
+          <div>
+            <div class="why-pt-title">End-to-End Service</div>
+            <div class="why-pt-title-k">ಸಂಪೂರ್ಣ ಸೇವೆ</div>
+            <div class="why-pt-desc">Plot to possession — we handle site selection, construction, interiors and registration.</div>
+          </div>
+        </div>
+        <div class="why-pt">
+          <div class="why-pt-icon">📱</div>
+          <div>
+            <div class="why-pt-title">Digital & Transparent</div>
+            <div class="why-pt-title-k">ಡಿಜಿಟಲ್ ಮತ್ತು ಪಾರದರ್ಶಕ</div>
+            <div class="why-pt-desc">Track your property project live via our app. Real-time updates, digital documentation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 7 — TESTIMONIALS
+════════════════════════════════════════════════════════════ -->
+<section class="test-section">
+  <p class="eyebrow-dark">Testimonials · ಗ್ರಾಹಕರ ಅಭಿಪ್ರಾಯ</p>
+  <h2 class="section-h-dark">What Our Clients Say</h2>
+  <p style="text-align:center;color:var(--slate);font-size:12px;margin-top:5px;font-family:'Noto Sans Kannada',sans-serif">ನಮ್ಮ ಗ್ರಾಹಕರು ಏನು ಹೇಳುತ್ತಾರೆ</p>
+  <div class="divider"></div>
+  <div class="test-grid section-wrap">
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"RAAS made our dream of owning land in Shivamogga a reality. The process was transparent, the team was responsive, and there were zero legal complications."</p>
+      <p class="test-text-k">"ರಾಸ್ ನಮ್ಮ ಶಿವಮೊಗ್ಗದಲ್ಲಿ ಭೂಮಿ ಹೊಂದುವ ಕನಸನ್ನು ನನಸು ಮಾಡಿತು. ಪ್ರಕ್ರಿಯೆ ಸ್ಪಷ್ಟವಾಗಿತ್ತು, ತಂಡ ಸ್ಪಂದನಶೀಲವಾಗಿತ್ತು."</p>
+      <div class="test-author">
+        <div class="test-avatar">R</div>
+        <div>
+          <div class="test-name">Ravi Kumar</div>
+          <div class="test-name-k">ರವಿ ಕುಮಾರ್</div>
+          <div class="test-role">Plot Buyer · Shivamogga</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Bought a 2BHK through RAAS in Bengaluru. The entire experience from site visit to registration was handled professionally. Highly recommend."</p>
+      <p class="test-text-k">"ಬೆಂಗಳೂರಿನಲ್ಲಿ ರಾಸ್ ಮೂಲಕ 2BHK ಖರೀದಿಸಿದ್ದೇವೆ. ಸ್ಥಳ ಭೇಟಿಯಿಂದ ನೋಂದಣಿಯವರೆಗೆ ಎಲ್ಲವೂ ವೃತ್ತಿಪರವಾಗಿ ನಿರ್ವಹಿಸಲ್ಪಟ್ಟಿತು."</p>
+      <div class="test-author">
+        <div class="test-avatar">P</div>
+        <div>
+          <div class="test-name">Priya Nagaraj</div>
+          <div class="test-name-k">ಪ್ರಿಯ ನಾಗರಾಜ್</div>
+          <div class="test-role">Apartment Buyer · Bengaluru</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"The construction quality exceeded our expectations. RAAS team supervised every detail of our house in Thirthahalli. Beautiful finish, on-time delivery."</p>
+      <p class="test-text-k">"ನಿರ್ಮಾಣ ಗುಣಮಟ್ಟ ನಮ್ಮ ನಿರೀಕ್ಷೆಗಳನ್ನು ಮೀರಿತು. ರಾಸ್ ತಂಡ ನಮ್ಮ ಮನೆಯ ಪ್ರತಿ ವಿವರವನ್ನೂ ನಿಗಾ ವಹಿಸಿತು."</p>
+      <div class="test-author">
+        <div class="test-avatar">M</div>
+        <div>
+          <div class="test-name">Manjunath Hegde</div>
+          <div class="test-name-k">ಮಂಜುನಾಥ ಹೆಗ್ಡೆ</div>
+          <div class="test-role">Construction Client · Thirthahalli</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 8 — AREAS WE SERVE
+════════════════════════════════════════════════════════════ -->
+<section class="areas-section">
+  <p class="eyebrow-dark">Our Reach · ನಮ್ಮ ವ್ಯಾಪ್ತಿ</p>
+  <h2 class="section-h-dark">Areas We Serve</h2>
+  <p style="text-align:center;color:var(--slate);font-size:12px;margin-top:5px;font-family:'Noto Sans Kannada',sans-serif">ನಾವು ಸೇವೆ ನೀಡುವ ಪ್ರದೇಶಗಳು</p>
+  <div class="divider"></div>
+  <div class="areas-grid section-wrap">
+    <div class="area-card">
+      <svg width="100%" height="200" viewBox="0 0 280 200"><rect width="280" height="200" fill="#0C1C2E"/><rect x="20" y="60" width="70" height="120" rx="4" fill="#12243A"/><rect x="110" y="30" width="80" height="150" rx="4" fill="#0F1E30"/><rect x="210" y="80" width="50" height="100" rx="4" fill="#12243A"/><rect x="0" y="175" width="280" height="25" fill="#07111D"/><rect x="20" y="54" width="70" height="8" rx="2" fill="#B8922A" opacity="0.5"/><rect x="110" y="24" width="80" height="8" rx="2" fill="#B8922A" opacity="0.6"/></svg>
+      <div class="area-overlay">
+        <div class="area-name">Bengaluru</div>
+        <div class="area-name-k">ಬೆಂಗಳೂರು</div>
+        <div class="area-count">48 Properties</div>
+      </div>
+    </div>
+    <div class="area-card">
+      <svg width="100%" height="200" viewBox="0 0 280 200"><rect width="280" height="200" fill="#07111D"/><ellipse cx="80" cy="100" rx="60" ry="80" fill="#1A3C34" opacity="0.4"/><ellipse cx="200" cy="80" rx="50" ry="70" fill="#1A3C34" opacity="0.3"/><rect x="100" y="100" width="80" height="80" rx="4" fill="#12243A"/><rect x="120" y="110" width="40" height="40" rx="2" fill="#0C1C2E"/><rect x="0" y="180" width="280" height="20" fill="#07111D"/></svg>
+      <div class="area-overlay">
+        <div class="area-name">Shivamogga</div>
+        <div class="area-name-k">ಶಿವಮೊಗ್ಗ</div>
+        <div class="area-count">120 Properties</div>
+      </div>
+    </div>
+    <div class="area-card">
+      <svg width="100%" height="200" viewBox="0 0 280 200"><rect width="280" height="200" fill="#0A1A10"/><rect x="0" y="120" width="280" height="80" fill="#07111D"/><ellipse cx="70" cy="110" rx="55" ry="75" fill="#1A3C34" opacity="0.6"/><ellipse cx="180" cy="90" rx="70" ry="90" fill="#1A3C34" opacity="0.5"/><ellipse cx="250" cy="130" rx="40" ry="55" fill="#1A3C34" opacity="0.4"/></svg>
+      <div class="area-overlay">
+        <div class="area-name">Malnad Region</div>
+        <div class="area-name-k">ಮಲೆನಾಡು</div>
+        <div class="area-count">65 Properties</div>
+      </div>
+    </div>
+    <div class="area-card">
+      <svg width="100%" height="200" viewBox="0 0 280 200"><rect width="280" height="200" fill="#0C1C2E"/><rect x="30" y="80" width="50" height="100" rx="3" fill="#12243A"/><rect x="100" y="60" width="60" height="120" rx="3" fill="#0F1E30"/><rect x="180" y="90" width="70" height="90" rx="3" fill="#12243A"/><line x1="0" y1="175" x2="280" y2="175" stroke="#B8922A" stroke-width="1.5" opacity="0.3"/></svg>
+      <div class="area-overlay">
+        <div class="area-name">Thirthahalli</div>
+        <div class="area-name-k">ತೀರ್ಥಹಳ್ಳಿ</div>
+        <div class="area-count">38 Properties</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 9 — CTA
+════════════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <h2 class="cta-title">Ready to Find Your <em>Perfect</em> Property?</h2>
+  <div class="cta-title-k">ನಿಮ್ಮ ಪರಿಪೂರ್ಣ ಆಸ್ತಿ ಹುಡುಕಲು ಸಿದ್ಧರಿದ್ದೀರಾ?</div>
+  <p class="cta-sub">Our experts are available 7 days a week — in English and ಕನ್ನಡ</p>
+  <p class="cta-sub-k">ನಮ್ಮ ತಜ್ಞರು ವಾರದ 7 ದಿನವೂ ಲಭ್ಯರಿದ್ದಾರೆ — ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ</p>
+  <div class="cta-actions">
+    <a href="#" class="btn-primary" style="font-size:14px;padding:16px 32px">📞 Call Now / ಈಗ ಕರೆ ಮಾಡಿ</a>
+    <a href="#" class="btn-secondary" style="font-size:14px;padding:16px 32px;color:var(--white)">💬 WhatsApp Us</a>
+    <a href="#" class="btn-secondary" style="font-size:14px;padding:16px 32px;color:var(--white)">🏠 View All Properties</a>
+  </div>
+  <div class="tag-row">
+    <span class="tag">RERA Approved · RERA ಅನುಮೋದಿತ</span>
+    <span class="tag">Legal Clarity · ಕಾನೂನು ಸ್ಪಷ್ಟತೆ</span>
+    <span class="tag">EMI Options · EMI ಆಯ್ಕೆ</span>
+    <span class="tag">Site Visit Free · ಉಚಿತ ಸ್ಥಳ ಭೇಟಿ</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 10 — FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <svg width="40" height="40" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="10" fill="#12243A"/>
+          <path d="M10,34 L10,18 Q10,10 22,10 Q34,10 34,18 L34,34" fill="none" stroke="#B8922A" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="7" y1="34" x2="37" y2="34" stroke="#B8922A" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="22" cy="7" r="2" fill="#D4AD52"/>
+        </svg>
+        <div>
+          <div class="footer-brand-name">RAAS Builders & Developers</div>
+          <div class="footer-brand-name-k">ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್</div>
+        </div>
+      </div>
+      <p class="footer-brand-desc">Your trusted real estate partner across Bengaluru, Shivamogga and the Malnad region. Building dreams since 2010.</p>
+      <p class="footer-brand-desc-k">ಬೆಂಗಳೂರು, ಶಿವಮೊಗ್ಗ ಮತ್ತು ಮಲೆನಾಡಿನಲ್ಲಿ ನಿಮ್ಮ ವಿಶ್ವಾಸಾರ್ಹ ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಪಾಲುದಾರ. 2010ರಿಂದ ಕನಸುಗಳನ್ನು ನಿರ್ಮಿಸುತ್ತಿದ್ದೇವೆ.</p>
+      <div class="footer-contact-item">📍 Bengaluru & Shivamogga, Karnataka<br><span class="footer-contact-item-k">ಬೆಂಗಳೂರು ಮತ್ತು ಶಿವಮೊಗ್ಗ, ಕರ್ನಾಟಕ</span></div>
+      <div class="footer-contact-item">📞 +91 98XXXXXXXX / +91 80XXXXXXXX</div>
+      <div class="footer-contact-item">✉ info@raasbuilders.com</div>
+      <div class="footer-social">
+        <div class="social-btn">📘</div>
+        <div class="social-btn">📸</div>
+        <div class="social-btn">🔗</div>
+        <div class="social-btn">▶️</div>
+      </div>
+    </div>
+    <div>
+      <p class="footer-h">Properties / ಆಸ್ತಿ</p>
+      <ul class="footer-links">
+        <li><a href="#">Plots / ನಿವೇಶನ<span class="footer-links-k"></span></a></li>
+        <li><a href="#">Apartments / ಅಪಾರ್ಟ್‌ಮೆಂಟ್</a></li>
+        <li><a href="#">Villas / ವಿಲ್ಲಾ</a></li>
+        <li><a href="#">Commercial / ವಾಣಿಜ್ಯ</a></li>
+        <li><a href="#">New Launches / ಹೊಸ ಯೋಜನೆ</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-h">Services / ಸೇವೆ</p>
+      <ul class="footer-links">
+        <li><a href="#">Construction / ನಿರ್ಮಾಣ</a></li>
+        <li><a href="#">Interior Design / ಅಂತರಿಕ</a></li>
+        <li><a href="#">Materials Supply / ಸಾಮಗ್ರಿ</a></li>
+        <li><a href="#">Legal Help / ಕಾನೂನು</a></li>
+        <li><a href="#">Vastu / ವಾಸ್ತು</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-h">Quick Contact / ಸಂಪರ್ಕ</p>
+      <div style="background:rgba(184,146,42,0.08);border:1px solid rgba(184,146,42,0.15);border-radius:12px;padding:20px">
+        <p style="font-size:12px;color:var(--mid);margin-bottom:14px">Have a question? We reply within 2 hours.<br><span style="font-family:'Noto Sans Kannada',sans-serif;font-size:11px;opacity:0.7">ಪ್ರಶ್ನೆ ಇದೆಯೇ? ನಾವು 2 ಗಂಟೆಯೊಳಗೆ ಉತ್ತರಿಸುತ್ತೇವೆ.</span></p>
+        <input style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;color:var(--white);font-size:12px;margin-bottom:10px;font-family:'Jost',sans-serif" placeholder="Your Name / ನಿಮ್ಮ ಹೆಸರು">
+        <input style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;color:var(--white);font-size:12px;margin-bottom:12px;font-family:'Jost',sans-serif" placeholder="Phone / ದೂರವಾಣಿ">
+        <button style="width:100%;background:var(--gold);color:var(--navy3);border:none;border-radius:8px;padding:12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Jost',sans-serif">Send / ಕಳುಹಿಸಿ ➜</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>
+      <div class="footer-copy">© 2025 RAAS Builders & Developers. All Rights Reserved.</div>
+      <div class="footer-copy-k">© 2025 ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್. ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.</div>
+    </div>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">RERA Details</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
