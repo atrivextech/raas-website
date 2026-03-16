@@ -264,3 +264,140 @@ body {
     text-align: center;
   }
 }
+
+/* File Upload Boxes */
+.upload-box {
+  border: 2px dashed var(--secondary);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: rgba(255,107,53,0.03);
+}
+
+.upload-box:hover {
+  background: rgba(255,107,53,0.08);
+  border-color: var(--primary);
+}
+
+.upload-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.upload-box p {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.upload-box span {
+  font-size: 12px;
+  color: var(--dark);
+  opacity: 0.6;
+}
+
+/* Image Previews */
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.preview-thumb {
+  position: relative;
+  text-align: center;
+}
+
+.preview-thumb img {
+  width: 90px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--secondary);
+}
+
+.thumb-label {
+  display: block;
+  font-size: 11px;
+  color: var(--dark);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+/* Layout Preview */
+.layout-preview {
+  margin-top: 12px;
+}
+
+.layout-thumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--cream);
+  border-radius: 8px;
+  border: 1px solid rgba(26,95,122,0.15);
+}
+
+.layout-thumb img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.layout-thumb span {
+  font-size: 13px;
+  color: var(--dark);
+  font-weight: 500;
+}
+
+.pdf-thumb .pdf-icon {
+  font-size: 36px;
+}
+
+/* Layout badge in property list */
+.layout-badge {
+  display: inline-block;
+  background: rgba(26,95,122,0.1);
+  color: var(--primary);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* View Layout button */
+.btn-view-layout {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-bottom: 6px;
+}
+
+.btn-view-layout:hover {
+  background: var(--secondary);
+}
+
+/* No image placeholder */
+.no-img {
+  width: 100px;
+  height: 80px;
+  background: var(--cream);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border: 1px solid rgba(26,95,122,0.1);
+}

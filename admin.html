@@ -87,17 +87,60 @@
             </div>
           </div>
 
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bedrooms / BHK</label>
+              <input type="text" id="prop-bhk" placeholder="e.g. 2 BHK, 3 BHK">
+            </div>
+            <div class="form-group">
+              <label>Facing</label>
+              <select id="prop-facing">
+                <option value="">Select Facing</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="North-East">North-East</option>
+                <option value="North-West">North-West</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Amenities (comma separated)</label>
+            <input type="text" id="prop-amenities" placeholder="e.g. Swimming Pool, Gym, 24/7 Security, Parking">
+          </div>
+
           <div class="form-group">
             <label>Description</label>
-            <textarea id="prop-description" rows="3"></textarea>
+            <textarea id="prop-description" rows="3" placeholder="Describe the property in detail..."></textarea>
           </div>
 
+          <!-- Image Upload -->
           <div class="form-group">
-            <label>Image URL</label>
-            <input type="url" id="prop-image" placeholder="https://example.com/image.jpg">
+            <label>Property Photos (upload multiple)</label>
+            <div class="upload-box" id="image-upload-box" onclick="document.getElementById('prop-images').click()">
+              <div class="upload-icon">📷</div>
+              <p>Click to upload photos</p>
+              <span>JPG, PNG, WEBP — unlimited photos</span>
+              <input type="file" id="prop-images" accept="image/*" multiple style="display:none" onchange="handleImageUpload(this)">
+            </div>
+            <div id="image-previews" class="image-previews"></div>
           </div>
 
-          <button type="submit" class="btn-primary">Add Property</button>
+          <!-- Layout Upload -->
+          <div class="form-group">
+            <label>Floor Plan / Layout (PDF or Image)</label>
+            <div class="upload-box" id="layout-upload-box" onclick="document.getElementById('prop-layout').click()">
+              <div class="upload-icon">📐</div>
+              <p>Click to upload floor plan / layout</p>
+              <span>PDF, JPG, PNG accepted</span>
+              <input type="file" id="prop-layout" accept=".pdf,image/*" style="display:none" onchange="handleLayoutUpload(this)">
+            </div>
+            <div id="layout-preview" class="layout-preview"></div>
+          </div>
+
+          <button type="submit" class="btn-primary">✅ Add Property</button>
         </form>
       </div>
 
