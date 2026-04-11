@@ -30,27 +30,34 @@ function showDashboard() {
 }
 
 // Login
-document.getElementById('login-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-  const errorMsg = document.getElementById('error-msg');
+const loginForm = document.getElementById('login-form');
+if (loginForm) {
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('error-msg');
 
-  if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-    sessionStorage.setItem('raas_admin_logged_in', 'true');
-    showDashboard();
-    errorMsg.textContent = '';
-  } else {
-    errorMsg.textContent = 'Invalid username or password';
-  }
-});
+    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+      sessionStorage.setItem('raas_admin_logged_in', 'true');
+      showDashboard();
+      errorMsg.textContent = '';
+    } else {
+      errorMsg.textContent = 'Invalid username or password';
+    }
+  });
+}
 
 // Logout
-document.getElementById('logout-btn').addEventListener('click', () => {
-  sessionStorage.removeItem('raas_admin_logged_in');
-  showLogin();
-  document.getElementById('login-form').reset();
-});
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('raas_admin_logged_in');
+    showLogin();
+    const loginFormElement = document.getElementById('login-form');
+    if (loginFormElement) loginFormElement.reset();
+  });
+}
 
 // Handle multiple image uploads — convert to base64
 function handleImageUpload(input) {
@@ -114,41 +121,60 @@ function handleLayoutUpload(input) {
 }
 
 // Add property form submit
-document.getElementById('property-form').addEventListener('submit', (e) => {
-  e.preventDefault();
+const propertyForm = document.getElementById('property-form');
+if (propertyForm) {
+  propertyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-  const property = {
-    id: Date.now(),
-    name: document.getElementById('prop-name').value,
-    type: document.getElementById('prop-type').value,
-    location: document.getElementById('prop-location').value,
-    price: document.getElementById('prop-price').value,
-    area: document.getElementById('prop-area').value,
-    bhk: document.getElementById('prop-bhk').value,
-    facing: document.getElementById('prop-facing').value,
-    amenities: document.getElementById('prop-amenities').value,
-    status: document.getElementById('prop-status').value,
-    description: document.getElementById('prop-description').value,
-    images: uploadedImages.length > 0 ? uploadedImages : [],
-    layout: uploadedLayout || null
-  };
+    // Validation
+    const name = document.getElementById('prop-name').value.trim();
+    const type = document.getElementById('prop-type').value;
+    const location = document.getElementById('prop-location').value.trim();
+    const price = document.getElementById('prop-price').value.trim();
 
-  const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
-  properties.push(property);
-  localStorage.setItem('raas_properties', JSON.stringify(properties));
+    if (!name || !type || !location || !price) {
+      alert('❌ Please fill in all required fields: Name, Type, Location, and Price');
+      return;
+    }
 
-  // Reset
-  document.getElementById('property-form').reset();
-  uploadedImages = [];
-  uploadedLayout = null;
-  document.getElementById('image-previews').innerHTML = '';
-  document.getElementById('layout-preview').innerHTML = '';
-  document.getElementById('image-upload-box').querySelector('p').textContent = 'Click to upload photos';
-  document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / layout';
+    if (isNaN(price) || price <= 0) {
+      alert('❌ Price must be a valid number greater than 0');
+      return;
+    }
 
-  loadPropertiesList();
-  alert('✅ Property added successfully!');
-});
+    const property = {
+      id: Date.now(),
+      name: name,
+      type: type,
+      location: location,
+      price: price,
+      area: document.getElementById('prop-area').value.trim(),
+      bhk: document.getElementById('prop-bhk').value.trim(),
+      facing: document.getElementById('prop-facing').value.trim(),
+      amenities: document.getElementById('prop-amenities').value.trim(),
+      status: document.getElementById('prop-status').value,
+      description: document.getElementById('prop-description').value.trim(),
+      images: uploadedImages.length > 0 ? uploadedImages : [],
+      layout: uploadedLayout || null
+    };
+
+    const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
+    properties.push(property);
+    localStorage.setItem('raas_properties', JSON.stringify(properties));
+
+    // Reset
+    propertyForm.reset();
+    uploadedImages = [];
+    uploadedLayout = null;
+    document.getElementById('image-previews').innerHTML = '';
+    document.getElementById('layout-preview').innerHTML = '';
+    document.getElementById('image-upload-box').querySelector('p').textContent = 'Click to upload photos';
+    document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / layout';
+
+    loadPropertiesList();
+    alert('✅ Property added successfully!');
+  });
+}
 
 // Load properties list
 function loadPropertiesList() {
@@ -217,5 +243,9 @@ function deleteProperty(id) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  checkAuth();
+  try {
+    checkAuth();
+  } catch (error) {
+    console.error('Error initializing admin page:', error);
+  }
 });

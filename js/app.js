@@ -129,38 +129,46 @@ function filterProperties(type) {
 
 // Initialize filter buttons
 document.addEventListener('DOMContentLoaded', () => {
-  loadProperties();
-  
-  // Filter buttons
-  const filterButtons = document.querySelectorAll('.pf-chip');
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.getAttribute('data-filter');
-      filterProperties(filter);
+  try {
+    loadProperties();
+    
+    // Filter buttons
+    const filterButtons = document.querySelectorAll('.pf-chip');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        filterProperties(filter);
+      });
     });
-  });
-  
-  // Smooth scroll for navigation
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
     });
-  });
+  } catch (error) {
+    console.error('Error initializing page:', error);
+  }
 });
 
 
 // Language Toggle Functionality
-let currentLang = 'en';
+let currentLang = localStorage.getItem('raas_language') || 'en';
 
 function toggleLanguage() {
   currentLang = currentLang === 'en' ? 'kn' : 'en';
-  
+  applyLanguage();
+  localStorage.setItem('raas_language', currentLang);
+}
+
+function applyLanguage() {
   // Update all elements with data-en and data-kn attributes
   document.querySelectorAll('[data-en]').forEach(element => {
     const enText = element.getAttribute('data-en');
@@ -177,22 +185,18 @@ function toggleLanguage() {
   const langIcon = document.getElementById('lang-icon');
   const langText = document.getElementById('lang-text');
   
-  if (currentLang === 'en') {
-    langIcon.textContent = '🇬🇧';
-    langText.textContent = 'EN';
-  } else {
-    langIcon.textContent = '🇮🇳';
-    langText.textContent = 'ಕನ್ನಡ';
+  if (langIcon && langText) {
+    if (currentLang === 'en') {
+      langIcon.textContent = '🇬🇧';
+      langText.textContent = 'EN';
+    } else {
+      langIcon.textContent = '🇮🇳';
+      langText.textContent = 'ಕನ್ನಡ';
+    }
   }
-  
-  // Save preference
-  localStorage.setItem('raas_language', currentLang);
 }
 
-// Load saved language preference
+// Apply saved language preference on page load
 document.addEventListener('DOMContentLoaded', () => {
-  const savedLang = localStorage.getItem('raas_language');
-  if (savedLang && savedLang !== 'en') {
-    toggleLanguage();
-  }
+  applyLanguage();
 });
