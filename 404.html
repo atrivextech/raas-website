@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page Not Found — RAAS Builders &amp; Developers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1A3C34;
+    --forest2: #122B25;
+    --forest3: #0D1F1B;
+    --gold: #C9A84C;
+    --gold2: #E8C96A;
+    --light: #8FA89F;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.14), transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,60,52,0.85), transparent 60%),
+      var(--forest2);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+  .wrap { max-width: 560px; }
+  .code {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(100px, 18vw, 180px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gold);
+    letter-spacing: -4px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    margin: 8px 0 16px;
+  }
+  p {
+    color: var(--light);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  a {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--forest3);
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  a:hover {
+    background: var(--gold2);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(201,168,76,0.3);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="code">404</div>
+  <h1>Page Not Found</h1>
+  <p>The page you're looking for doesn't exist or has been moved. Let's get you back to building your dream home.</p>
+  <a href="/">← Back to Home</a>
+</div>
+</body>
+</html>

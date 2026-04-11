@@ -3,29 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - RAAS</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Panel — RAAS Builders &amp; Developers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
 <div class="admin-container">
-  <!-- Login Form -->
+
+  <!-- ═════════════════════════ LOGIN ═════════════════════════ -->
   <div id="login-section" class="login-section">
     <div class="login-card">
       <div class="login-header">
         <h1>🔐 Admin Login</h1>
-        <p>RAAS Builders & Developers</p>
+        <p>RAAS Builders &amp; Developers</p>
       </div>
       <form id="login-form">
         <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="username" required>
+          <label for="username">Username</label>
+          <input type="text" id="username" autocomplete="username" required>
         </div>
         <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="password" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
         </div>
         <button type="submit" class="btn-primary">Login</button>
         <p class="error-msg" id="error-msg"></p>
@@ -33,125 +36,246 @@
     </div>
   </div>
 
-  <!-- Admin Dashboard -->
+  <!-- ═════════════════════════ DASHBOARD ═════════════════════════ -->
   <div id="dashboard-section" class="dashboard-section" style="display:none;">
     <div class="dashboard-header">
       <h1>Admin Dashboard</h1>
-      <button id="logout-btn" class="btn-secondary">Logout</button>
+      <div class="dashboard-header-actions">
+        <a href="index.html" class="view-site-link" target="_blank">🌐 View Site</a>
+        <button id="logout-btn" class="btn-secondary">Logout</button>
+      </div>
     </div>
 
     <div class="dashboard-content">
-      <!-- Add Property Form -->
-      <div class="card">
-        <h2>Add New Property</h2>
-        <form id="property-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Property Name *</label>
-              <input type="text" id="prop-name" required>
-            </div>
-            <div class="form-group">
-              <label>Type *</label>
-              <select id="prop-type" required>
-                <option value="">Select Type</option>
-                <option value="plot">Plot</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
-                <option value="commercial">Commercial</option>
-              </select>
-            </div>
-          </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label>Location *</label>
-              <input type="text" id="prop-location" required>
-            </div>
-            <div class="form-group">
-              <label>Price (₹) *</label>
-              <input type="text" id="prop-price" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Area (sq.ft)</label>
-              <input type="text" id="prop-area">
-            </div>
-            <div class="form-group">
-              <label>Status *</label>
-              <select id="prop-status" required>
-                <option value="available">Available</option>
-                <option value="sold">Sold</option>
-                <option value="premium">Premium</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Bedrooms / BHK</label>
-              <input type="text" id="prop-bhk" placeholder="e.g. 2 BHK, 3 BHK">
-            </div>
-            <div class="form-group">
-              <label>Facing</label>
-              <select id="prop-facing">
-                <option value="">Select Facing</option>
-                <option value="East">East</option>
-                <option value="West">West</option>
-                <option value="North">North</option>
-                <option value="South">South</option>
-                <option value="North-East">North-East</option>
-                <option value="North-West">North-West</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Amenities (comma separated)</label>
-            <input type="text" id="prop-amenities" placeholder="e.g. Swimming Pool, Gym, 24/7 Security, Parking">
-          </div>
-
-          <div class="form-group">
-            <label>Description</label>
-            <textarea id="prop-description" rows="3" placeholder="Describe the property in detail..."></textarea>
-          </div>
-
-          <!-- Image Upload -->
-          <div class="form-group">
-            <label>Property Photos (upload multiple)</label>
-            <div class="upload-box" id="image-upload-box" onclick="document.getElementById('prop-images').click()">
-              <div class="upload-icon">📷</div>
-              <p>Click to upload photos</p>
-              <span>JPG, PNG, WEBP — unlimited photos</span>
-              <input type="file" id="prop-images" accept="image/*" multiple style="display:none" onchange="handleImageUpload(this)">
-            </div>
-            <div id="image-previews" class="image-previews"></div>
-          </div>
-
-          <!-- Layout Upload -->
-          <div class="form-group">
-            <label>Floor Plan / Layout (PDF or Image)</label>
-            <div class="upload-box" id="layout-upload-box" onclick="document.getElementById('prop-layout').click()">
-              <div class="upload-icon">📐</div>
-              <p>Click to upload floor plan / layout</p>
-              <span>PDF, JPG, PNG accepted</span>
-              <input type="file" id="prop-layout" accept=".pdf,image/*" style="display:none" onchange="handleLayoutUpload(this)">
-            </div>
-            <div id="layout-preview" class="layout-preview"></div>
-          </div>
-
-          <button type="submit" class="btn-primary">✅ Add Property</button>
-        </form>
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="properties">🏠 Properties</button>
+        <button class="tab-btn" data-tab="settings">⚙️ Site Settings</button>
       </div>
 
-      <!-- Properties List -->
-      <div class="card">
-        <h2>Manage Properties</h2>
-        <div id="properties-list" class="properties-list">
-          <!-- Properties will be loaded here -->
+      <!-- ══════════════════ TAB: PROPERTIES ══════════════════ -->
+      <div class="tab-panel active" id="tab-properties">
+
+        <!-- Add Property Form -->
+        <div class="card">
+          <h2>Add New Property</h2>
+          <div class="card-note">
+            ⚠️ <strong>Note:</strong> Until the backend is connected, properties you add here are saved to your browser only. They will show when you preview the site from this same browser, but not to other visitors. Backend (AWS S3 / Lambda) coming soon.
+          </div>
+          <form id="property-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prop-name">Property Name *</label>
+                <input type="text" id="prop-name" required>
+              </div>
+              <div class="form-group">
+                <label for="prop-type">Type *</label>
+                <select id="prop-type" required>
+                  <option value="">Select Type</option>
+                  <option value="plot">Plot</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="villa">Villa</option>
+                  <option value="commercial">Commercial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prop-location">Location *</label>
+                <input type="text" id="prop-location" placeholder="e.g. Thirthahalli, Shivamogga" required>
+              </div>
+              <div class="form-group">
+                <label for="prop-price">Price (₹ in Lakhs) *</label>
+                <input type="text" id="prop-price" placeholder="e.g. 22" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prop-area">Area (sq.ft)</label>
+                <input type="text" id="prop-area">
+              </div>
+              <div class="form-group">
+                <label for="prop-status">Status *</label>
+                <select id="prop-status" required>
+                  <option value="available">Available</option>
+                  <option value="sold">Sold</option>
+                  <option value="premium">Premium</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prop-bhk">Bedrooms / BHK</label>
+                <input type="text" id="prop-bhk" placeholder="e.g. 2 BHK, 3 BHK">
+              </div>
+              <div class="form-group">
+                <label for="prop-facing">Facing</label>
+                <select id="prop-facing">
+                  <option value="">Select Facing</option>
+                  <option value="East">East</option>
+                  <option value="West">West</option>
+                  <option value="North">North</option>
+                  <option value="South">South</option>
+                  <option value="North-East">North-East</option>
+                  <option value="North-West">North-West</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="prop-amenities">Amenities (comma separated)</label>
+              <input type="text" id="prop-amenities" placeholder="e.g. Swimming Pool, Gym, 24/7 Security, Parking">
+            </div>
+
+            <div class="form-group">
+              <label for="prop-description">Description</label>
+              <textarea id="prop-description" rows="3" placeholder="Describe the property in detail..."></textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="form-group">
+              <label>Property Photos (upload multiple)</label>
+              <div class="upload-box" id="image-upload-box" onclick="document.getElementById('prop-images').click()">
+                <div class="upload-icon">📷</div>
+                <p>Click to upload photos</p>
+                <span>JPG, PNG, WEBP — unlimited photos</span>
+                <input type="file" id="prop-images" accept="image/*" multiple style="display:none" onchange="handleImageUpload(this)">
+              </div>
+              <div id="image-previews" class="image-previews"></div>
+            </div>
+
+            <!-- Layout Upload -->
+            <div class="form-group">
+              <label>Floor Plan / Layout (PDF or Image)</label>
+              <div class="upload-box" id="layout-upload-box" onclick="document.getElementById('prop-layout').click()">
+                <div class="upload-icon">📐</div>
+                <p>Click to upload floor plan / layout</p>
+                <span>PDF, JPG, PNG accepted</span>
+                <input type="file" id="prop-layout" accept=".pdf,image/*" style="display:none" onchange="handleLayoutUpload(this)">
+              </div>
+              <div id="layout-preview" class="layout-preview"></div>
+            </div>
+
+            <button type="submit" class="btn-primary">✅ Add Property</button>
+          </form>
+        </div>
+
+        <!-- Properties List -->
+        <div class="card">
+          <h2>Manage Properties</h2>
+          <div id="properties-list" class="properties-list"></div>
         </div>
       </div>
+
+      <!-- ══════════════════ TAB: SITE SETTINGS ══════════════════ -->
+      <div class="tab-panel" id="tab-settings">
+        <div class="card">
+          <h2>Contact Details</h2>
+          <div class="card-note">
+            Update the phone numbers, email and address that appear across the website.
+          </div>
+          <form id="settings-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-phone-blr">Bengaluru Phone (display)</label>
+                <input type="text" id="s-phone-blr" placeholder="+91 90197 93641">
+              </div>
+              <div class="form-group">
+                <label for="s-phone-blr-raw">Bengaluru Phone (dial/WhatsApp — digits only)</label>
+                <input type="text" id="s-phone-blr-raw" placeholder="919019793641">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-phone-shi">Shivamogga Phone (display)</label>
+                <input type="text" id="s-phone-shi" placeholder="+91 82777 55555">
+              </div>
+              <div class="form-group">
+                <label for="s-phone-shi-raw">Shivamogga Phone (digits only)</label>
+                <input type="text" id="s-phone-shi-raw" placeholder="918277755555">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="s-email">Email</label>
+              <input type="email" id="s-email" placeholder="info@raasbuilders.com">
+            </div>
+            <div class="form-group">
+              <label for="s-address">Office Address</label>
+              <textarea id="s-address" rows="2" placeholder="Shivamogga, Karnataka&#10;Branch: Bengaluru"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="s-hours">Working Hours</label>
+              <textarea id="s-hours" rows="2" placeholder="Mon – Sat: 9:00 AM – 7:00 PM&#10;Sun: By appointment"></textarea>
+            </div>
+
+            <h2 style="margin-top:32px;">Homepage Stats</h2>
+            <div class="card-note">
+              These numbers appear in the hero strip and the "Numbers That Speak" section.
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-stat-listings">Active Listings (hero)</label>
+                <input type="text" id="s-stat-listings" placeholder="500+">
+              </div>
+              <div class="form-group">
+                <label for="s-stat-listings-num">Properties Listed (stats)</label>
+                <input type="text" id="s-stat-listings-num" placeholder="500">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-stat-years">Years Experience (hero)</label>
+                <input type="text" id="s-stat-years" placeholder="14+">
+              </div>
+              <div class="form-group">
+                <label for="s-stat-years-num">Years in Business (stats)</label>
+                <input type="text" id="s-stat-years-num" placeholder="14">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-stat-districts">Districts Served (hero)</label>
+                <input type="text" id="s-stat-districts" placeholder="3">
+              </div>
+              <div class="form-group">
+                <label for="s-stat-satisfaction">Happy Clients % (hero)</label>
+                <input type="text" id="s-stat-satisfaction" placeholder="98%">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-stat-families-num">Happy Families (stats, thousands)</label>
+                <input type="text" id="s-stat-families-num" placeholder="3">
+              </div>
+              <div class="form-group">
+                <label for="s-stat-rating-num">Customer Rating</label>
+                <input type="text" id="s-stat-rating-num" placeholder="4.8">
+              </div>
+            </div>
+
+            <h2 style="margin-top:32px;">About Section</h2>
+            <div class="form-group">
+              <label for="s-about-1">About — Paragraph 1</label>
+              <textarea id="s-about-1" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="s-about-2">About — Paragraph 2</label>
+              <textarea id="s-about-2" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="s-about-3">About — Paragraph 3</label>
+              <textarea id="s-about-3" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">💾 Save Site Settings</button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

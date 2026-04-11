@@ -3,40 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RAAS Builders & Developers</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Jost:wght@300;400;500;600&family=Noto+Sans+Kannada:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="RAAS Builders & Developers — Premium plots, apartments, construction, interiors and building materials across Bengaluru, Shivamogga and the Malnad region. RERA approved. Trusted since 2010.">
+<meta name="keywords" content="RAAS Builders, plots in Shivamogga, apartments Bengaluru, construction Malnad, Thirthahalli plots, real estate Karnataka, RERA approved">
+<meta name="author" content="RAAS Builders & Developers">
+<meta name="theme-color" content="#1A3C34">
+
+<!-- Open Graph -->
+<meta property="og:title" content="RAAS Builders & Developers — Plots, Apartments, Construction">
+<meta property="og:description" content="Premium plots, apartments & construction services across Bengaluru, Shivamogga and the Malnad region.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_IN">
+<meta property="og:site_name" content="RAAS Builders & Developers">
+
+<title>RAAS Builders & Developers — Plots · Apartments · Construction · Bengaluru & Shivamogga</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38 38'%3E%3Crect width='38' height='38' rx='8' fill='%231A3C34'/%3E%3Crect x='2' y='30' width='34' height='2' fill='%23C9A84C' rx='1'/%3E%3Cpath d='M19 4 L4 22 L34 22 Z' stroke='%23C9A84C' stroke-width='2' fill='none' stroke-linejoin='round'/%3E%3Cpath d='M13 22 Q13 15 19 15 Q25 15 25 22' stroke='%23C9A84C' stroke-width='1.5' fill='none'/%3E%3Crect x='14' y='22' width='3' height='8' fill='%23C9A84C' rx='0.5'/%3E%3Crect x='21' y='22' width='3' height='8' fill='%23C9A84C' rx='0.5'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- Navigation -->
+<!-- ═══════════════════════════════ NAVIGATION ═══════════════════════════════ -->
 <nav class="nav-bar">
   <div class="nav-container">
-    <div class="nav-logo-area">
-      <svg class="nav-logo-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-        <rect width="44" height="44" rx="10" fill="#1b3a6b"/>
-        <path d="M10,34 L10,18 Q10,10 22,10 Q34,10 34,18 L34,34" fill="none" stroke="#c8a96e" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="7" y1="34" x2="37" y2="34" stroke="#c8a96e" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="22" cy="7" r="2" fill="#e8d5b0"/>
+    <a href="#top" class="nav-logo-area">
+      <svg class="nav-logo-icon" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="42" height="42" rx="10" fill="#1A3C34"/>
+        <rect x="4" y="32" width="34" height="2.5" fill="#C9A84C" rx="1"/>
+        <path d="M21 6 L6 24 L36 24 Z" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <path d="M14 24 Q14 16 21 16 Q28 16 28 24" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+        <rect x="15" y="24" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+        <rect x="24" y="24" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+        <rect x="19" y="27" width="4" height="5" rx="0.5" fill="rgba(201,168,76,0.4)"/>
       </svg>
       <div class="nav-logo-text">
         <span class="nav-company">RAAS</span>
-        <span class="nav-company-sub">Builders & Developers</span>
+        <span class="nav-company-sub">Builders &amp; Developers</span>
       </div>
-    </div>
-    <ul class="nav-links">
-      <li><a href="#buy-plots">Buy Plots</a></li>
-      <li><a href="#apartments">Apartments</a></li>
-      <li><a href="#constructions">Constructions</a></li>
-      <li><a href="#interiors">Interiors</a></li>
-      <li><a href="#materials">Materials</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu">☰</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#properties" data-en="Properties" data-kn="ಆಸ್ತಿಗಳು">Properties</a></li>
+      <li><a href="#buy-plots" data-en="Buy Plots" data-kn="ನಿವೇಶನ">Buy Plots</a></li>
+      <li><a href="#apartments" data-en="Apartments" data-kn="ಅಪಾರ್ಟ್‌ಮೆಂಟ್">Apartments</a></li>
+      <li><a href="#constructions" data-en="Construction" data-kn="ನಿರ್ಮಾಣ">Construction</a></li>
+      <li><a href="#interiors" data-en="Interiors" data-kn="ಒಳಾಂಗಣ">Interiors</a></li>
+      <li><a href="#materials" data-en="Materials" data-kn="ಸಾಮಗ್ರಿಗಳು">Materials</a></li>
+      <li><a href="#about" data-en="About" data-kn="ನಮ್ಮ ಬಗ್ಗೆ">About</a></li>
+      <li><a href="#contact" data-en="Contact" data-kn="ಸಂಪರ್ಕ">Contact</a></li>
       <li><a href="admin.html" class="admin-link">🔐 Admin</a></li>
       <li>
-        <button class="lang-toggle" onclick="toggleLanguage()">
+        <button class="lang-toggle" onclick="toggleLanguage()" aria-label="Toggle language">
           <span id="lang-icon">🇬🇧</span>
           <span id="lang-text">EN</span>
         </button>
@@ -45,120 +65,212 @@
   </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="hero-bg-overlay"></div>
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero-section" id="top">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-bg-grid"></div>
+
   <div class="hero-content">
-    <div class="hero-badge">
-      <span class="hero-badge-dot"></span>
-      <span class="hero-badge-text" data-en="Trusted Since 2010" data-kn="2010 ರಿಂದ ವಿಶ್ವಾಸಾರ್ಹ">Trusted Since 2010</span>
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span data-en="Bengaluru · Shivamogga · Malnad" data-kn="ಬೆಂಗಳೂರು · ಶಿವಮೊಗ್ಗ · ಮಲೆನಾಡು">Bengaluru · Shivamogga · Malnad</span>
+      </div>
+
+      <h1 class="hero-h1" data-en="<span class='kn'>ನಿಮ್ಮ ಕನಸಿನ ಮನೆ, ನಮ್ಮ ಬದ್ಧತೆ</span>Build Your <em>Dream Home</em><br>With RAAS" data-kn="<span class='kn'>Your Dream Home, Our Commitment</span>ನಿಮ್ಮ <em>ಕನಸಿನ ಮನೆ</em><br>ರಾಸ್‌ನೊಂದಿಗೆ">
+        <span class="kn">ನಿಮ್ಮ ಕನಸಿನ ಮನೆ, ನಮ್ಮ ಬದ್ಧತೆ</span>
+        Build Your <em>Dream Home</em><br>With RAAS
+      </h1>
+
+      <p class="hero-p" data-en="Plots, apartments, full-home construction, interiors and wholesale building materials — everything under one trusted roof. Serving Bengaluru, Shivamogga, Thirthahalli and Sagara with RERA-approved projects." data-kn="ನಿವೇಶನ, ಅಪಾರ್ಟ್‌ಮೆಂಟ್, ಸಂಪೂರ್ಣ ಮನೆ ನಿರ್ಮಾಣ, ಒಳಾಂಗಣ ವಿನ್ಯಾಸ ಮತ್ತು ಸಗಟು ಸಾಮಗ್ರಿಗಳು — ಎಲ್ಲವೂ ಒಂದೇ ಛಾವಣಿಯ ಅಡಿಯಲ್ಲಿ. ಬೆಂಗಳೂರು, ಶಿವಮೊಗ್ಗ, ತೀರ್ಥಹಳ್ಳಿ ಮತ್ತು ಸಾಗರದಲ್ಲಿ ರೇರಾ-ಅನುಮೋದಿತ ಯೋಜನೆಗಳು.">
+        Plots, apartments, full-home construction, interiors and wholesale building materials — everything under one trusted roof. Serving Bengaluru, Shivamogga, Thirthahalli and Sagara with RERA-approved projects.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#properties" class="btn-primary" data-en="🔍 View Properties" data-kn="🔍 ಆಸ್ತಿಗಳು ನೋಡಿ">🔍 View Properties</a>
+        <a href="#contact" class="btn-secondary" data-en="📞 Talk to an Expert" data-kn="📞 ತಜ್ಞರೊಂದಿಗೆ ಮಾತನಾಡಿ">📞 Talk to an Expert</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num" data-setting="stat_listings">500+</div><div class="stat-label" data-en="Active Listings" data-kn="ಲಭ್ಯ ಆಸ್ತಿಗಳು">Active Listings</div></div>
+        <div class="stat"><div class="stat-num" data-setting="stat_years">14+</div><div class="stat-label" data-en="Years Experience" data-kn="ವರ್ಷಗಳ ಅನುಭವ">Years Experience</div></div>
+        <div class="stat"><div class="stat-num" data-setting="stat_districts">3</div><div class="stat-label" data-en="Districts Served" data-kn="ಜಿಲ್ಲೆಗಳು">Districts Served</div></div>
+        <div class="stat"><div class="stat-num" data-setting="stat_satisfaction">98%</div><div class="stat-label" data-en="Happy Clients" data-kn="ಸಂತೋಷ ಗ್ರಾಹಕರು">Happy Clients</div></div>
+      </div>
     </div>
-    <h1 class="hero-h1" data-en="Build Your <em>Dream Home</em><br>With RAAS" data-kn="ನಿಮ್ಮ <em>ಕನಸಿನ ಮನೆ</em> ನಿರ್ಮಿಸಿ<br>ರಾಸ್‌ನೊಂದಿಗೆ">Build Your <em>Dream Home</em><br>With RAAS</h1>
-    <p class="hero-p" data-en="Premium plots, apartments & construction services across Bengaluru, Shivamogga and the Malnad region." data-kn="ಬೆಂಗಳೂರು, ಶಿವಮೊಗ್ಗ ಮತ್ತು ಮಲೆನಾಡು ಪ್ರದೇಶದಲ್ಲಿ ಉತ್ತಮ ನಿವೇಶನ, ಅಪಾರ್ಟ್‌ಮೆಂಟ್ ಮತ್ತು ನಿರ್ಮಾಣ ಸೇವೆಗಳು">Premium plots, apartments & construction services across Bengaluru, Shivamogga and the Malnad region.</p>
-    <div class="hero-btns">
-      <a href="#properties" class="btn-primary">🏠 View Properties</a>
-      <a href="#contact" class="btn-secondary">📞 Contact Us</a>
+
+    <div class="hero-right">
+      <div class="hero-card-stack">
+        <div class="property-card-back"></div>
+        <div class="floating-tag">
+          <div class="floating-dot"></div>
+          <span data-en="Just Listed — Shivamogga" data-kn="ಹೊಸ ಸೇರ್ಪಡೆ — ಶಿವಮೊಗ್ಗ">Just Listed — Shivamogga</span>
+        </div>
+        <div class="hero-prop-card">
+          <div class="hero-prop-img">
+            <div class="card-sun"></div>
+            <div class="card-badge">AVAILABLE</div>
+          </div>
+          <div class="hero-prop-body">
+            <div class="hero-prop-title">Prime Plot — Thirthahalli Road</div>
+            <div class="hero-prop-loc">📍 Shivamogga District, Karnataka</div>
+            <div class="hero-prop-specs">
+              <div class="hero-prop-spec">📐 <strong>30×40 ft</strong></div>
+              <div class="hero-prop-spec">🛣️ <strong>40ft Road</strong></div>
+              <div class="hero-prop-spec">✅ <strong>RERA</strong></div>
+            </div>
+            <div class="hero-prop-footer">
+              <div>
+                <div class="hero-prop-price-label">Starting from</div>
+                <div class="hero-prop-price">₹18.5 L</div>
+              </div>
+              <a href="https://wa.me/919019793641" target="_blank" rel="noopener" class="btn-primary" style="padding:9px 16px;font-size:11px;">💬 WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <div class="hero-diagonal"></div>
 </section>
 
-<!-- Properties Section -->
-<section id="properties" class="properties-section">
-  <p class="eyebrow" data-en="Featured Listings" data-kn="ವಿಶೇಷ ಆಸ್ತಿಗಳು">Featured Listings</p>
-  <h2 class="section-h" data-en="Properties Available Now" data-kn="ಈಗ ಲಭ್ಯವಿರುವ ಆಸ್ತಿಗಳು">Properties Available Now</h2>
+<!-- ═══════════════════════════════ SERVICES ═══════════════════════════════ -->
+<section class="services-section" id="services">
+  <p class="eyebrow reveal" data-en="Everything Real Estate" data-kn="ಸಂಪೂರ್ಣ ರಿಯಲ್ ಎಸ್ಟೇಟ್">Everything Real Estate</p>
+  <h2 class="section-h reveal" data-en="One Platform. <em>All Services.</em>" data-kn="ಒಂದೇ ವೇದಿಕೆ. <em>ಎಲ್ಲಾ ಸೇವೆಗಳು.</em>">One Platform. <em>All Services.</em></h2>
   <div class="divider"></div>
-  
-  <div class="prop-filter">
-    <button class="pf-chip active" data-filter="all">All</button>
-    <button class="pf-chip" data-filter="plot">Plots</button>
-    <button class="pf-chip" data-filter="apartment">Apartments</button>
-    <button class="pf-chip" data-filter="villa">Villas</button>
-  </div>
-  
-  <div id="properties-grid" class="prop-grid">
-    <!-- Properties will be loaded dynamically -->
-  </div>
-</section>
 
-<!-- Services Section -->
-<section id="services" class="services-section">
-  <p class="eyebrow" data-en="Our Services" data-kn="ನಮ್ಮ ಸೇವೆಗಳು">Our Services</p>
-  <h2 class="section-h" data-en="Everything Under One Roof" data-kn="ಎಲ್ಲವೂ ಒಂದೇ ಛಾವಣಿಯ ಅಡಿಯಲ್ಲಿ">Everything Under One Roof</h2>
-  <div class="divider"></div>
-  
-  <div class="services-grid">
+  <div class="services-grid reveal">
     <div class="svc-card">
-      <div class="svc-icon">🏗️</div>
-      <div class="svc-name" data-en="Plot / Layouts" data-kn="ನಿವೇಶನ / ಬಡಾವಣೆ">Plot / Layouts</div>
+      <div class="svc-icon">🏞️</div>
+      <div class="svc-name" data-en="Buy / Sell Plots" data-kn="ನಿವೇಶನ ಖರೀದಿ / ಮಾರಾಟ">Buy / Sell Plots</div>
+      <div class="svc-desc" data-en="Verified plots in Shivamogga, Bengaluru & surrounding taluks. Survey verified, clear title." data-kn="ಶಿವಮೊಗ್ಗ, ಬೆಂಗಳೂರಿನಲ್ಲಿ ಪರಿಶೀಲಿಸಿದ ನಿವೇಶನಗಳು.">Verified plots in Shivamogga, Bengaluru & surrounding taluks. Survey verified, clear title.</div>
+      <div class="svc-arrow">→</div>
     </div>
     <div class="svc-card">
       <div class="svc-icon">🏢</div>
       <div class="svc-name" data-en="Apartments" data-kn="ಅಪಾರ್ಟ್‌ಮೆಂಟ್">Apartments</div>
+      <div class="svc-desc" data-en="1BHK to 3BHK apartments with premium amenities. RERA listed, home loan assistance available." data-kn="ಪ್ರೀಮಿಯಂ ಸೌಲಭ್ಯಗಳೊಂದಿಗೆ 1BHK ರಿಂದ 3BHK ಅಪಾರ್ಟ್‌ಮೆಂಟ್‌ಗಳು.">1BHK to 3BHK apartments with premium amenities. RERA listed, home loan assistance available.</div>
+      <div class="svc-arrow">→</div>
     </div>
     <div class="svc-card">
-      <div class="svc-icon">🏠</div>
-      <div class="svc-name" data-en="Construction" data-kn="ನಿರ್ಮಾಣ">Construction</div>
+      <div class="svc-icon">🏗️</div>
+      <div class="svc-name" data-en="House Construction" data-kn="ಮನೆ ನಿರ್ಮಾಣ">House Construction</div>
+      <div class="svc-desc" data-en="Turnkey construction with full interior. Economy to luxury packages with transparent pricing." data-kn="ಸಂಪೂರ್ಣ ಒಳಾಂಗಣದೊಂದಿಗೆ ಟರ್ನ್‌ಕೀ ನಿರ್ಮಾಣ.">Turnkey construction with full interior. Economy to luxury packages with transparent pricing.</div>
+      <div class="svc-arrow">→</div>
     </div>
     <div class="svc-card">
-      <div class="svc-icon">🎨</div>
-      <div class="svc-name" data-en="Interior Design" data-kn="ಅಂತರಿಕ ವಿನ್ಯಾಸ">Interior Design</div>
+      <div class="svc-icon">🛋️</div>
+      <div class="svc-name" data-en="Interior Design" data-kn="ಒಳಾಂಗಣ ವಿನ್ಯಾಸ">Interior Design</div>
+      <div class="svc-desc" data-en="Modular kitchens, wardrobes, false ceilings for new and existing homes. 3D preview available." data-kn="ಮಾಡ್ಯುಲರ್ ಕಿಚನ್, ವಾರ್ಡ್‌ರೋಬ್, ಫಾಲ್ಸ್ ಸೀಲಿಂಗ್.">Modular kitchens, wardrobes, false ceilings for new and existing homes. 3D preview available.</div>
+      <div class="svc-arrow">→</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">🧱</div>
+      <div class="svc-name" data-en="Building Materials" data-kn="ಕಟ್ಟಡ ಸಾಮಗ್ರಿಗಳು">Building Materials</div>
+      <div class="svc-desc" data-en="Wholesale supply of sand, M-sand, bricks, steel, cement. Bulk enquiry with site delivery." data-kn="ಸಗಟು ಪೂರೈಕೆ — ಮರಳು, ಇಟ್ಟಿಗೆ, ಉಕ್ಕು, ಸಿಮೆಂಟ್.">Wholesale supply of sand, M-sand, bricks, steel, cement. Bulk enquiry with site delivery.</div>
+      <div class="svc-arrow">→</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">🌿</div>
+      <div class="svc-name" data-en="Farmhouses" data-kn="ಫಾರ್ಮ್ ಹೌಸ್">Farmhouses</div>
+      <div class="svc-desc" data-en="Weekend homes and farm estates in the scenic Malnad region — Sagara, Thirthahalli, Hosanagara." data-kn="ಮಲೆನಾಡು ಪ್ರದೇಶದಲ್ಲಿ ವಾರಾಂತ್ಯ ಮನೆಗಳು ಮತ್ತು ಫಾರ್ಮ್ ಎಸ್ಟೇಟ್‌ಗಳು.">Weekend homes and farm estates in the scenic Malnad region — Sagara, Thirthahalli, Hosanagara.</div>
+      <div class="svc-arrow">→</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">⚖️</div>
+      <div class="svc-name" data-en="Legal Services" data-kn="ಕಾನೂನು ಸೇವೆಗಳು">Legal Services</div>
+      <div class="svc-desc" data-en="Title verification, mutation, encumbrance certificates, property disputes. Empanelled lawyers." data-kn="ಟೈಟಲ್ ಪರಿಶೀಲನೆ, ಆಸ್ತಿ ವಿವಾದಗಳು. ಅನುಭವಿ ವಕೀಲರು.">Title verification, mutation, encumbrance certificates, property disputes. Empanelled lawyers.</div>
+      <div class="svc-arrow">→</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon">🔧</div>
+      <div class="svc-name" data-en="Renovation" data-kn="ನವೀಕರಣ">Renovation</div>
+      <div class="svc-desc" data-en="Kitchen & bathroom remodeling, painting, flooring, structural changes. Quick turnaround." data-kn="ಅಡುಗೆಮನೆ ಮತ್ತು ಸ್ನಾನಗೃಹ ನವೀಕರಣ. ವೇಗದ ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ.">Kitchen & bathroom remodeling, painting, flooring, structural changes. Quick turnaround.</div>
+      <div class="svc-arrow">→</div>
     </div>
   </div>
 </section>
 
-<!-- Buy Plots Section -->
-<section id="buy-plots" class="section-page">
-  <p class="eyebrow">Available Now</p>
-  <h2 class="section-h">Buy Plots</h2>
+<!-- ═══════════════════════════════ PROPERTIES ═══════════════════════════════ -->
+<section class="properties-section" id="properties">
+  <p class="eyebrow reveal" data-en="Property Showcase" data-kn="ಆಸ್ತಿ ಪ್ರದರ್ಶನ">Property Showcase</p>
+  <h2 class="section-h reveal" data-en="Featured <em>Listings</em>" data-kn="ವಿಶೇಷ <em>ಆಸ್ತಿಗಳು</em>">Featured <em>Listings</em></h2>
   <div class="divider"></div>
-  <div class="info-grid">
+
+  <div class="prop-filter reveal">
+    <button class="pf-chip active" data-filter="all" data-en="All" data-kn="ಎಲ್ಲಾ">All</button>
+    <button class="pf-chip" data-filter="plot" data-en="Plots" data-kn="ನಿವೇಶನ">Plots</button>
+    <button class="pf-chip" data-filter="apartment" data-en="Apartments" data-kn="ಅಪಾರ್ಟ್‌ಮೆಂಟ್">Apartments</button>
+    <button class="pf-chip" data-filter="villa" data-en="Villas" data-kn="ವಿಲ್ಲಾ">Villas</button>
+    <button class="pf-chip" data-filter="commercial" data-en="Commercial" data-kn="ವಾಣಿಜ್ಯ">Commercial</button>
+  </div>
+
+  <div id="properties-grid" class="prop-grid reveal">
+    <!-- Populated by js/app.js -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BUY PLOTS ═══════════════════════════════ -->
+<section id="buy-plots" class="section-page">
+  <p class="eyebrow reveal" data-en="Available Now" data-kn="ಈಗ ಲಭ್ಯ">Available Now</p>
+  <h2 class="section-h reveal" data-en="Buy <em>Plots</em>" data-kn="<em>ನಿವೇಶನ</em> ಖರೀದಿ">Buy <em>Plots</em></h2>
+  <p class="section-sub reveal" data-en="RERA-approved plots with clear legal titles across Karnataka's growth corridors." data-kn="ಕರ್ನಾಟಕದಾದ್ಯಂತ ಸ್ಪಷ್ಟ ಕಾನೂನು ಶೀರ್ಷಿಕೆಯೊಂದಿಗೆ RERA-ಅನುಮೋದಿತ ನಿವೇಶನಗಳು.">RERA-approved plots with clear legal titles across Karnataka's growth corridors.</p>
+  <div class="divider"></div>
+
+  <div class="info-grid reveal">
     <div class="info-card">
       <div class="info-icon">🌿</div>
-      <h3>Residential Plots</h3>
-      <p>RERA-approved residential plots in gated communities across Bengaluru, Shivamogga and Malnad region. Clear titles, ready for construction.</p>
+      <h3 data-en="Residential Plots" data-kn="ವಸತಿ ನಿವೇಶನ">Residential Plots</h3>
+      <p data-en="RERA-approved residential plots in gated communities across Bengaluru, Shivamogga and Malnad. Clear titles, ready for construction." data-kn="ಗೇಟೆಡ್ ಸಮುದಾಯಗಳಲ್ಲಿ RERA ಅನುಮೋದಿತ ವಸತಿ ನಿವೇಶನಗಳು.">RERA-approved residential plots in gated communities across Bengaluru, Shivamogga and Malnad. Clear titles, ready for construction.</p>
       <ul class="info-list">
         <li>✅ RERA Approved</li>
         <li>✅ Clear Legal Title</li>
         <li>✅ Gated Community</li>
         <li>✅ 24/7 Security</li>
       </ul>
-      <a href="#contact" class="btn-primary">Enquire Now</a>
+      <a href="#contact" class="btn-primary" data-en="Enquire Now" data-kn="ವಿಚಾರಿಸಿ">Enquire Now</a>
     </div>
     <div class="info-card">
       <div class="info-icon">🏭</div>
-      <h3>Commercial Plots</h3>
-      <p>Prime commercial land in high-footfall areas. Ideal for shops, offices, showrooms and business establishments.</p>
+      <h3 data-en="Commercial Plots" data-kn="ವಾಣಿಜ್ಯ ನಿವೇಶನ">Commercial Plots</h3>
+      <p data-en="Prime commercial land in high-footfall areas. Ideal for shops, offices, showrooms and business establishments." data-kn="ಹೆಚ್ಚಿನ ಜನಸಂಚಾರ ಪ್ರದೇಶಗಳಲ್ಲಿ ವಾಣಿಜ್ಯ ಭೂಮಿ.">Prime commercial land in high-footfall areas. Ideal for shops, offices, showrooms and business establishments.</p>
       <ul class="info-list">
         <li>✅ Highway Facing</li>
         <li>✅ High Footfall Area</li>
         <li>✅ All Utilities Available</li>
         <li>✅ Flexible Sizes</li>
       </ul>
-      <a href="#contact" class="btn-primary">Enquire Now</a>
+      <a href="#contact" class="btn-primary" data-en="Enquire Now" data-kn="ವಿಚಾರಿಸಿ">Enquire Now</a>
     </div>
     <div class="info-card">
       <div class="info-icon">🌾</div>
-      <h3>Agricultural / Farm Land</h3>
-      <p>Fertile agricultural land and farm plots in the scenic Malnad region. Perfect for weekend homes and organic farming.</p>
+      <h3 data-en="Agricultural / Farm Land" data-kn="ಕೃಷಿ ಭೂಮಿ">Agricultural / Farm Land</h3>
+      <p data-en="Fertile agricultural land and farm plots in the scenic Malnad region. Perfect for weekend homes and organic farming." data-kn="ಮಲೆನಾಡು ಪ್ರದೇಶದಲ್ಲಿ ಫಲವತ್ತಾದ ಕೃಷಿ ಭೂಮಿ.">Fertile agricultural land and farm plots in the scenic Malnad region. Perfect for weekend homes and organic farming.</p>
       <ul class="info-list">
         <li>✅ Fertile Soil</li>
         <li>✅ Water Source Available</li>
         <li>✅ Road Access</li>
         <li>✅ Scenic Location</li>
       </ul>
-      <a href="#contact" class="btn-primary">Enquire Now</a>
+      <a href="#contact" class="btn-primary" data-en="Enquire Now" data-kn="ವಿಚಾರಿಸಿ">Enquire Now</a>
     </div>
   </div>
 </section>
 
-<!-- Apartments Section -->
+<!-- ═══════════════════════════════ APARTMENTS ═══════════════════════════════ -->
 <section id="apartments" class="section-page alt-bg">
-  <p class="eyebrow">Premium Living</p>
-  <h2 class="section-h">Apartments</h2>
+  <p class="eyebrow reveal" data-en="Premium Living" data-kn="ಪ್ರೀಮಿಯಂ ವಾಸ">Premium Living</p>
+  <h2 class="section-h reveal" data-en="<em>Apartments</em> That Feel Like Home" data-kn="ಮನೆಯಂತೆ ಭಾಸವಾಗುವ <em>ಅಪಾರ್ಟ್‌ಮೆಂಟ್</em>">
+    <em>Apartments</em> That Feel Like Home
+  </h2>
+  <p class="section-sub reveal" data-en="From compact 1 BHK starter homes to spacious luxury penthouses — designed for every stage of life." data-kn="ಪ್ರತಿ ಜೀವನ ಹಂತಕ್ಕೂ ವಿನ್ಯಾಸಗೊಳಿಸಲಾದ ಅಪಾರ್ಟ್‌ಮೆಂಟ್‌ಗಳು.">From compact 1 BHK starter homes to spacious luxury penthouses — designed for every stage of life.</p>
   <div class="divider"></div>
-  <div class="info-grid">
+
+  <div class="info-grid reveal">
     <div class="info-card">
-      <div class="info-icon">🏢</div>
+      <div class="info-icon">🏙️</div>
       <h3>1 BHK Apartments</h3>
       <p>Compact and affordable 1 BHK units ideal for young professionals and small families. Smart layouts with modern finishes.</p>
       <ul class="info-list">
@@ -170,13 +282,13 @@
       <a href="#contact" class="btn-primary">Book a Visit</a>
     </div>
     <div class="info-card">
-      <div class="info-icon">🏙️</div>
-      <h3>2 & 3 BHK Apartments</h3>
+      <div class="info-icon">🏢</div>
+      <h3>2 &amp; 3 BHK Apartments</h3>
       <p>Spacious 2 and 3 BHK apartments with premium amenities. Perfect for growing families seeking comfort and convenience.</p>
       <ul class="info-list">
         <li>✅ 900 – 1600 sq.ft</li>
         <li>✅ Starting ₹45 Lakhs</li>
-        <li>✅ Swimming Pool & Gym</li>
+        <li>✅ Swimming Pool &amp; Gym</li>
         <li>✅ Children's Play Area</li>
       </ul>
       <a href="#contact" class="btn-primary">Book a Visit</a>
@@ -196,373 +308,388 @@
   </div>
 </section>
 
-<!-- Constructions Section -->
-<section id="constructions" class="section-page">
-  <p class="eyebrow">Build With Us</p>
-  <h2 class="section-h">Constructions</h2>
-  <div class="divider"></div>
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="info-icon">🏗️</div>
-      <h3>Residential Construction</h3>
-      <p>End-to-end home construction from foundation to finishing. We handle design, permits, materials and execution under one roof.</p>
-      <ul class="info-list">
-        <li>✅ Architect & Design Included</li>
-        <li>✅ Quality Materials</li>
-        <li>✅ On-time Delivery</li>
-        <li>✅ 5-Year Warranty</li>
+<!-- ═══════════════════════════════ CONSTRUCTION PACKAGES ═══════════════════════════════ -->
+<section id="constructions" class="packages-section">
+  <div class="packages-inner">
+    <div class="packages-left reveal">
+      <p class="eyebrow">Construction Service</p>
+      <h2 class="section-h">Build Your Dream Home<br>With <em>Full Interior</em></h2>
+      <div class="divider"></div>
+      <p class="section-sub">Complete turnkey construction in Shivamogga and Bengaluru — from foundation to furnishing. Choose your package.</p>
+      <ul>
+        <li>✅ Licensed Engineers &amp; Architects</li>
+        <li>✅ 5-Year Structural Warranty</li>
+        <li>✅ Transparent, Itemized Pricing</li>
+        <li>✅ On-time Delivery Guarantee</li>
       </ul>
-      <a href="#contact" class="btn-primary">Get a Quote</a>
+      <a href="#contact" class="btn-primary">Get Free Estimate →</a>
     </div>
-    <div class="info-card">
-      <div class="info-icon">🏬</div>
-      <h3>Commercial Construction</h3>
-      <p>Offices, retail spaces, warehouses and commercial complexes built to your specifications with the highest quality standards.</p>
-      <ul class="info-list">
-        <li>✅ Structural Engineering</li>
-        <li>✅ MEP Services</li>
-        <li>✅ Fire Safety Compliance</li>
-        <li>✅ RERA Compliant</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Get a Quote</a>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">🔧</div>
-      <h3>Renovation & Remodelling</h3>
-      <p>Transform your existing space with our expert renovation services. From minor repairs to complete overhauls, we do it all.</p>
-      <ul class="info-list">
-        <li>✅ Kitchen & Bathroom Remodel</li>
-        <li>✅ Flooring & Painting</li>
-        <li>✅ Structural Changes</li>
-        <li>✅ Quick Turnaround</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Get a Quote</a>
+    <div class="package-cards reveal">
+      <div class="package-card">
+        <div class="pack-badge">Economy</div>
+        <div class="pack-name">Essential</div>
+        <div class="pack-price">From ₹1,650/sqft</div>
+        <div class="pack-features">
+          <div class="pack-feature">Basic finishes</div>
+          <div class="pack-feature">Standard fixtures</div>
+          <div class="pack-feature">2-year warranty</div>
+        </div>
+      </div>
+      <div class="package-card gold-card">
+        <div class="pack-badge">★ Most Popular</div>
+        <div class="pack-name">Premium</div>
+        <div class="pack-price">From ₹2,200/sqft</div>
+        <div class="pack-features">
+          <div class="pack-feature">Modular kitchen</div>
+          <div class="pack-feature">Italian tiles</div>
+          <div class="pack-feature">5-year warranty</div>
+        </div>
+      </div>
+      <div class="package-card">
+        <div class="pack-badge">Luxury</div>
+        <div class="pack-name">Elite</div>
+        <div class="pack-price">From ₹3,200/sqft</div>
+        <div class="pack-features">
+          <div class="pack-feature">Full interior design</div>
+          <div class="pack-feature">Smart home ready</div>
+          <div class="pack-feature">Lifetime support</div>
+        </div>
+      </div>
+      <div class="package-card">
+        <div class="pack-badge">Special</div>
+        <div class="pack-name">Farmhouse</div>
+        <div class="pack-price">Custom Pricing</div>
+        <div class="pack-features">
+          <div class="pack-feature">Eco-friendly design</div>
+          <div class="pack-feature">Vastu compliant</div>
+          <div class="pack-feature">Site assessment</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Interiors Section -->
+<!-- ═══════════════════════════════ INTERIORS ═══════════════════════════════ -->
 <section id="interiors" class="section-page alt-bg">
-  <p class="eyebrow">Design Your Space</p>
-  <h2 class="section-h">Interiors</h2>
+  <p class="eyebrow reveal">Design Your Space</p>
+  <h2 class="section-h reveal"><em>Interiors</em> That Inspire</h2>
+  <p class="section-sub reveal">From modular kitchens to complete home makeovers — we bring your vision to life with premium finishes and smart design.</p>
   <div class="divider"></div>
-  <div class="info-grid">
+
+  <div class="info-grid reveal">
     <div class="info-card">
       <div class="info-icon">🎨</div>
-      <h3>Home Interiors</h3>
-      <p>Complete home interior design and execution. From living rooms to bedrooms, we create spaces that reflect your personality.</p>
+      <h3>Full Home Interiors</h3>
+      <p>End-to-end interior design for your new home or renovation. Furniture, lighting, decor — all under one package.</p>
       <ul class="info-list">
         <li>✅ 3D Design Preview</li>
-        <li>✅ Modular Furniture</li>
-        <li>✅ False Ceiling & Lighting</li>
-        <li>✅ Turnkey Delivery</li>
+        <li>✅ Premium Materials</li>
+        <li>✅ Custom Furniture</li>
+        <li>✅ On-site Supervision</li>
       </ul>
-      <a href="#contact" class="btn-primary">Get Design Quote</a>
+      <a href="#contact" class="btn-primary">Get Started</a>
     </div>
     <div class="info-card">
       <div class="info-icon">🍳</div>
-      <h3>Modular Kitchen</h3>
-      <p>Custom modular kitchens designed for Indian cooking needs. Durable materials, smart storage and elegant finishes.</p>
+      <h3>Modular Kitchens</h3>
+      <p>Functional and stylish modular kitchens with premium hardware, soft-close hinges and stain-proof finishes.</p>
       <ul class="info-list">
-        <li>✅ L-Shape / U-Shape / Island</li>
-        <li>✅ Soft-Close Shutters</li>
-        <li>✅ Granite / Quartz Countertop</li>
-        <li>✅ 10-Year Warranty</li>
+        <li>✅ L / U / Island Layouts</li>
+        <li>✅ Marine-grade Ply</li>
+        <li>✅ Granite / Quartz Tops</li>
+        <li>✅ 10-year Warranty</li>
       </ul>
-      <a href="#contact" class="btn-primary">Get Design Quote</a>
+      <a href="#contact" class="btn-primary">View Designs</a>
     </div>
     <div class="info-card">
-      <div class="info-icon">🛋️</div>
-      <h3>Office Interiors</h3>
-      <p>Professional office spaces designed for productivity and brand identity. Modern workstations, cabins and conference rooms.</p>
+      <div class="info-icon">🛏️</div>
+      <h3>Wardrobes &amp; Storage</h3>
+      <p>Custom-built wardrobes, TV units, shoe racks and storage solutions designed to maximize space in any home.</p>
       <ul class="info-list">
-        <li>✅ Space Planning</li>
-        <li>✅ Ergonomic Furniture</li>
-        <li>✅ Acoustic Solutions</li>
-        <li>✅ Brand-Aligned Design</li>
+        <li>✅ Sliding / Openable</li>
+        <li>✅ Laminate Finishes</li>
+        <li>✅ LED Lighting</li>
+        <li>✅ Lifetime Hardware</li>
       </ul>
-      <a href="#contact" class="btn-primary">Get Design Quote</a>
+      <a href="#contact" class="btn-primary">Enquire</a>
     </div>
   </div>
 </section>
 
-<!-- Materials Section -->
-<section id="materials" class="section-page">
-  <p class="eyebrow">Quality Assured</p>
-  <h2 class="section-h">Building Materials</h2>
+<!-- ═══════════════════════════════ MATERIALS ═══════════════════════════════ -->
+<section id="materials" class="materials-section">
+  <p class="eyebrow reveal">Wholesale Supply</p>
+  <h2 class="section-h reveal">Construction <em>Materials</em></h2>
+  <p class="section-sub reveal">Direct wholesale pricing for contractors, builders and individuals. Bulk enquiry — delivered to your site in Shivamogga &amp; Bengaluru.</p>
   <div class="divider"></div>
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="info-icon">🧱</div>
-      <h3>Structural Materials</h3>
-      <p>Premium quality cement, steel, bricks and aggregates sourced from trusted manufacturers. Strength and durability guaranteed.</p>
-      <ul class="info-list">
-        <li>✅ ISI Certified Products</li>
-        <li>✅ TMT Steel Bars</li>
-        <li>✅ OPC / PPC Cement</li>
-        <li>✅ Bulk Supply Available</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Request Supply</a>
+
+  <div class="materials-grid reveal">
+    <div class="material-card">
+      <div class="material-icon">🏖️</div>
+      <div class="material-name">River Sand</div>
+      <div class="material-price">Enquiry based</div>
     </div>
-    <div class="info-card">
-      <div class="info-icon">🪟</div>
-      <h3>Finishing Materials</h3>
-      <p>Tiles, flooring, doors, windows, paints and sanitary ware from top brands. Everything you need to finish your home beautifully.</p>
-      <ul class="info-list">
-        <li>✅ Vitrified & Ceramic Tiles</li>
-        <li>✅ UPVC / Aluminium Windows</li>
-        <li>✅ Premium Paints</li>
-        <li>✅ Sanitary Ware</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Request Supply</a>
+    <div class="material-card">
+      <div class="material-icon">🪨</div>
+      <div class="material-name">M-Sand</div>
+      <div class="material-price">₹55–65/cft</div>
     </div>
-    <div class="info-card">
-      <div class="info-icon">⚡</div>
-      <h3>Electrical & Plumbing</h3>
-      <p>Complete electrical fittings, wiring, plumbing pipes and fixtures from certified brands. Safe, reliable and long-lasting.</p>
-      <ul class="info-list">
-        <li>✅ ISI Wires & Cables</li>
-        <li>✅ CPVC / UPVC Pipes</li>
-        <li>✅ LED Lighting Solutions</li>
-        <li>✅ Solar Panel Supply</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Request Supply</a>
+    <div class="material-card">
+      <div class="material-icon">🧱</div>
+      <div class="material-name">Bricks</div>
+      <div class="material-price">₹8–12/unit</div>
     </div>
+    <div class="material-card">
+      <div class="material-icon">⚙️</div>
+      <div class="material-name">TMT Steel</div>
+      <div class="material-price">Wholesale rate</div>
+    </div>
+    <div class="material-card">
+      <div class="material-icon">🏗️</div>
+      <div class="material-name">Cement</div>
+      <div class="material-price">₹340–380/bag</div>
+    </div>
+    <div class="material-card">
+      <div class="material-icon">🪵</div>
+      <div class="material-name">Granite / Stone</div>
+      <div class="material-price">₹90–140/sqft</div>
+    </div>
+  </div>
+  <div class="materials-note reveal">
+    <a href="#contact" class="btn-primary">📦 Request Bulk Quote</a>
+    <p>* Prices are indicative. Actual rates depend on quantity, grade and delivery location. Sand prices subject to government permit availability.</p>
   </div>
 </section>
 
-<!-- Legal Section -->
-<section id="legal" class="section-page alt-bg">
-  <p class="eyebrow">Hassle-Free Documentation</p>
-  <h2 class="section-h">Legal Services</h2>
+<!-- ═══════════════════════════════ TRUST / STATS ═══════════════════════════════ -->
+<section class="trust-section">
+  <p class="eyebrow reveal">Why Clients Trust Us</p>
+  <h2 class="section-h reveal">Numbers That <em>Speak</em></h2>
   <div class="divider"></div>
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="info-icon">📋</div>
-      <h3>Property Registration</h3>
-      <p>Complete assistance with sale deed preparation, stamp duty calculation and property registration at the sub-registrar office.</p>
-      <ul class="info-list">
-        <li>✅ Sale Deed Drafting</li>
-        <li>✅ Stamp Duty Guidance</li>
-        <li>✅ Sub-Registrar Assistance</li>
-        <li>✅ Encumbrance Certificate</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Get Assistance</a>
+  <div class="trust-grid reveal">
+    <div class="trust-card">
+      <div class="trust-num"><span data-setting="stat_listings_num">500</span><sup>+</sup></div>
+      <div class="trust-label">Properties Listed</div>
     </div>
-    <div class="info-card">
-      <div class="info-icon">🏛️</div>
-      <h3>Title Verification</h3>
-      <p>Thorough legal due diligence and title verification to ensure your property is free from disputes, liens and encumbrances.</p>
-      <ul class="info-list">
-        <li>✅ Title Search Report</li>
-        <li>✅ Khata Verification</li>
-        <li>✅ RERA Compliance Check</li>
-        <li>✅ Loan NOC Assistance</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Get Assistance</a>
+    <div class="trust-card">
+      <div class="trust-num"><span data-setting="stat_years_num">14</span><sup>+</sup></div>
+      <div class="trust-label">Years in Business</div>
     </div>
-    <div class="info-card">
-      <div class="info-icon">🏦</div>
-      <h3>Home Loan Assistance</h3>
-      <p>We partner with leading banks and NBFCs to help you get the best home loan deals with minimal documentation and quick approval.</p>
-      <ul class="info-list">
-        <li>✅ SBI / HDFC / ICICI Tie-ups</li>
-        <li>✅ Up to 90% Financing</li>
-        <li>✅ Quick Approval</li>
-        <li>✅ Balance Transfer Help</li>
-      </ul>
-      <a href="#contact" class="btn-primary">Get Assistance</a>
+    <div class="trust-card">
+      <div class="trust-num"><span data-setting="stat_families_num">3</span><sup>K+</sup></div>
+      <div class="trust-label">Happy Families</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-num"><span data-setting="stat_rating_num">4.8</span><sup>★</sup></div>
+      <div class="trust-label">Customer Rating</div>
     </div>
   </div>
 </section>
 
-<!-- About Section -->
+<!-- ═══════════════════════════════ TESTIMONIALS ═══════════════════════════════ -->
+<section class="testimonials-section">
+  <p class="eyebrow reveal">What Clients Say</p>
+  <h2 class="section-h reveal"><em>Stories</em> From Our Customers</h2>
+  <div class="divider"></div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"Bought a plot in Thirthahalli through RAAS. The entire process — from survey verification to registration — was smooth and transparent. Highly recommended."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SR</div>
+        <div>
+          <div class="testimonial-name">Shivakumar R.</div>
+          <div class="testimonial-role">Plot Owner, Shivamogga</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"RAAS built our 3 BHK home in Bengaluru from foundation to final interiors. On time, within budget, and the quality exceeded our expectations."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">PK</div>
+        <div>
+          <div class="testimonial-name">Priya K.</div>
+          <div class="testimonial-role">Homeowner, Bengaluru</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">MH</div>
+        <div>
+          <div class="testimonial-name">Mohan H.</div>
+          <div class="testimonial-role">Farmhouse Owner, Sagara</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
 <section id="about" class="section-page">
-  <p class="eyebrow">Who We Are</p>
-  <h2 class="section-h">About RAAS</h2>
+  <p class="eyebrow reveal">About Us</p>
+  <h2 class="section-h reveal">Rooted in Karnataka. <em>Built on Trust.</em></h2>
   <div class="divider"></div>
-  <div class="about-grid">
-    <div class="about-text">
-      <p>RAAS Builders & Developers has been a trusted name in real estate since 2010. With deep roots in Bengaluru, Shivamogga and the Malnad region, we have helped hundreds of families find their dream homes and investment properties.</p>
-      <p>Our commitment is simple — transparency, quality and customer satisfaction at every step of your real estate journey.</p>
-      <div class="about-stats">
-        <div class="about-stat"><span class="stat-num">500+</span><span class="stat-lbl">Happy Families</span></div>
-        <div class="about-stat"><span class="stat-num">15+</span><span class="stat-lbl">Years Experience</span></div>
-        <div class="about-stat"><span class="stat-num">50+</span><span class="stat-lbl">Projects Completed</span></div>
-        <div class="about-stat"><span class="stat-num">3</span><span class="stat-lbl">Cities Served</span></div>
-      </div>
-    </div>
+  <div class="about-inner reveal">
+    <p data-setting="about_p1">RAAS Builders &amp; Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.</p>
+    <p data-setting="about_p2">We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.</p>
+    <p data-setting="about_p3">Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.</p>
   </div>
 </section>
 
-<!-- Testimonials Section -->
-<section id="testimonials" class="testimonials-section">
-  <p class="eyebrow">What Our Customers Say</p>
-  <h2 class="section-h">Happy Families, Happy Homes</h2>
+<!-- ═══════════════════════════════ CONTACT ═══════════════════════════════ -->
+<section id="contact" class="contact-section">
+  <p class="eyebrow reveal">Get in Touch</p>
+  <h2 class="section-h reveal">Let's Build <em>Together</em></h2>
   <div class="divider"></div>
-  <div class="test-grid">
 
-    <div class="test-card">
-      <div class="test-quote">"</div>
-      <div class="test-stars">★★★★★</div>
-      <p class="test-text">RAAS helped us find the perfect plot in Shivamogga. The entire process — from site visit to registration — was smooth and transparent. Highly recommend them!</p>
-      <div class="test-author">
-        <div class="test-avatar">R</div>
+  <div class="contact-inner">
+    <div class="contact-info-card reveal">
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
         <div>
-          <div class="test-name">Rajesh Kumar</div>
-          <div class="test-role">Plot Buyer · Shivamogga</div>
+          <div class="contact-label">Bengaluru Office</div>
+          <div class="contact-value"><a href="tel:+919019793641" data-setting="phone_bengaluru">+91 90197 93641</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Shivamogga / Thirthahalli</div>
+          <div class="contact-value"><a href="tel:+918277755555" data-setting="phone_shivamogga">+91 82777 55555</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:info@raasbuilders.com" data-setting="email">info@raasbuilders.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Head Office</div>
+          <div class="contact-value" data-setting="address">Shivamogga, Karnataka<br>Branch: Bengaluru</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-label">Working Hours</div>
+          <div class="contact-value" data-setting="hours">Mon – Sat: 9:00 AM – 7:00 PM<br>Sun: By appointment</div>
         </div>
       </div>
     </div>
 
-    <div class="test-card">
-      <div class="test-quote">"</div>
-      <div class="test-stars">★★★★★</div>
-      <p class="test-text">We bought a 2 BHK apartment through RAAS and the experience was outstanding. Their team was always available to answer our questions and the quality of construction is excellent.</p>
-      <div class="test-author">
-        <div class="test-avatar">P</div>
-        <div>
-          <div class="test-name">Priya & Suresh Nair</div>
-          <div class="test-role">Apartment Buyers · Bengaluru</div>
+    <form class="contact-form reveal" id="contact-form" onsubmit="return handleContactSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cf-name">Your Name</label>
+          <input type="text" id="cf-name" required>
+        </div>
+        <div class="form-group">
+          <label for="cf-phone">Phone</label>
+          <input type="tel" id="cf-phone" required>
         </div>
       </div>
-    </div>
-
-    <div class="test-card">
-      <div class="test-quote">"</div>
-      <div class="test-stars">★★★★★</div>
-      <p class="test-text">RAAS built our dream home in Thirthahalli. The construction quality is top-notch and they completed it on time. The interior design team did a fantastic job too!</p>
-      <div class="test-author">
-        <div class="test-avatar">M</div>
-        <div>
-          <div class="test-name">Manjunath Hegde</div>
-          <div class="test-role">Home Construction · Malnad Region</div>
-        </div>
+      <div class="form-group">
+        <label for="cf-email">Email (optional)</label>
+        <input type="email" id="cf-email">
       </div>
-    </div>
-
-    <div class="test-card">
-      <div class="test-quote">"</div>
-      <div class="test-stars">★★★★★</div>
-      <p class="test-text">The legal assistance provided by RAAS was invaluable. They handled all the documentation and home loan process seamlessly. Stress-free experience from start to finish.</p>
-      <div class="test-author">
-        <div class="test-avatar">A</div>
-        <div>
-          <div class="test-name">Anitha Gowda</div>
-          <div class="test-role">Plot Buyer · Electronic City</div>
-        </div>
+      <div class="form-group">
+        <label for="cf-interest">I'm interested in</label>
+        <select id="cf-interest">
+          <option value="plots">Buying a Plot</option>
+          <option value="apartment">Buying an Apartment</option>
+          <option value="construction">House Construction</option>
+          <option value="interiors">Interior Design</option>
+          <option value="materials">Building Materials</option>
+          <option value="other">Something Else</option>
+        </select>
       </div>
-    </div>
-
-    <div class="test-card">
-      <div class="test-quote">"</div>
-      <div class="test-stars">★★★★★</div>
-      <p class="test-text">Invested in a commercial plot through RAAS two years ago. The value has already appreciated significantly. Their knowledge of the local market is unmatched.</p>
-      <div class="test-author">
-        <div class="test-avatar">V</div>
-        <div>
-          <div class="test-name">Venkatesh Rao</div>
-          <div class="test-role">Commercial Investor · Bengaluru</div>
-        </div>
+      <div class="form-group">
+        <label for="cf-message">Tell us more</label>
+        <textarea id="cf-message" placeholder="Location, budget, timeline, any questions..."></textarea>
       </div>
-    </div>
-
-    <div class="test-card">
-      <div class="test-quote">"</div>
-      <div class="test-stars">★★★★★</div>
-      <p class="test-text">The modular kitchen and interior work done by RAAS team is simply beautiful. They understood our taste perfectly and delivered beyond our expectations within budget.</p>
-      <div class="test-author">
-        <div class="test-avatar">S</div>
-        <div>
-          <div class="test-name">Savitha & Kiran</div>
-          <div class="test-role">Interior Design · Shivamogga</div>
-        </div>
-      </div>
-    </div>
-
+      <button type="submit">Send Enquiry via WhatsApp →</button>
+    </form>
   </div>
 </section>
 
-<!-- Contact Section -->
-<section id="contact" class="cta-section">
-  <h2 class="cta-title" data-en="Ready to Find Your <em>Perfect</em> Property?" data-kn="ನಿಮ್ಮ <em>ಪರಿಪೂರ್ಣ</em> ಆಸ್ತಿ ಹುಡುಕಲು ಸಿದ್ಧರಿದ್ದೀರಾ?">Ready to Find Your <em>Perfect</em> Property?</h2>
-  <p class="cta-sub" data-en="Our experts are available 7 days a week" data-kn="ನಮ್ಮ ತಜ್ಞರು ವಾರದ 7 ದಿನವೂ ಲಭ್ಯರಿದ್ದಾರೆ">Our experts are available 7 days a week</p>
-  <div class="cta-actions">
-    <a href="tel:+919800000000" class="btn-primary">📞 Call Now</a>
-    <a href="https://wa.me/919800000000" class="btn-secondary">💬 WhatsApp Us</a>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
   <div class="footer-inner">
-    <div>
-      <div class="footer-brand-name" data-en="RAAS Builders & Developers" data-kn="ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್">RAAS Builders & Developers</div>
-      <p class="footer-brand-desc" data-en="Your trusted real estate partner across Bengaluru, Shivamogga and the Malnad region." data-kn="ಬೆಂಗಳೂರು, ಶಿವಮೊಗ್ಗ ಮತ್ತು ಮಲೆನಾಡಿನಲ್ಲಿ ನಿಮ್ಮ ವಿಶ್ವಾಸಾರ್ಹ ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಪಾಲುದಾರ">Your trusted real estate partner across Bengaluru, Shivamogga and the Malnad region.</p>
-    </div>
-    <div>
-      <p class="footer-h" data-en="Contact" data-kn="ಸಂಪರ್ಕ">Contact</p>
-      <div class="footer-contact">
-        <p data-en="📍 Bengaluru & Shivamogga, Karnataka" data-kn="📍 ಬೆಂಗಳೂರು ಮತ್ತು ಶಿವಮೊಗ್ಗ, ಕರ್ನಾಟಕ">📍 Bengaluru & Shivamogga, Karnataka</p>
-        <p>📞 +91 98XXXXXXXX</p>
-        <p>✉ info@raasbuilders.com</p>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="38" height="38" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="42" height="42" rx="10" fill="#1A3C34"/>
+            <rect x="4" y="32" width="34" height="2.5" fill="#C9A84C" rx="1"/>
+            <path d="M21 6 L6 24 L36 24 Z" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linejoin="round"/>
+            <path d="M14 24 Q14 16 21 16 Q28 16 28 24" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+            <rect x="15" y="24" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+            <rect x="24" y="24" width="3" height="8" fill="#C9A84C" rx="0.5"/>
+          </svg>
+          <div class="footer-logo-text">RAAS<em> Builders</em></div>
+        </div>
+        <p class="footer-desc">Karnataka's trusted real estate company. Serving Bengaluru and the Malnad region with expertise in plots, apartments, construction, interiors and more.</p>
+        <div class="footer-contact-item">📞 <div><strong>Bengaluru</strong><a href="tel:+919019793641" data-setting="phone_bengaluru">+91 90197 93641</a></div></div>
+        <div class="footer-contact-item">📞 <div><strong>Shivamogga</strong><a href="tel:+918277755555" data-setting="phone_shivamogga">+91 82777 55555</a></div></div>
+        <div class="footer-contact-item">✉️ <div><strong>Email</strong><a href="mailto:info@raasbuilders.com" data-setting="email">info@raasbuilders.com</a></div></div>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Properties</div>
+        <ul class="footer-links">
+          <li><a href="#buy-plots">Buy Plots</a></li>
+          <li><a href="#apartments">Apartments</a></li>
+          <li><a href="#properties">Featured Listings</a></li>
+          <li><a href="#buy-plots">Farm Land</a></li>
+          <li><a href="#contact">Post Your Property</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#constructions">House Construction</a></li>
+          <li><a href="#interiors">Interior Design</a></li>
+          <li><a href="#materials">Building Materials</a></li>
+          <li><a href="#constructions">Renovation</a></li>
+          <li><a href="#contact">Free Estimate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="admin.html">Admin Login</a></li>
+        </ul>
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p data-en="© 2026 RAAS Builders & Developers. All Rights Reserved." data-kn="© 2026 ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಅಂಡ್ ಡೆವಲಪರ್ಸ್. ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.">© 2026 RAAS Builders & Developers. All Rights Reserved.</p>
-    <div class="footer-links-bottom">
-      <a href="privacy-policy.html" data-en="Privacy Policy" data-kn="ಗೌಪ್ಯತಾ ನೀತಿ">Privacy Policy</a>
-      <span>|</span>
-      <a href="#" data-en="Terms of Service" data-kn="ಸೇವಾ ನಿಯಮಗಳು">Terms of Service</a>
-      <span>|</span>
-      <a href="#" data-en="Sitemap" data-kn="ಸೈಟ್‌ಮ್ಯಾಪ್">Sitemap</a>
+
+    <div class="footer-bottom">
+      <div>© <span id="footer-year">2025</span> RAAS Builders &amp; Developers. All rights reserved. | Bengaluru &amp; Shivamogga, Karnataka</div>
+      <div class="footer-badges">
+        <div class="footer-badge">RERA Compliant</div>
+        <div class="footer-badge">ISO Certified</div>
+        <div class="footer-badge">GST Registered</div>
+      </div>
     </div>
   </div>
 </footer>
 
-<!-- WhatsApp Chat Widget -->
-<div class="whatsapp-widget" id="wa-widget">
-  <div class="wa-chat-box" id="wa-chat-box">
-    <div class="wa-header">
-      <div class="wa-avatar">R</div>
-      <div class="wa-info">
-        <div class="wa-name">RAAS Support</div>
-        <div class="wa-status">● Online</div>
-      </div>
-      <button class="wa-close" onclick="toggleChat()">✕</button>
-    </div>
-    <div class="wa-body">
-      <div class="wa-message">
-        <p>Hello! 👋</p>
-        <p>Welcome to RAAS Builders & Developers!</p>
-        <p>How can we help you today?</p>
-      </div>
-      <div class="wa-options">
-        <button onclick="sendMessage('I want to buy a plot')">🏗️ Buy a Plot</button>
-        <button onclick="sendMessage('I want to buy an apartment')">🏢 Buy Apartment</button>
-        <button onclick="sendMessage('I need construction services')">🔨 Construction</button>
-        <button onclick="sendMessage('I want to schedule a site visit')">📍 Site Visit</button>
-      </div>
-    </div>
-    <div class="wa-footer">
-      <a href="https://wa.me/919800000000?text=Hi%20RAAS,%20I'm%20interested%20in%20your%20properties" target="_blank" class="wa-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Chat on WhatsApp
-      </a>
-    </div>
-  </div>
-  <button class="wa-float-btn" onclick="toggleChat()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  </button>
+<!-- ═══════════════════════════════ FLOATING WIDGETS ═══════════════════════════════ -->
+<div class="chat-widget">
+  <a href="https://wa.me/919019793641?text=Hi%20RAAS%20Builders%2C%20I'm%20interested%20in%20your%20properties" target="_blank" rel="noopener" class="widget-btn wa" aria-label="Chat on WhatsApp" id="wa-btn">💬</a>
+  <a href="tel:+919019793641" class="widget-btn phone" aria-label="Call us" id="phone-btn">📞</a>
 </div>
 
-<!-- Phone Call Widget -->
-<a href="tel:+919800000000" class="phone-widget" title="Call Us">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-</a>
-
 <script src="js/app.js"></script>
-<script src="js/chat-widget.js"></script>
 </body>
 </html>
