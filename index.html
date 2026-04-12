@@ -202,6 +202,7 @@
   <div class="prop-filter reveal">
     <button class="pf-chip active" data-filter="all" data-en="All" data-kn="ಎಲ್ಲಾ">All</button>
     <button class="pf-chip" data-filter="plot" data-en="Plots" data-kn="ನಿವೇಶನ">Plots</button>
+    <button class="pf-chip" data-filter="land" data-en="Agri Land" data-kn="ಕೃಷಿ ಭೂಮಿ">Agri Land</button>
     <button class="pf-chip" data-filter="apartment" data-en="Apartments" data-kn="ಅಪಾರ್ಟ್‌ಮೆಂಟ್">Apartments</button>
     <button class="pf-chip" data-filter="villa" data-en="Villas" data-kn="ವಿಲ್ಲಾ">Villas</button>
     <button class="pf-chip" data-filter="commercial" data-en="Commercial" data-kn="ವಾಣಿಜ್ಯ">Commercial</button>
@@ -423,37 +424,8 @@
   <p class="section-sub reveal">Direct wholesale pricing for contractors, builders and individuals. Bulk enquiry — delivered to your site in Shivamogga &amp; Bengaluru.</p>
   <div class="divider"></div>
 
-  <div class="materials-grid reveal">
-    <div class="material-card">
-      <div class="material-icon">🏖️</div>
-      <div class="material-name">River Sand</div>
-      <div class="material-price">Enquiry based</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🪨</div>
-      <div class="material-name">M-Sand</div>
-      <div class="material-price">₹55–65/cft</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🧱</div>
-      <div class="material-name">Bricks</div>
-      <div class="material-price">₹8–12/unit</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">⚙️</div>
-      <div class="material-name">TMT Steel</div>
-      <div class="material-price">Wholesale rate</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🏗️</div>
-      <div class="material-name">Cement</div>
-      <div class="material-price">₹340–380/bag</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🪵</div>
-      <div class="material-name">Granite / Stone</div>
-      <div class="material-price">₹90–140/sqft</div>
-    </div>
+  <div id="materials-grid" class="materials-grid reveal">
+    <!-- Populated by js/app.js from admin-saved materials or defaults -->
   </div>
   <div class="materials-note reveal">
     <a href="#contact" class="btn-primary">📦 Request Bulk Quote</a>
@@ -603,7 +575,8 @@
       <div class="form-group">
         <label for="cf-interest">I'm interested in</label>
         <select id="cf-interest">
-          <option value="plots">Buying a Plot</option>
+          <option value="plots">Buying a Plot / Site</option>
+          <option value="land">Agricultural Land</option>
           <option value="apartment">Buying an Apartment</option>
           <option value="construction">House Construction</option>
           <option value="interiors">Interior Design</option>

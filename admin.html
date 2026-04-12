@@ -51,6 +51,7 @@
       <!-- Tabs -->
       <div class="admin-tabs">
         <button class="tab-btn active" data-tab="properties">🏠 Properties</button>
+        <button class="tab-btn" data-tab="materials">🧱 Materials Pricing</button>
         <button class="tab-btn" data-tab="settings">⚙️ Site Settings</button>
       </div>
 
@@ -73,9 +74,10 @@
                 <label for="prop-type">Type *</label>
                 <select id="prop-type" required>
                   <option value="">Select Type</option>
-                  <option value="plot">Plot</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="villa">Villa</option>
+                  <option value="plot">Plot / Site</option>
+                  <option value="land">Agricultural Land</option>
+                  <option value="apartment">Apartment / Flat</option>
+                  <option value="villa">Villa / Independent House</option>
                   <option value="commercial">Commercial</option>
                 </select>
               </div>
@@ -87,31 +89,84 @@
                 <input type="text" id="prop-location" placeholder="e.g. Thirthahalli, Shivamogga" required>
               </div>
               <div class="form-group">
-                <label for="prop-price">Price (₹ in Lakhs) *</label>
-                <input type="text" id="prop-price" placeholder="e.g. 22" required>
+                <label for="prop-price">Price *</label>
+                <div class="input-with-unit">
+                  <input type="text" id="prop-price" placeholder="e.g. 22" required>
+                  <select id="prop-price-unit">
+                    <option value="lakhs">₹ Lakhs</option>
+                    <option value="crores">₹ Crores</option>
+                    <option value="per_sqft">₹ / sq.ft</option>
+                    <option value="per_acre">₹ / Acre</option>
+                    <option value="per_gunta">₹ / Gunta</option>
+                    <option value="negotiable">Negotiable</option>
+                  </select>
+                </div>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="prop-area">Area (sq.ft)</label>
-                <input type="text" id="prop-area">
+                <label for="prop-area">Area *</label>
+                <div class="input-with-unit">
+                  <input type="text" id="prop-area" placeholder="e.g. 1200">
+                  <select id="prop-area-unit">
+                    <option value="sqft">sq.ft</option>
+                    <option value="acres">Acres</option>
+                    <option value="guntas">Guntas</option>
+                    <option value="cents">Cents</option>
+                    <option value="grounds">Grounds</option>
+                  </select>
+                </div>
               </div>
               <div class="form-group">
                 <label for="prop-status">Status *</label>
                 <select id="prop-status" required>
                   <option value="available">Available</option>
                   <option value="sold">Sold</option>
+                  <option value="booked">Booked / Reserved</option>
+                  <option value="upcoming">Upcoming</option>
                   <option value="premium">Premium</option>
                 </select>
               </div>
             </div>
 
-            <div class="form-row">
+            <!-- Dimensions — useful for plots/land -->
+            <div class="form-row" id="row-dimensions">
+              <div class="form-group">
+                <label for="prop-length">Length (ft)</label>
+                <input type="text" id="prop-length" placeholder="e.g. 40">
+              </div>
+              <div class="form-group">
+                <label for="prop-breadth">Breadth (ft)</label>
+                <input type="text" id="prop-breadth" placeholder="e.g. 30">
+              </div>
+            </div>
+
+            <!-- BHK — only for apartments/villas -->
+            <div class="form-row" id="row-bhk">
               <div class="form-group">
                 <label for="prop-bhk">Bedrooms / BHK</label>
-                <input type="text" id="prop-bhk" placeholder="e.g. 2 BHK, 3 BHK">
+                <select id="prop-bhk">
+                  <option value="">Select BHK</option>
+                  <option value="1 BHK">1 BHK</option>
+                  <option value="1.5 BHK">1.5 BHK</option>
+                  <option value="2 BHK">2 BHK</option>
+                  <option value="2.5 BHK">2.5 BHK</option>
+                  <option value="3 BHK">3 BHK</option>
+                  <option value="3.5 BHK">3.5 BHK</option>
+                  <option value="4 BHK">4 BHK</option>
+                  <option value="4+ BHK">4+ BHK</option>
+                  <option value="Duplex">Duplex</option>
+                  <option value="Penthouse">Penthouse</option>
+                </select>
               </div>
+              <div class="form-group">
+                <label for="prop-floor">Floor</label>
+                <input type="text" id="prop-floor" placeholder="e.g. 3rd of 12">
+              </div>
+            </div>
+
+            <div class="form-row">
               <div class="form-group">
                 <label for="prop-facing">Facing</label>
                 <select id="prop-facing">
@@ -122,11 +177,39 @@
                   <option value="South">South</option>
                   <option value="North-East">North-East</option>
                   <option value="North-West">North-West</option>
+                  <option value="South-East">South-East</option>
+                  <option value="South-West">South-West</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="prop-rera">RERA Number (if applicable)</label>
+                <input type="text" id="prop-rera" placeholder="e.g. PRM/KA/RERA/1250/310/AG/...">
+              </div>
+            </div>
+
+            <!-- Land-specific fields -->
+            <div id="row-land-details" class="form-row" style="display:none;">
+              <div class="form-group">
+                <label for="prop-road-width">Road Width</label>
+                <input type="text" id="prop-road-width" placeholder="e.g. 30 ft tar road">
+              </div>
+              <div class="form-group">
+                <label for="prop-zone">Zone / Land Use</label>
+                <select id="prop-zone">
+                  <option value="">Select Zone</option>
+                  <option value="Residential">Residential Zone</option>
+                  <option value="Agricultural">Agricultural</option>
+                  <option value="Commercial">Commercial Zone</option>
+                  <option value="Mixed Use">Mixed Use</option>
+                  <option value="Industrial">Industrial</option>
+                  <option value="Revenue Site">Revenue Site</option>
+                  <option value="Converted">Converted (Agri → Residential)</option>
                 </select>
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- Amenities — for apartments/villas/commercial -->
+            <div class="form-group" id="row-amenities">
               <label for="prop-amenities">Amenities (comma separated)</label>
               <input type="text" id="prop-amenities" placeholder="e.g. Swimming Pool, Gym, 24/7 Security, Parking">
             </div>
@@ -150,10 +233,10 @@
 
             <!-- Layout Upload -->
             <div class="form-group">
-              <label>Floor Plan / Layout (PDF or Image)</label>
+              <label>Site Map / Floor Plan / Layout (PDF or Image)</label>
               <div class="upload-box" id="layout-upload-box" onclick="document.getElementById('prop-layout').click()">
                 <div class="upload-icon">📐</div>
-                <p>Click to upload floor plan / layout</p>
+                <p>Click to upload floor plan / site map / layout</p>
                 <span>PDF, JPG, PNG accepted</span>
                 <input type="file" id="prop-layout" accept=".pdf,image/*" style="display:none" onchange="handleLayoutUpload(this)">
               </div>
@@ -168,6 +251,24 @@
         <div class="card">
           <h2>Manage Properties</h2>
           <div id="properties-list" class="properties-list"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ TAB: MATERIALS PRICING ══════════════════ -->
+      <div class="tab-panel" id="tab-materials">
+        <div class="card">
+          <h2>Construction Materials Pricing</h2>
+          <div class="card-note">
+            Update prices and they appear on the homepage <strong>Materials</strong> section.
+            Prices are indicative — add a range or write "Enquiry based" for market-rate items.
+          </div>
+          <form id="materials-form">
+            <div id="materials-editor"></div>
+            <div class="materials-form-actions" style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+              <button type="button" class="btn-add-material" onclick="addMaterialRow()">+ Add Material</button>
+              <button type="submit" class="btn-primary" style="width:auto;">💾 Save Materials</button>
+            </div>
+          </form>
         </div>
       </div>
 

@@ -731,6 +731,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .prop-badge.available { background: #22c55e; }
 .prop-badge.sold { background: #ef4444; }
+.prop-badge.booked { background: #f59e0b; color: #000; }
+.prop-badge.upcoming { background: #3b82f6; }
 .prop-badge.premium { background: var(--gold); color: var(--forest3); }
 
 .prop-body {

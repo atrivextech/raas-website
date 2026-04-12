@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════════════════════
    RAAS Builders — Front-end app logic
    Handles: property rendering, filtering, language toggle, site
-   settings, scroll reveal, mobile nav, contact form → WhatsApp.
+   settings, materials pricing, scroll reveal, mobile nav, contact → WA.
    Storage: localStorage (static demo). Backend coming later.
 ══════════════════════════════════════════════════════════════ */
 
@@ -13,12 +13,16 @@ const SAMPLE_PROPERTIES = [
     type: 'plot',
     location: 'Shivamogga',
     price: '22',
+    priceUnit: 'lakhs',
     area: '1200',
+    areaUnit: 'sqft',
     status: 'available',
     description: 'Premium residential plots in a RERA-approved gated community.',
     images: ['https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'],
     bhk: '',
-    facing: 'East'
+    facing: 'East',
+    length: '40',
+    breadth: '30'
   },
   {
     id: 'sample-2',
@@ -26,12 +30,15 @@ const SAMPLE_PROPERTIES = [
     type: 'apartment',
     location: 'Electronic City, Bengaluru',
     price: '58',
+    priceUnit: 'lakhs',
     area: '1180',
+    areaUnit: 'sqft',
     status: 'premium',
     description: 'Luxury 2 & 3 BHK apartments with pool, gym and clubhouse.',
     images: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80'],
-    bhk: '2 & 3 BHK',
-    facing: 'East'
+    bhk: '2 BHK',
+    facing: 'East',
+    floor: '3rd of 12'
   },
   {
     id: 'sample-3',
@@ -39,28 +46,76 @@ const SAMPLE_PROPERTIES = [
     type: 'villa',
     location: 'Thirthahalli, Malnad',
     price: '48',
+    priceUnit: 'lakhs',
     area: '2400',
+    areaUnit: 'sqft',
     status: 'available',
     description: 'Eco-friendly villa layouts surrounded by the Western Ghats.',
     images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'],
     bhk: '3 BHK',
     facing: 'North-East'
+  },
+  {
+    id: 'sample-4',
+    name: 'Malnad Farm Estate',
+    type: 'land',
+    location: 'Sagara, Shivamogga',
+    price: '18',
+    priceUnit: 'per_gunta',
+    area: '2',
+    areaUnit: 'acres',
+    status: 'available',
+    description: 'Agricultural land ideal for farmhouse or plantation — clear title, road access.',
+    images: ['https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'],
+    bhk: '',
+    facing: 'East',
+    roadWidth: '20 ft mud road',
+    zone: 'Agricultural'
   }
 ];
 
 const TYPE_FALLBACK_IMG = {
   plot: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
+  land: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
   apartment: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80',
   villa: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80',
   commercial: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'
 };
 
 const TYPE_LABEL = {
-  plot: 'Plot',
+  plot: 'Plot / Site',
+  land: 'Agri Land',
   apartment: 'Apartment',
   villa: 'Villa',
   commercial: 'Commercial'
 };
+
+const PRICE_UNIT_LABELS = {
+  lakhs: 'Lakhs',
+  crores: 'Crores',
+  per_sqft: '/ sq.ft',
+  per_acre: '/ Acre',
+  per_gunta: '/ Gunta',
+  negotiable: ''
+};
+
+const AREA_UNIT_LABELS = {
+  sqft: 'sq.ft',
+  acres: 'Acres',
+  guntas: 'Guntas',
+  cents: 'Cents',
+  grounds: 'Grounds'
+};
+
+// ─── Default materials (matches index.html hardcoded, overridden by admin) ───
+const DEFAULT_MATERIALS = [
+  { icon: '🏖️', name: 'River Sand',       price: 'Enquiry based' },
+  { icon: '🪨', name: 'M-Sand',           price: '₹55–65/cft' },
+  { icon: '🧱', name: 'Bricks',           price: '₹8–12/unit' },
+  { icon: '⚙️', name: 'TMT Steel',        price: 'Wholesale rate' },
+  { icon: '🏗️', name: 'Cement',           price: '₹340–380/bag' },
+  { icon: '🪵', name: 'Granite / Stone',   price: '₹90–140/sqft' }
+];
 
 // ─── Load properties (admin-added or fall back to samples) ───
 function getAllProperties() {
@@ -78,9 +133,24 @@ function getStatusBadge(status) {
   const map = {
     available: '● Available',
     sold: '● Sold',
+    booked: '● Booked',
+    upcoming: '● Upcoming',
     premium: '● Premium'
   };
   return `<span class="prop-badge ${status || 'available'}">${map[status] || map.available}</span>`;
+}
+
+function formatPropPrice(prop) {
+  if (!prop.price) return '₹ —';
+  const unit = PRICE_UNIT_LABELS[prop.priceUnit] || 'Lakhs';
+  if (prop.priceUnit === 'negotiable') return `₹${prop.price} (Negotiable)`;
+  return `₹${prop.price} <span>${unit}</span>`;
+}
+
+function formatPropArea(prop) {
+  if (!prop.area) return '';
+  const unit = AREA_UNIT_LABELS[prop.areaUnit] || 'sq.ft';
+  return `${prop.area} ${unit}`;
 }
 
 function renderPropertyCard(prop) {
@@ -90,10 +160,16 @@ function renderPropertyCard(prop) {
   const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.phone_bengaluru_raw) || '919019793641';
 
   const specs = [];
-  if (prop.area) specs.push(`<div class="spec-item">📐 ${prop.area} sq.ft</div>`);
+  const areaStr = formatPropArea(prop);
+  if (areaStr) specs.push(`<div class="spec-item">📐 ${areaStr}</div>`);
   if (prop.bhk) specs.push(`<div class="spec-item">🛏️ ${prop.bhk}</div>`);
+  if (prop.length && prop.breadth) specs.push(`<div class="spec-item">📏 ${prop.length}×${prop.breadth} ft</div>`);
   if (prop.facing) specs.push(`<div class="spec-item">🧭 ${prop.facing}</div>`);
-  if (specs.length === 0) specs.push(`<div class="spec-item">✅ RERA Approved</div>`);
+  if (prop.floor) specs.push(`<div class="spec-item">🏢 Floor ${prop.floor}</div>`);
+  if (prop.roadWidth) specs.push(`<div class="spec-item">🛣️ ${prop.roadWidth}</div>`);
+  if (prop.zone) specs.push(`<div class="spec-item">📋 ${prop.zone}</div>`);
+  if (prop.rera) specs.push(`<div class="spec-item">✅ RERA</div>`);
+  if (specs.length === 0) specs.push(`<div class="spec-item">✅ Verified</div>`);
 
   return `
     <article class="prop-card" data-type="${prop.type || 'plot'}">
@@ -106,7 +182,7 @@ function renderPropertyCard(prop) {
         <div class="prop-location">📍 ${prop.location || 'Karnataka'}</div>
         <div class="prop-specs">${specs.join('')}</div>
         <div class="prop-footer">
-          <div class="prop-price">₹${prop.price || '—'} <span>Lakhs</span></div>
+          <div class="prop-price">${formatPropPrice(prop)}</div>
           <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" rel="noopener" class="prop-enquire">Enquire</a>
         </div>
       </div>
@@ -127,6 +203,25 @@ function displayProperties(list) {
 function filterProperties(type) {
   const all = getAllProperties();
   displayProperties(type === 'all' ? all : all.filter(p => p.type === type));
+}
+
+// ─── Materials (admin-editable pricing) ──────────────────
+function getMaterials() {
+  const stored = JSON.parse(localStorage.getItem('raas_materials') || 'null');
+  return stored || DEFAULT_MATERIALS;
+}
+
+function renderMaterialsSection() {
+  const grid = document.getElementById('materials-grid');
+  if (!grid) return;
+  const materials = getMaterials();
+  grid.innerHTML = materials.map(m => `
+    <div class="material-card">
+      <div class="material-icon">${m.icon || '📦'}</div>
+      <div class="material-name">${m.name}</div>
+      <div class="material-price">${m.price || 'Enquiry based'}</div>
+    </div>
+  `).join('');
 }
 
 // ─── Site Settings (admin-editable) ───
@@ -210,6 +305,7 @@ function handleContactSubmit(e) {
 
   const interestLabels = {
     plots: 'Buying a Plot',
+    land: 'Agricultural Land',
     apartment: 'Buying an Apartment',
     construction: 'House Construction',
     interiors: 'Interior Design',
@@ -222,7 +318,7 @@ function handleContactSubmit(e) {
 
 Name: ${name}
 Phone: ${phone}${email ? `\nEmail: ${email}` : ''}
-Interested in: ${interestLabels[interest]}
+Interested in: ${interestLabels[interest] || interest}
 
 ${message}`;
 
@@ -298,6 +394,7 @@ function initFilters() {
 document.addEventListener('DOMContentLoaded', () => {
   loadSiteSettings();
   displayProperties(getAllProperties());
+  renderMaterialsSection();
   initFilters();
   initSmoothScroll();
   initReveal();

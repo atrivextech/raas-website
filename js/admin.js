@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   RAAS Admin — properties + site settings
+   RAAS Admin — properties, materials pricing & site settings
    NOTE: client-side only (localStorage). Replace with backend
    before real launch. Login check is NOT secure — it's a gate.
 ══════════════════════════════════════════════════════════════ */
@@ -34,6 +34,41 @@ const DEFAULT_SETTINGS = {
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.'
 };
 
+const DEFAULT_MATERIALS = [
+  { icon: '🏖️', name: 'River Sand',       price: 'Enquiry based' },
+  { icon: '🪨', name: 'M-Sand',           price: '₹55–65/cft' },
+  { icon: '🧱', name: 'Bricks',           price: '₹8–12/unit' },
+  { icon: '⚙️', name: 'TMT Steel',        price: 'Wholesale rate' },
+  { icon: '🏗️', name: 'Cement',           price: '₹340–380/bag' },
+  { icon: '🪵', name: 'Granite / Stone',   price: '₹90–140/sqft' }
+];
+
+// ─── Which property types show which fields ──────────────
+const TYPE_FIELD_RULES = {
+  plot:       { bhk: false, floor: false, amenities: false, dimensions: true,  landDetails: true  },
+  land:       { bhk: false, floor: false, amenities: false, dimensions: false, landDetails: true  },
+  apartment:  { bhk: true,  floor: true,  amenities: true,  dimensions: false, landDetails: false },
+  villa:      { bhk: true,  floor: false, amenities: true,  dimensions: true,  landDetails: false },
+  commercial: { bhk: false, floor: true,  amenities: true,  dimensions: false, landDetails: false }
+};
+
+// Default measurement unit per type
+const TYPE_DEFAULT_AREA_UNIT = {
+  plot: 'sqft',
+  land: 'acres',
+  apartment: 'sqft',
+  villa: 'sqft',
+  commercial: 'sqft'
+};
+
+const TYPE_DEFAULT_PRICE_UNIT = {
+  plot: 'lakhs',
+  land: 'per_acre',
+  apartment: 'lakhs',
+  villa: 'lakhs',
+  commercial: 'lakhs'
+};
+
 // ─── Toast ────────────────────────────────────────────────
 function showToast(msg) {
   const existing = document.querySelector('.toast');
@@ -60,6 +95,7 @@ function showDashboard() {
   document.getElementById('dashboard-section').style.display = 'block';
   loadPropertiesList();
   loadSettingsIntoForm();
+  loadMaterialsEditor();
 }
 
 document.getElementById('login-form').addEventListener('submit', (e) => {
@@ -93,6 +129,55 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
+
+// ─── Property type → conditional fields ───────────────────
+function updateFormFieldsByType() {
+  const type = document.getElementById('prop-type').value;
+  const rules = TYPE_FIELD_RULES[type] || { bhk: true, floor: true, amenities: true, dimensions: true, landDetails: false };
+
+  const rowBhk = document.getElementById('row-bhk');
+  const rowDimensions = document.getElementById('row-dimensions');
+  const rowAmenities = document.getElementById('row-amenities');
+  const rowLandDetails = document.getElementById('row-land-details');
+
+  if (rowBhk) rowBhk.style.display = (rules.bhk || rules.floor) ? '' : 'none';
+  if (rowDimensions) rowDimensions.style.display = rules.dimensions ? '' : 'none';
+  if (rowAmenities) rowAmenities.style.display = rules.amenities ? '' : 'none';
+  if (rowLandDetails) rowLandDetails.style.display = rules.landDetails ? '' : 'none';
+
+  // BHK select visibility within row
+  const bhkGroup = document.getElementById('prop-bhk')?.closest('.form-group');
+  const floorGroup = document.getElementById('prop-floor')?.closest('.form-group');
+  if (bhkGroup) bhkGroup.style.display = rules.bhk ? '' : 'none';
+  if (floorGroup) floorGroup.style.display = rules.floor ? '' : 'none';
+
+  // Set smart default units
+  if (type && TYPE_DEFAULT_AREA_UNIT[type]) {
+    const areaUnit = document.getElementById('prop-area-unit');
+    if (areaUnit) areaUnit.value = TYPE_DEFAULT_AREA_UNIT[type];
+  }
+  if (type && TYPE_DEFAULT_PRICE_UNIT[type]) {
+    const priceUnit = document.getElementById('prop-price-unit');
+    if (priceUnit) priceUnit.value = TYPE_DEFAULT_PRICE_UNIT[type];
+  }
+
+  // Update labels contextually
+  const areaLabel = document.querySelector('label[for="prop-area"]');
+  if (areaLabel) {
+    if (type === 'land') areaLabel.textContent = 'Total Land Area *';
+    else if (type === 'plot') areaLabel.textContent = 'Plot Area *';
+    else if (type === 'apartment') areaLabel.textContent = 'Super Built-up Area *';
+    else if (type === 'villa') areaLabel.textContent = 'Built-up Area *';
+    else areaLabel.textContent = 'Area *';
+  }
+}
+
+const propTypeSelect = document.getElementById('prop-type');
+if (propTypeSelect) {
+  propTypeSelect.addEventListener('change', updateFormFieldsByType);
+  // Set initial state
+  updateFormFieldsByType();
+}
 
 // ─── Property uploads ─────────────────────────────────────
 function handleImageUpload(input) {
@@ -156,28 +241,45 @@ window.handleLayoutUpload = handleLayoutUpload;
 // ─── Add property ─────────────────────────────────────────
 document.getElementById('property-form').addEventListener('submit', (e) => {
   e.preventDefault();
+  const type = document.getElementById('prop-type').value;
+  const rules = TYPE_FIELD_RULES[type] || {};
+
   const property = {
     id: Date.now(),
     name: document.getElementById('prop-name').value,
-    type: document.getElementById('prop-type').value,
+    type: type,
     location: document.getElementById('prop-location').value,
     price: document.getElementById('prop-price').value,
+    priceUnit: document.getElementById('prop-price-unit').value,
     area: document.getElementById('prop-area').value,
-    bhk: document.getElementById('prop-bhk').value,
-    facing: document.getElementById('prop-facing').value,
-    amenities: document.getElementById('prop-amenities').value,
+    areaUnit: document.getElementById('prop-area-unit').value,
     status: document.getElementById('prop-status').value,
+    facing: document.getElementById('prop-facing').value,
+    rera: document.getElementById('prop-rera').value,
     description: document.getElementById('prop-description').value,
     images: uploadedImages.length > 0 ? uploadedImages.slice() : [],
     layout: uploadedLayout || null
   };
+
+  // Conditional fields
+  if (rules.bhk) property.bhk = document.getElementById('prop-bhk').value;
+  if (rules.floor) property.floor = document.getElementById('prop-floor').value;
+  if (rules.amenities) property.amenities = document.getElementById('prop-amenities').value;
+  if (rules.dimensions) {
+    property.length = document.getElementById('prop-length').value;
+    property.breadth = document.getElementById('prop-breadth').value;
+  }
+  if (rules.landDetails) {
+    property.roadWidth = document.getElementById('prop-road-width').value;
+    property.zone = document.getElementById('prop-zone').value;
+  }
 
   const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
   properties.push(property);
   try {
     localStorage.setItem('raas_properties', JSON.stringify(properties));
   } catch (err) {
-    alert('⚠️ Storage limit reached. Try fewer / smaller photos per property until the backend is connected.');
+    alert('Storage limit reached. Try fewer / smaller photos per property until the backend is connected.');
     return;
   }
 
@@ -187,13 +289,52 @@ document.getElementById('property-form').addEventListener('submit', (e) => {
   document.getElementById('image-previews').innerHTML = '';
   document.getElementById('layout-preview').innerHTML = '';
   document.getElementById('image-upload-box').querySelector('p').textContent = 'Click to upload photos';
-  document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / layout';
+  document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / site map / layout';
+  updateFormFieldsByType();
 
   loadPropertiesList();
-  showToast('✅ Property added successfully');
+  showToast('Property added successfully');
 });
 
 // ─── Properties list ──────────────────────────────────────
+const PRICE_UNIT_LABELS = {
+  lakhs: 'Lakhs',
+  crores: 'Crores',
+  per_sqft: '/ sq.ft',
+  per_acre: '/ Acre',
+  per_gunta: '/ Gunta',
+  negotiable: '(Negotiable)'
+};
+
+const AREA_UNIT_LABELS = {
+  sqft: 'sq.ft',
+  acres: 'Acres',
+  guntas: 'Guntas',
+  cents: 'Cents',
+  grounds: 'Grounds'
+};
+
+const TYPE_LABELS = {
+  plot: 'Plot / Site',
+  land: 'Agricultural Land',
+  apartment: 'Apartment',
+  villa: 'Villa',
+  commercial: 'Commercial'
+};
+
+function formatPrice(prop) {
+  if (!prop.price) return '₹ —';
+  const unit = PRICE_UNIT_LABELS[prop.priceUnit] || 'Lakhs';
+  if (prop.priceUnit === 'negotiable') return `₹${prop.price} ${unit}`;
+  return `₹${prop.price} ${unit}`;
+}
+
+function formatArea(prop) {
+  if (!prop.area) return '';
+  const unit = AREA_UNIT_LABELS[prop.areaUnit] || 'sq.ft';
+  return `${prop.area} ${unit}`;
+}
+
 function loadPropertiesList() {
   const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
   const listContainer = document.getElementById('properties-list');
@@ -215,14 +356,32 @@ function loadPropertiesList() {
       ? `<span class="layout-badge">${prop.layout.type && prop.layout.type.includes('pdf') ? '📄 Layout PDF' : '📐 Layout Image'}</span>`
       : '';
 
+    const typeLabel = TYPE_LABELS[prop.type] || prop.type;
+    const areaStr = formatArea(prop);
+    const priceStr = formatPrice(prop);
+
+    let detailsLine2 = `<p><strong>Price:</strong> ${priceStr}`;
+    if (areaStr) detailsLine2 += ` &nbsp;|&nbsp; <strong>Area:</strong> ${areaStr}`;
+    detailsLine2 += ` &nbsp;|&nbsp; <strong>Status:</strong> ${prop.status}</p>`;
+
+    let detailsLine3 = '';
+    if (prop.bhk) detailsLine3 += `<strong>BHK:</strong> ${prop.bhk} &nbsp; `;
+    if (prop.facing) detailsLine3 += `<strong>Facing:</strong> ${prop.facing} &nbsp; `;
+    if (prop.floor) detailsLine3 += `<strong>Floor:</strong> ${prop.floor} &nbsp; `;
+    if (prop.length && prop.breadth) detailsLine3 += `<strong>Dimensions:</strong> ${prop.length} × ${prop.breadth} ft &nbsp; `;
+    if (prop.roadWidth) detailsLine3 += `<strong>Road:</strong> ${prop.roadWidth} &nbsp; `;
+    if (prop.zone) detailsLine3 += `<strong>Zone:</strong> ${prop.zone} &nbsp; `;
+    if (prop.rera) detailsLine3 += `<strong>RERA:</strong> ${prop.rera}`;
+    if (detailsLine3) detailsLine3 = `<p>${detailsLine3}</p>`;
+
     return `
       <div class="property-item">
         ${thumb}
         <div class="property-info">
           <h3>${prop.name}</h3>
-          <p><strong>Type:</strong> ${prop.type} &nbsp;|&nbsp; <strong>Location:</strong> ${prop.location}</p>
-          <p><strong>Price:</strong> ₹${prop.price} Lakhs &nbsp;|&nbsp; <strong>Status:</strong> ${prop.status}</p>
-          ${prop.area ? `<p><strong>Area:</strong> ${prop.area} sq.ft ${prop.bhk ? '&nbsp;|&nbsp; <strong>BHK:</strong> ' + prop.bhk : ''}</p>` : ''}
+          <p><strong>Type:</strong> ${typeLabel} &nbsp;|&nbsp; <strong>Location:</strong> ${prop.location}</p>
+          ${detailsLine2}
+          ${detailsLine3}
           ${prop.amenities ? `<p><strong>Amenities:</strong> ${prop.amenities}</p>` : ''}
           ${layoutBadge}
           ${prop.images && prop.images.length > 1 ? `<p><strong>Photos:</strong> ${prop.images.length} uploaded</p>` : ''}
@@ -255,12 +414,89 @@ function deleteProperty(id) {
     properties = properties.filter(prop => prop.id !== id);
     localStorage.setItem('raas_properties', JSON.stringify(properties));
     loadPropertiesList();
-    showToast('🗑️ Property deleted');
+    showToast('Property deleted');
   }
 }
 window.deleteProperty = deleteProperty;
 
-// ─── Site Settings ────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+//   MATERIALS PRICING EDITOR
+// ═══════════════════════════════════════════════════════════
+function getMaterials() {
+  const stored = JSON.parse(localStorage.getItem('raas_materials') || 'null');
+  return stored || DEFAULT_MATERIALS.slice();
+}
+
+function renderMaterialRow(mat, index) {
+  return `
+    <div class="material-edit-row" data-index="${index}">
+      <div class="form-group">
+        <label>Icon</label>
+        <input type="text" class="icon-input mat-icon" value="${mat.icon || ''}" placeholder="🧱">
+      </div>
+      <div class="form-group">
+        <label>Material Name</label>
+        <input type="text" class="mat-name" value="${mat.name || ''}" placeholder="e.g. Cement" required>
+      </div>
+      <div class="form-group">
+        <label>Price / Rate</label>
+        <input type="text" class="mat-price" value="${mat.price || ''}" placeholder="e.g. ₹340–380/bag">
+      </div>
+      <button type="button" class="btn-remove-material" onclick="removeMaterialRow(${index})" title="Remove">✕</button>
+    </div>`;
+}
+
+function loadMaterialsEditor() {
+  const materials = getMaterials();
+  const editor = document.getElementById('materials-editor');
+  if (!editor) return;
+  editor.innerHTML = materials.map((m, i) => renderMaterialRow(m, i)).join('');
+}
+
+function addMaterialRow() {
+  const editor = document.getElementById('materials-editor');
+  if (!editor) return;
+  const idx = editor.querySelectorAll('.material-edit-row').length;
+  editor.insertAdjacentHTML('beforeend', renderMaterialRow({ icon: '', name: '', price: '' }, idx));
+}
+window.addMaterialRow = addMaterialRow;
+
+function removeMaterialRow(index) {
+  const rows = document.querySelectorAll('.material-edit-row');
+  if (rows[index]) rows[index].remove();
+  // Re-index
+  document.querySelectorAll('.material-edit-row').forEach((row, i) => {
+    row.setAttribute('data-index', i);
+    row.querySelector('.btn-remove-material').setAttribute('onclick', `removeMaterialRow(${i})`);
+  });
+}
+window.removeMaterialRow = removeMaterialRow;
+
+function collectMaterialsFromForm() {
+  const rows = document.querySelectorAll('.material-edit-row');
+  const materials = [];
+  rows.forEach(row => {
+    const icon = row.querySelector('.mat-icon').value.trim();
+    const name = row.querySelector('.mat-name').value.trim();
+    const price = row.querySelector('.mat-price').value.trim();
+    if (name) materials.push({ icon, name, price });
+  });
+  return materials;
+}
+
+const materialsForm = document.getElementById('materials-form');
+if (materialsForm) {
+  materialsForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const materials = collectMaterialsFromForm();
+    localStorage.setItem('raas_materials', JSON.stringify(materials));
+    showToast('Materials pricing saved');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//   SITE SETTINGS
+// ═══════════════════════════════════════════════════════════
 function getSettings() {
   const stored = JSON.parse(localStorage.getItem('raas_site_settings') || '{}');
   return { ...DEFAULT_SETTINGS, ...stored };
@@ -292,7 +528,6 @@ function loadSettingsIntoForm() {
     const el = document.getElementById(inputId);
     if (!el) return;
     let val = s[key] || '';
-    // Convert <br> back to newlines for textareas
     if (el.tagName === 'TEXTAREA') val = val.replace(/<br\s*\/?>/gi, '\n');
     el.value = val;
   });
@@ -330,7 +565,7 @@ document.getElementById('settings-form').addEventListener('submit', (e) => {
   };
 
   localStorage.setItem('raas_site_settings', JSON.stringify(settings));
-  showToast('💾 Site settings saved');
+  showToast('Site settings saved');
 });
 
 document.addEventListener('DOMContentLoaded', checkAuth);
