@@ -117,10 +117,27 @@ const DEFAULT_MATERIALS = [
   { icon: '🪵', name: 'Granite / Stone',   price: '₹90–140/sqft' }
 ];
 
-// ─── Load properties (admin-added or fall back to samples) ───
+// ─── API-first helper: try fetch, fall back to localStorage ───
+async function apiFetch(path) {
+  try {
+    const res = await fetch(path);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null; // network error / no backend → fall back
+  }
+}
+
+// ─── Load properties (API → localStorage → samples) ───
 function getAllProperties() {
   const stored = JSON.parse(localStorage.getItem('raas_properties') || '[]');
   return stored.length > 0 ? stored : SAMPLE_PROPERTIES;
+}
+
+async function getAllPropertiesAsync() {
+  const apiData = await apiFetch('/api/properties');
+  if (Array.isArray(apiData) && apiData.length > 0) return apiData;
+  return getAllProperties(); // localStorage fallback
 }
 
 function getImage(prop) {
@@ -201,7 +218,13 @@ function displayProperties(list) {
 }
 
 function filterProperties(type) {
+  // Sync filter from cache
   const all = getAllProperties();
+  displayProperties(type === 'all' ? all : all.filter(p => p.type === type));
+}
+
+async function filterPropertiesAsync(type) {
+  const all = await getAllPropertiesAsync();
   displayProperties(type === 'all' ? all : all.filter(p => p.type === type));
 }
 
@@ -211,10 +234,15 @@ function getMaterials() {
   return stored || DEFAULT_MATERIALS;
 }
 
-function renderMaterialsSection() {
+async function getMaterialsAsync() {
+  const apiData = await apiFetch('/api/materials');
+  if (Array.isArray(apiData) && apiData.length > 0) return apiData;
+  return getMaterials();
+}
+
+function renderMaterialsGrid(materials) {
   const grid = document.getElementById('materials-grid');
   if (!grid) return;
-  const materials = getMaterials();
   grid.innerHTML = materials.map(m => `
     <div class="material-card">
       <div class="material-icon">${m.icon || '📦'}</div>
@@ -222,6 +250,12 @@ function renderMaterialsSection() {
       <div class="material-price">${m.price || 'Enquiry based'}</div>
     </div>
   `).join('');
+}
+
+function renderMaterialsSection() {
+  // Render sync first (no flash), then update async
+  renderMaterialsGrid(getMaterials());
+  getMaterialsAsync().then(renderMaterialsGrid);
 }
 
 // ─── Site Settings (admin-editable) ───
@@ -246,9 +280,7 @@ const DEFAULT_SETTINGS = {
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.'
 };
 
-function loadSiteSettings() {
-  const stored = JSON.parse(localStorage.getItem('raas_site_settings') || '{}');
-  const settings = { ...DEFAULT_SETTINGS, ...stored };
+function applySiteSettings(settings) {
   window.RAAS_SETTINGS = settings;
 
   document.querySelectorAll('[data-setting]').forEach(el => {
@@ -258,7 +290,6 @@ function loadSiteSettings() {
     }
   });
 
-  // Update WhatsApp + phone floating widgets
   const waBtn = document.getElementById('wa-btn');
   if (waBtn) {
     waBtn.href = `https://wa.me/${settings.phone_bengaluru_raw}?text=${encodeURIComponent("Hi RAAS Builders, I'm interested in your properties")}`;
@@ -267,6 +298,21 @@ function loadSiteSettings() {
   if (phoneBtn) {
     phoneBtn.href = `tel:+${settings.phone_bengaluru_raw}`;
   }
+}
+
+function loadSiteSettings() {
+  // Sync first: localStorage / defaults (instant, no flash)
+  const stored = JSON.parse(localStorage.getItem('raas_site_settings') || '{}');
+  const settings = { ...DEFAULT_SETTINGS, ...stored };
+  applySiteSettings(settings);
+
+  // Then try API (updates if backend has newer data)
+  apiFetch('/api/settings').then(apiSettings => {
+    if (apiSettings && typeof apiSettings === 'object' && Object.keys(apiSettings).length > 0) {
+      const merged = { ...DEFAULT_SETTINGS, ...apiSettings };
+      applySiteSettings(merged);
+    }
+  });
 }
 
 // ─── Language toggle (EN ↔ Kannada) ───
@@ -294,8 +340,8 @@ function toggleLanguage() {
   applyLanguage();
 }
 
-// ─── Contact form → WhatsApp ───
-function handleContactSubmit(e) {
+// ─── Contact form → WhatsApp + API ───
+async function handleContactSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('cf-name').value.trim();
   const phone = document.getElementById('cf-phone').value.trim();
@@ -313,6 +359,18 @@ function handleContactSubmit(e) {
     other: 'General Enquiry'
   };
 
+  // Save to API (non-blocking, fires email notification if Resend configured)
+  apiFetch('/api/health').then(h => {
+    if (h && h.backend) {
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, interest, message })
+      }).catch(() => {});
+    }
+  });
+
+  // Always open WhatsApp (primary channel)
   const text =
 `Hi RAAS Builders,
 
@@ -392,6 +450,7 @@ function initFilters() {
 
 // ─── Bootstrap ───
 document.addEventListener('DOMContentLoaded', () => {
+  // 1. Instant render from localStorage / defaults (zero flash)
   loadSiteSettings();
   displayProperties(getAllProperties());
   renderMaterialsSection();
@@ -408,4 +467,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const yr = document.getElementById('footer-year');
   if (yr) yr.textContent = new Date().getFullYear();
+
+  // 2. Background: try API and refresh if backend has data
+  //    (settings + materials already handled inside their load functions)
+  getAllPropertiesAsync().then(props => {
+    displayProperties(props);
+  });
 });

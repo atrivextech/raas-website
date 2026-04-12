@@ -1,6 +1,11 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -21,6 +26,12 @@
       "source": "/js/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=604800, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store" }
       ]
     }
   ]
