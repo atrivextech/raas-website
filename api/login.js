@@ -1,44 +1,36 @@
-/* POST /api/login — admin authentication */
-const { backendReady, createSessionCookie, clearSessionCookie, headers, parseBody } = require('./_lib/auth');
+/* POST /api/login — admin authentication
+   DELETE /api/login — logout */
+const { backendReady, createSessionCookie, clearSessionCookie, verifySession, respond } = require('./_lib/auth');
+const { vercelWrap } = require('./_lib/adapter');
 
-module.exports = async function handler(req, res) {
-  // CORS preflight
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, headers());
-    return res.end();
-  }
+async function handle({ method, headers, body }) {
+  if (method === 'OPTIONS') return respond(204, '');
 
   if (!backendReady()) {
-    return res.writeHead(503, headers()).end(JSON.stringify({
-      error: 'Backend not configured. Set SESSION_SECRET + ADMIN_PASSWORD in Vercel env vars.'
-    }));
+    return respond(503, { error: 'Backend not configured. Set SESSION_SECRET + ADMIN_PASSWORD env vars.' });
   }
 
-  if (req.method === 'POST') {
-    const body = await parseBody(req);
+  // POST — login
+  if (method === 'POST') {
     if (!body || !body.username || !body.password) {
-      return res.writeHead(400, headers()).end(JSON.stringify({ error: 'Missing credentials' }));
+      return respond(400, { error: 'Missing credentials' });
     }
-
     const validUser = body.username === (process.env.ADMIN_USERNAME || 'admin');
     const validPass = body.password === process.env.ADMIN_PASSWORD;
 
     if (validUser && validPass) {
-      const cookie = createSessionCookie();
-      return res.writeHead(200, headers({ 'Set-Cookie': cookie })).end(
-        JSON.stringify({ ok: true })
-      );
+      return respond(200, { ok: true }, { 'Set-Cookie': createSessionCookie() });
     }
-
-    return res.writeHead(401, headers()).end(JSON.stringify({ error: 'Invalid credentials' }));
+    return respond(401, { error: 'Invalid credentials' });
   }
 
-  // DELETE /api/login — logout
-  if (req.method === 'DELETE') {
-    return res.writeHead(200, headers({ 'Set-Cookie': clearSessionCookie() })).end(
-      JSON.stringify({ ok: true })
-    );
+  // DELETE — logout
+  if (method === 'DELETE') {
+    return respond(200, { ok: true }, { 'Set-Cookie': clearSessionCookie() });
   }
 
-  res.writeHead(405, headers()).end(JSON.stringify({ error: 'Method not allowed' }));
-};
+  return respond(405, { error: 'Method not allowed' });
+}
+
+module.exports = vercelWrap(handle);
+module.exports.handle = handle;

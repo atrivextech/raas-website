@@ -1,0 +1,146 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: RAAS Builders — API backend (Lambda + DynamoDB + API Gateway)
+
+# ─── Parameters (set during `sam deploy --guided`) ────────
+Parameters:
+  SessionSecret:
+    Type: String
+    NoEcho: true
+    Description: Random string 32+ chars for signing session cookies
+  AdminPassword:
+    Type: String
+    NoEcho: true
+    Description: Admin panel password
+  AdminUsername:
+    Type: String
+    Default: admin
+    Description: Admin panel username
+  NotifyEmail:
+    Type: String
+    Default: ''
+    Description: Email to receive contact form notifications (optional)
+  SesFromEmail:
+    Type: String
+    Default: ''
+    Description: Verified SES sender email (optional, enables email notifications)
+  StaticSiteDomain:
+    Type: String
+    Default: '*'
+    Description: Your frontend domain for CORS (e.g. https://raasbuilders.com)
+
+Globals:
+  Function:
+    Timeout: 15
+    Runtime: nodejs20.x
+    MemorySize: 256
+    Environment:
+      Variables:
+        SESSION_SECRET: !Ref SessionSecret
+        ADMIN_PASSWORD: !Ref AdminPassword
+        ADMIN_USERNAME: !Ref AdminUsername
+        NOTIFY_EMAIL: !Ref NotifyEmail
+        SES_FROM_EMAIL: !Ref SesFromEmail
+        DYNAMODB_TABLE: !Ref RaasTable
+
+Resources:
+
+  # ─── DynamoDB table (simple key-value) ──────────────────
+  RaasTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: raas-kv
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+
+  # ─── Lambda function (single handler, all routes) ──────
+  RaasApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: raas-api
+      Handler: aws/lambda.handler
+      CodeUri: ../
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref RaasTable
+        # SES send permission (only needed if SES_FROM_EMAIL is set)
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+                - ses:SendRawEmail
+              Resource: '*'
+      Events:
+        # Catch-all API route
+        ApiCatchAll:
+          Type: HttpApi
+          Properties:
+            Path: /api/{proxy+}
+            Method: ANY
+            ApiId: !Ref RaasHttpApi
+
+  # ─── HTTP API (API Gateway v2) ──────────────────────────
+  RaasHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: '$default'
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref StaticSiteDomain
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - X-RAAS-Client
+          - Cookie
+        AllowCredentials: true
+
+  # ─── S3 bucket for static site ─────────────────────────
+  StaticSiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'raas-website-${AWS::AccountId}'
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  StaticSiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticSiteBucket
+      PolicyDocument:
+        Statement:
+          - Sid: PublicRead
+            Effect: Allow
+            Principal: '*'
+            Action: s3:GetObject
+            Resource: !Sub '${StaticSiteBucket.Arn}/*'
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value: !Sub 'https://${RaasHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+  StaticSiteUrl:
+    Description: S3 website URL
+    Value: !GetAtt StaticSiteBucket.WebsiteURL
+  StaticBucketName:
+    Description: S3 bucket name (for `aws s3 sync`)
+    Value: !Ref StaticSiteBucket
+  DynamoTableName:
+    Description: DynamoDB table
+    Value: !Ref RaasTable

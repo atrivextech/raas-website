@@ -1,61 +1,51 @@
-/* /api/properties — CRUD for properties
-   GET  → public (no auth needed)
-   POST → requires admin session */
-const { backendReady, verifySession, headers, parseBody } = require('./_lib/auth');
+/* /api/properties — CRUD
+   GET    → public
+   POST   → admin (add)
+   DELETE → admin (remove by ?id=) */
+const { backendReady, verifySession, respond } = require('./_lib/auth');
 const store = require('./_lib/store');
+const { vercelWrap } = require('./_lib/adapter');
 
-const STORE_KEY = 'raas_properties';
+const KEY = 'raas_properties';
 
-module.exports = async function handler(req, res) {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, headers());
-    return res.end();
-  }
+async function handle({ method, headers, url, body }) {
+  if (method === 'OPTIONS') return respond(204, '');
 
   if (!backendReady()) {
-    return res.writeHead(503, headers()).end(JSON.stringify({
-      error: 'Backend not configured',
-      fallback: true
-    }));
+    return respond(503, { error: 'Backend not configured', fallback: true });
   }
 
-  // ── GET: list all properties (public) ──
-  if (req.method === 'GET') {
-    const properties = (await store.get(STORE_KEY)) || [];
-    return res.writeHead(200, headers()).end(JSON.stringify(properties));
+  // GET — list
+  if (method === 'GET') {
+    const props = (await store.get(KEY)) || [];
+    return respond(200, props);
   }
 
-  // ── POST: add a property (admin only) ──
-  if (req.method === 'POST') {
-    if (!verifySession(req)) {
-      return res.writeHead(401, headers()).end(JSON.stringify({ error: 'Unauthorized' }));
-    }
-    const body = await parseBody(req);
-    if (!body || !body.name) {
-      return res.writeHead(400, headers()).end(JSON.stringify({ error: 'Property name required' }));
-    }
+  // POST — add
+  if (method === 'POST') {
+    if (!verifySession(headers)) return respond(401, { error: 'Unauthorized' });
+    if (!body || !body.name) return respond(400, { error: 'Property name required' });
     body.id = body.id || Date.now();
-    const properties = (await store.get(STORE_KEY)) || [];
-    properties.push(body);
-    await store.set(STORE_KEY, properties);
-    return res.writeHead(201, headers()).end(JSON.stringify({ ok: true, id: body.id }));
+    const props = (await store.get(KEY)) || [];
+    props.push(body);
+    await store.set(KEY, props);
+    return respond(201, { ok: true, id: body.id });
   }
 
-  // ── DELETE: remove a property by id (admin only) ──
-  if (req.method === 'DELETE') {
-    if (!verifySession(req)) {
-      return res.writeHead(401, headers()).end(JSON.stringify({ error: 'Unauthorized' }));
-    }
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const id = url.searchParams.get('id');
-    if (!id) {
-      return res.writeHead(400, headers()).end(JSON.stringify({ error: 'Property id required' }));
-    }
-    let properties = (await store.get(STORE_KEY)) || [];
-    properties = properties.filter(p => String(p.id) !== String(id));
-    await store.set(STORE_KEY, properties);
-    return res.writeHead(200, headers()).end(JSON.stringify({ ok: true }));
+  // DELETE — remove by id
+  if (method === 'DELETE') {
+    if (!verifySession(headers)) return respond(401, { error: 'Unauthorized' });
+    const u = new URL(url, 'http://localhost');
+    const id = u.searchParams.get('id');
+    if (!id) return respond(400, { error: 'Property id required' });
+    let props = (await store.get(KEY)) || [];
+    props = props.filter(p => String(p.id) !== String(id));
+    await store.set(KEY, props);
+    return respond(200, { ok: true });
   }
 
-  res.writeHead(405, headers()).end(JSON.stringify({ error: 'Method not allowed' }));
-};
+  return respond(405, { error: 'Method not allowed' });
+}
+
+module.exports = vercelWrap(handle);
+module.exports.handle = handle;

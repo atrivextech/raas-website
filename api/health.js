@@ -1,20 +1,20 @@
-/* GET /api/health — quick check for frontend to detect backend availability */
-const { backendReady, headers } = require('./_lib/auth');
-const { useUpstash } = require('./_lib/store');
+/* GET /api/health — backend availability check */
+const { backendReady, respond } = require('./_lib/auth');
+const { storageType } = require('./_lib/store');
+const { emailProvider } = require('./_lib/email');
+const { vercelWrap } = require('./_lib/adapter');
 
-module.exports = async function handler(req, res) {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, headers());
-    return res.end();
-  }
+async function handle({ method }) {
+  if (method === 'OPTIONS') return respond(204, '');
 
-  const status = {
+  return respond(200, {
     ok: true,
     backend: backendReady(),
-    storage: useUpstash() ? 'upstash' : 'memory',
-    email: !!process.env.RESEND_API_KEY,
+    storage: storageType(),
+    email: emailProvider(),
     timestamp: new Date().toISOString()
-  };
+  });
+}
 
-  res.writeHead(200, headers()).end(JSON.stringify(status));
-};
+module.exports = vercelWrap(handle);
+module.exports.handle = handle;

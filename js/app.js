@@ -117,10 +117,16 @@ const DEFAULT_MATERIALS = [
   { icon: '🪵', name: 'Granite / Stone',   price: '₹90–140/sqft' }
 ];
 
+// ─── API base URL ────────────────────────────────────────
+// On Vercel: same origin (empty string)
+// On AWS: set window.RAAS_API_BASE to your API Gateway URL
+//   e.g. <script>window.RAAS_API_BASE='https://abc123.execute-api.ap-south-1.amazonaws.com'</script>
+const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
+
 // ─── API-first helper: try fetch, fall back to localStorage ───
 async function apiFetch(path) {
   try {
-    const res = await fetch(path);
+    const res = await fetch(API_BASE + path);
     if (!res.ok) return null;
     return await res.json();
   } catch {

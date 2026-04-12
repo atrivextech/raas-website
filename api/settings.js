@@ -1,40 +1,33 @@
-/* /api/settings — site settings (contact info, stats, about)
+/* /api/settings — site settings
    GET  → public
-   POST → admin only */
-const { backendReady, verifySession, headers, parseBody } = require('./_lib/auth');
+   POST → admin */
+const { backendReady, verifySession, respond } = require('./_lib/auth');
 const store = require('./_lib/store');
+const { vercelWrap } = require('./_lib/adapter');
 
-const STORE_KEY = 'raas_site_settings';
+const KEY = 'raas_site_settings';
 
-module.exports = async function handler(req, res) {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, headers());
-    return res.end();
-  }
+async function handle({ method, headers, body }) {
+  if (method === 'OPTIONS') return respond(204, '');
 
   if (!backendReady()) {
-    return res.writeHead(503, headers()).end(JSON.stringify({
-      error: 'Backend not configured',
-      fallback: true
-    }));
+    return respond(503, { error: 'Backend not configured', fallback: true });
   }
 
-  if (req.method === 'GET') {
-    const settings = await store.get(STORE_KEY);
-    return res.writeHead(200, headers()).end(JSON.stringify(settings || {}));
+  if (method === 'GET') {
+    const s = await store.get(KEY);
+    return respond(200, s || {});
   }
 
-  if (req.method === 'POST') {
-    if (!verifySession(req)) {
-      return res.writeHead(401, headers()).end(JSON.stringify({ error: 'Unauthorized' }));
-    }
-    const body = await parseBody(req);
-    if (!body || typeof body !== 'object') {
-      return res.writeHead(400, headers()).end(JSON.stringify({ error: 'Expected settings object' }));
-    }
-    await store.set(STORE_KEY, body);
-    return res.writeHead(200, headers()).end(JSON.stringify({ ok: true }));
+  if (method === 'POST') {
+    if (!verifySession(headers)) return respond(401, { error: 'Unauthorized' });
+    if (!body || typeof body !== 'object') return respond(400, { error: 'Expected settings object' });
+    await store.set(KEY, body);
+    return respond(200, { ok: true });
   }
 
-  res.writeHead(405, headers()).end(JSON.stringify({ error: 'Method not allowed' }));
-};
+  return respond(405, { error: 'Method not allowed' });
+}
+
+module.exports = vercelWrap(handle);
+module.exports.handle = handle;

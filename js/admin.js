@@ -12,13 +12,16 @@ const ADMIN_CREDENTIALS = {
   password: 'raas2025'
 };
 
+// ─── API base (same-origin on Vercel, set RAAS_API_BASE for AWS) ─
+const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
+
 // ─── API helpers ─────────────────────────────────────────
 let _backendAvailable = null; // null=unknown, true/false after health check
 
 async function checkBackend() {
   if (_backendAvailable !== null) return _backendAvailable;
   try {
-    const r = await fetch('/api/health');
+    const r = await fetch(API_BASE + '/api/health');
     if (!r.ok) { _backendAvailable = false; return false; }
     const data = await r.json();
     _backendAvailable = data.backend === true;
@@ -30,10 +33,10 @@ async function checkBackend() {
 
 async function apiPost(path, body) {
   try {
-    const r = await fetch(path, {
+    const r = await fetch(API_BASE + path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-RAAS-Client': 'web' },
-      credentials: 'same-origin',
+      credentials: API_BASE ? 'include' : 'same-origin',
       body: JSON.stringify(body)
     });
     return { ok: r.ok, status: r.status, data: await r.json().catch(() => null) };
@@ -42,10 +45,10 @@ async function apiPost(path, body) {
 
 async function apiDelete(path) {
   try {
-    const r = await fetch(path, {
+    const r = await fetch(API_BASE + path, {
       method: 'DELETE',
       headers: { 'X-RAAS-Client': 'web' },
-      credentials: 'same-origin'
+      credentials: API_BASE ? 'include' : 'same-origin'
     });
     return { ok: r.ok, data: await r.json().catch(() => null) };
   } catch { return { ok: false, data: null }; }
@@ -53,7 +56,7 @@ async function apiDelete(path) {
 
 async function apiGet(path) {
   try {
-    const r = await fetch(path);
+    const r = await fetch(API_BASE + path);
     if (!r.ok) return null;
     return await r.json();
   } catch { return null; }

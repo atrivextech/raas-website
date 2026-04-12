@@ -1,11 +1,11 @@
 /* ═══════════════════════════════════════════════════════════
-   RAAS — Serverless auth helpers (Phase 2)
+   RAAS — Auth helpers (platform-neutral)
    HMAC-signed session cookie. Zero external deps.
 
-   Required env vars (set in Vercel dashboard):
+   Env vars:
      SESSION_SECRET  — random 32+ char string
-     ADMIN_PASSWORD  — bcrypt-free plaintext for now (upgrade later)
-     ADMIN_USERNAME  — (optional, defaults to "admin")
+     ADMIN_PASSWORD  — plaintext for now (upgrade to bcrypt later)
+     ADMIN_USERNAME  — optional, defaults to "admin"
 ═══════════════════════════════════════════════════════════ */
 
 const crypto = require('node:crypto');
@@ -13,11 +13,9 @@ const crypto = require('node:crypto');
 const COOKIE_NAME = 'raas_session';
 const TTL_SECONDS = 60 * 60 * 12; // 12 hours
 
-function getSecret() {
-  return process.env.SESSION_SECRET || '';
-}
+function getSecret() { return process.env.SESSION_SECRET || ''; }
 
-/** True when all required env vars are present */
+/** True when required env vars are present → backend mode */
 function backendReady() {
   return !!(process.env.SESSION_SECRET && process.env.ADMIN_PASSWORD);
 }
@@ -32,18 +30,20 @@ function createSessionCookie() {
   const exp = Date.now() + TTL_SECONDS * 1000;
   const payload = `admin.${exp}`;
   const sig = sign(payload);
-  const value = `${payload}.${sig}`;
-  return `${COOKIE_NAME}=${value}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${TTL_SECONDS}`;
+  return `${COOKIE_NAME}=${payload}.${sig}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${TTL_SECONDS}`;
 }
 
 function clearSessionCookie() {
   return `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`;
 }
 
-/** Verify the session cookie on an incoming request */
-function verifySession(req) {
+/**
+ * Verify session from a plain headers object { cookie: "..." }
+ * Works with both Vercel req.headers and Lambda event.headers
+ */
+function verifySession(hdrs) {
   if (!backendReady()) return false;
-  const cookie = req.headers.cookie || '';
+  const cookie = hdrs.cookie || hdrs.Cookie || '';
   const m = cookie.match(/raas_session=([^;]+)/);
   if (!m) return false;
   const parts = m[1].split('.');
@@ -64,7 +64,7 @@ function verifySession(req) {
 }
 
 /** Standard CORS + JSON headers */
-function headers(extra = {}) {
+function corsHeaders(extra = {}) {
   return {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -74,16 +74,13 @@ function headers(extra = {}) {
   };
 }
 
-/** Parse JSON body safely */
-async function parseBody(req) {
-  return new Promise((resolve) => {
-    let data = '';
-    req.on('data', chunk => { data += chunk; });
-    req.on('end', () => {
-      try { resolve(JSON.parse(data)); }
-      catch { resolve(null); }
-    });
-  });
+/** Quick response builder */
+function respond(statusCode, body, extraHeaders = {}) {
+  return {
+    statusCode,
+    headers: corsHeaders(extraHeaders),
+    body: typeof body === 'string' ? body : JSON.stringify(body)
+  };
 }
 
 module.exports = {
@@ -91,6 +88,6 @@ module.exports = {
   createSessionCookie,
   clearSessionCookie,
   verifySession,
-  headers,
-  parseBody
+  corsHeaders,
+  respond
 };

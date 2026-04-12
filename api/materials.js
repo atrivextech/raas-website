@@ -1,40 +1,33 @@
-/* /api/materials — CRUD for materials pricing
+/* /api/materials — materials pricing
    GET  → public
-   POST → admin only (replaces full list) */
-const { backendReady, verifySession, headers, parseBody } = require('./_lib/auth');
+   POST → admin (replaces full list) */
+const { backendReady, verifySession, respond } = require('./_lib/auth');
 const store = require('./_lib/store');
+const { vercelWrap } = require('./_lib/adapter');
 
-const STORE_KEY = 'raas_materials';
+const KEY = 'raas_materials';
 
-module.exports = async function handler(req, res) {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, headers());
-    return res.end();
-  }
+async function handle({ method, headers, body }) {
+  if (method === 'OPTIONS') return respond(204, '');
 
   if (!backendReady()) {
-    return res.writeHead(503, headers()).end(JSON.stringify({
-      error: 'Backend not configured',
-      fallback: true
-    }));
+    return respond(503, { error: 'Backend not configured', fallback: true });
   }
 
-  if (req.method === 'GET') {
-    const materials = await store.get(STORE_KEY);
-    return res.writeHead(200, headers()).end(JSON.stringify(materials || []));
+  if (method === 'GET') {
+    const mats = await store.get(KEY);
+    return respond(200, mats || []);
   }
 
-  if (req.method === 'POST') {
-    if (!verifySession(req)) {
-      return res.writeHead(401, headers()).end(JSON.stringify({ error: 'Unauthorized' }));
-    }
-    const body = await parseBody(req);
-    if (!Array.isArray(body)) {
-      return res.writeHead(400, headers()).end(JSON.stringify({ error: 'Expected array of materials' }));
-    }
-    await store.set(STORE_KEY, body);
-    return res.writeHead(200, headers()).end(JSON.stringify({ ok: true }));
+  if (method === 'POST') {
+    if (!verifySession(headers)) return respond(401, { error: 'Unauthorized' });
+    if (!Array.isArray(body)) return respond(400, { error: 'Expected array of materials' });
+    await store.set(KEY, body);
+    return respond(200, { ok: true });
   }
 
-  res.writeHead(405, headers()).end(JSON.stringify({ error: 'Method not allowed' }));
-};
+  return respond(405, { error: 'Method not allowed' });
+}
+
+module.exports = vercelWrap(handle);
+module.exports.handle = handle;
