@@ -118,9 +118,10 @@ const DEFAULT_MATERIALS = [
 ];
 
 // ─── API base URL ────────────────────────────────────────
-// On Vercel: same origin (empty string)
-// On AWS: set window.RAAS_API_BASE to your API Gateway URL
-//   e.g. <script>window.RAAS_API_BASE='https://abc123.execute-api.ap-south-1.amazonaws.com'</script>
+// Vercel: same origin (empty string) — /api/* routes to serverless functions
+// AWS:    same origin (empty string) — CloudFront routes /api/* to API Gateway
+// Override only if static + API are on different domains (not recommended):
+//   <script>window.RAAS_API_BASE='https://your-api-domain.com'</script>
 const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
 
 // ─── API-first helper: try fetch, fall back to localStorage ───

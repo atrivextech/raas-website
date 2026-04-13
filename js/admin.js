@@ -12,7 +12,7 @@ const ADMIN_CREDENTIALS = {
   password: 'raas2025'
 };
 
-// ─── API base (same-origin on Vercel, set RAAS_API_BASE for AWS) ─
+// ─── API base (same-origin on both Vercel and AWS with CloudFront) ─
 const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
 
 // ─── API helpers ─────────────────────────────────────────

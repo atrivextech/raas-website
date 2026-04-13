@@ -1,8 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: RAAS Builders — API backend (Lambda + DynamoDB + API Gateway)
+Description: >
+  RAAS Builders — Full AWS stack
+  CloudFront (CDN + SSL) → S3 (static) + API Gateway (Lambda)
+  Single domain serves both website and API.
 
-# ─── Parameters (set during `sam deploy --guided`) ────────
+# ─── Parameters ───────────────────────────────────────────
 Parameters:
   SessionSecret:
     Type: String
@@ -19,15 +22,27 @@ Parameters:
   NotifyEmail:
     Type: String
     Default: ''
-    Description: Email to receive contact form notifications (optional)
+    Description: Email for contact form notifications (optional)
   SesFromEmail:
     Type: String
     Default: ''
-    Description: Verified SES sender email (optional, enables email notifications)
-  StaticSiteDomain:
+    Description: Verified SES sender email (optional)
+  DomainName:
     Type: String
-    Default: '*'
-    Description: Your frontend domain for CORS (e.g. https://raasbuilders.com)
+    Default: ''
+    Description: >
+      Custom domain (e.g. raasbuilders.com). Leave blank to use
+      CloudFront's default *.cloudfront.net domain.
+  AcmCertificateArn:
+    Type: String
+    Default: ''
+    Description: >
+      ACM certificate ARN for your custom domain (us-east-1 region required).
+      Leave blank if no custom domain.
+
+Conditions:
+  HasCustomDomain: !Not [!Equals [!Ref DomainName, '']]
+  HasCertificate: !Not [!Equals [!Ref AcmCertificateArn, '']]
 
 Globals:
   Function:
@@ -45,7 +60,9 @@ Globals:
 
 Resources:
 
-  # ─── DynamoDB table (simple key-value) ──────────────────
+  # ═══════════════════════════════════════════════════════
+  #   DynamoDB (key-value store)
+  # ═══════════════════════════════════════════════════════
   RaasTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -58,7 +75,9 @@ Resources:
         - AttributeName: pk
           KeyType: HASH
 
-  # ─── Lambda function (single handler, all routes) ──────
+  # ═══════════════════════════════════════════════════════
+  #   Lambda + API Gateway
+  # ═══════════════════════════════════════════════════════
   RaasApiFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -68,7 +87,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref RaasTable
-        # SES send permission (only needed if SES_FROM_EMAIL is set)
         - Version: '2012-10-17'
           Statement:
             - Effect: Allow
@@ -77,7 +95,6 @@ Resources:
                 - ses:SendRawEmail
               Resource: '*'
       Events:
-        # Catch-all API route
         ApiCatchAll:
           Type: HttpApi
           Properties:
@@ -85,14 +102,13 @@ Resources:
             Method: ANY
             ApiId: !Ref RaasHttpApi
 
-  # ─── HTTP API (API Gateway v2) ──────────────────────────
   RaasHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: '$default'
       CorsConfiguration:
         AllowOrigins:
-          - !Ref StaticSiteDomain
+          - '*'
         AllowMethods:
           - GET
           - POST
@@ -103,44 +119,196 @@ Resources:
           - Content-Type
           - X-RAAS-Client
           - Cookie
-        AllowCredentials: true
+        AllowCredentials: false
 
-  # ─── S3 bucket for static site ─────────────────────────
+  # ═══════════════════════════════════════════════════════
+  #   S3 Bucket (static files — private, accessed via CloudFront OAC)
+  # ═══════════════════════════════════════════════════════
   StaticSiteBucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub 'raas-website-${AWS::AccountId}'
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: 404.html
+      # NO WebsiteConfiguration — CloudFront handles routing
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
+  # OAC — lets CloudFront read from private S3 bucket
+  CloudFrontOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: raas-oac
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # Bucket policy — only CloudFront can read
   StaticSiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref StaticSiteBucket
       PolicyDocument:
         Statement:
-          - Sid: PublicRead
+          - Sid: AllowCloudFrontOAC
             Effect: Allow
-            Principal: '*'
+            Principal:
+              Service: cloudfront.amazonaws.com
             Action: s3:GetObject
             Resource: !Sub '${StaticSiteBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
 
+  # ═══════════════════════════════════════════════════════
+  #   CloudFront Distribution
+  #   - Default: S3 (static files)
+  #   - /api/*:  API Gateway (Lambda)
+  #   - SSL, HTTP/2, gzip, edge caching
+  # ═══════════════════════════════════════════════════════
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: RAAS Builders website
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_200   # India, Asia, Europe, NA
+        HttpVersion: http2and3
+
+        # Custom domain + SSL (if provided)
+        Aliases:
+          !If
+            - HasCustomDomain
+            - - !Ref DomainName
+            - !Ref 'AWS::NoValue'
+        ViewerCertificate:
+          !If
+            - HasCertificate
+            - AcmCertificateArn: !Ref AcmCertificateArn
+              SslSupportMethod: sni-only
+              MinimumProtocolVersion: TLSv1.2_2021
+            - CloudFrontDefaultCertificate: true
+
+        # ─── Origins ─────────────────────────────────
+        Origins:
+          # Origin 1: S3 (static files)
+          - Id: S3Origin
+            DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt CloudFrontOAC.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+
+          # Origin 2: API Gateway (Lambda)
+          - Id: ApiOrigin
+            DomainName: !Sub '${RaasHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+            CustomOriginConfig:
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols:
+                - TLSv1.2
+
+        # ─── Cache Behaviors ─────────────────────────
+        # /api/* → Lambda (no caching, pass all headers)
+        CacheBehaviors:
+          - PathPattern: /api/*
+            TargetOriginId: ApiOrigin
+            ViewerProtocolPolicy: https-only
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - POST
+              - PATCH
+              - DELETE
+            CachedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad   # CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # AllViewerExceptHostHeader
+            Compress: true
+
+        # Default → S3 (static files, cached)
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # CachingOptimized
+          # SPA fallback: serve index.html for client-side routes
+          FunctionAssociations: []
+
+        # ─── Custom Error Pages ──────────────────────
+        CustomErrorResponses:
+          # 403 from S3 (file not found) → serve 404.html
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+          # Actual 404
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+
+        # ─── Security Headers ────────────────────────
+        # (matches vercel.json headers)
+        # Using CloudFront response headers policy
+        # Created inline below
+
+  # Response headers policy (security headers matching vercel.json)
+  SecurityHeadersPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: raas-security-headers
+        SecurityHeadersConfig:
+          ContentTypeOptions:
+            Override: true
+          FrameOptions:
+            FrameOption: SAMEORIGIN
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            IncludeSubdomains: true
+            Override: true
+            Preload: true
+
+# ═══════════════════════════════════════════════════════
+#   Outputs
+# ═══════════════════════════════════════════════════════
 Outputs:
-  ApiUrl:
-    Description: API Gateway endpoint URL
+  CloudFrontUrl:
+    Description: CloudFront URL (use this as your site URL)
+    Value: !Sub 'https://${CloudFrontDistribution.DomainName}'
+  CloudFrontDistributionId:
+    Description: CloudFront Distribution ID (for cache invalidation)
+    Value: !Ref CloudFrontDistribution
+  ApiGatewayUrl:
+    Description: API Gateway direct URL (for debugging, not public)
     Value: !Sub 'https://${RaasHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
-  StaticSiteUrl:
-    Description: S3 website URL
-    Value: !GetAtt StaticSiteBucket.WebsiteURL
   StaticBucketName:
-    Description: S3 bucket name (for `aws s3 sync`)
+    Description: S3 bucket name (for aws s3 sync)
     Value: !Ref StaticSiteBucket
   DynamoTableName:
     Description: DynamoDB table
     Value: !Ref RaasTable
+  CustomDomainNote:
+    Condition: HasCustomDomain
+    Description: >
+      Point your domain's DNS to CloudFront. Create a CNAME or
+      Route 53 alias record pointing to the CloudFront domain above.
+    Value: !Sub 'Point ${DomainName} → ${CloudFrontDistribution.DomainName}'
