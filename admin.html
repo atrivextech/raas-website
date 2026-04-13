@@ -46,12 +46,37 @@
       </div>
     </div>
 
+    <!-- Dashboard Summary -->
+    <div class="dashboard-summary" id="dashboard-summary">
+      <div class="summary-card">
+        <div class="summary-num" id="sum-total">0</div>
+        <div class="summary-label">Total Listings</div>
+      </div>
+      <div class="summary-card sc-green">
+        <div class="summary-num" id="sum-available">0</div>
+        <div class="summary-label">Available</div>
+      </div>
+      <div class="summary-card sc-amber">
+        <div class="summary-num" id="sum-booked">0</div>
+        <div class="summary-label">Booked</div>
+      </div>
+      <div class="summary-card sc-red">
+        <div class="summary-num" id="sum-sold">0</div>
+        <div class="summary-label">Sold</div>
+      </div>
+      <div class="summary-card sc-blue">
+        <div class="summary-num" id="sum-enquiries">0</div>
+        <div class="summary-label">Enquiries</div>
+      </div>
+    </div>
+
     <div class="dashboard-content">
 
       <!-- Tabs -->
       <div class="admin-tabs">
         <button class="tab-btn active" data-tab="properties">🏠 Properties</button>
         <button class="tab-btn" data-tab="materials">🧱 Materials Pricing</button>
+        <button class="tab-btn" data-tab="enquiries">📩 Enquiries</button>
         <button class="tab-btn" data-tab="settings">⚙️ Site Settings</button>
       </div>
 
@@ -269,6 +294,20 @@
               <button type="submit" class="btn-primary" style="width:auto;">💾 Save Materials</button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <!-- ══════════════════ TAB: ENQUIRIES ══════════════════ -->
+      <div class="tab-panel" id="tab-enquiries">
+        <div class="card">
+          <h2>Customer Enquiries</h2>
+          <div class="card-note">
+            Leads from the website contact form. Newest first.
+            <span id="enquiry-source-note"></span>
+          </div>
+          <div id="enquiries-list" class="enquiries-list">
+            <div class="empty-state"><p>No enquiries yet. They'll appear here when visitors submit the contact form.</p></div>
+          </div>
         </div>
       </div>
 

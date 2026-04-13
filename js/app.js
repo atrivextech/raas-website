@@ -124,6 +124,14 @@ const DEFAULT_MATERIALS = [
 //   <script>window.RAAS_API_BASE='https://your-api-domain.com'</script>
 const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
 
+// ─── XSS sanitizer ──────────────────────────────────────
+function esc(str) {
+  if (!str) return '';
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
 // ─── API-first helper: try fetch, fall back to localStorage ───
 async function apiFetch(path) {
   try {
@@ -166,9 +174,9 @@ function getStatusBadge(status) {
 
 function formatPropPrice(prop) {
   if (!prop.price) return '₹ —';
-  const unit = PRICE_UNIT_LABELS[prop.priceUnit] || 'Lakhs';
-  if (prop.priceUnit === 'negotiable') return `₹${prop.price} (Negotiable)`;
-  return `₹${prop.price} <span>${unit}</span>`;
+  const unit = esc(PRICE_UNIT_LABELS[prop.priceUnit] || 'Lakhs');
+  if (prop.priceUnit === 'negotiable') return `₹${esc(prop.price)} (Negotiable)`;
+  return `₹${esc(prop.price)} <span>${unit}</span>`;
 }
 
 function formatPropArea(prop) {
@@ -178,32 +186,32 @@ function formatPropArea(prop) {
 }
 
 function renderPropertyCard(prop) {
-  const bg = getImage(prop);
-  const typeLabel = TYPE_LABEL[prop.type] || prop.type || 'Property';
+  const bg = esc(getImage(prop));
+  const typeLabel = esc(TYPE_LABEL[prop.type] || prop.type || 'Property');
   const waMsg = encodeURIComponent(`Hi RAAS Builders, I'm interested in ${prop.name} at ${prop.location}. Please share more details.`);
   const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.phone_bengaluru_raw) || '919019793641';
 
   const specs = [];
-  const areaStr = formatPropArea(prop);
+  const areaStr = esc(formatPropArea(prop));
   if (areaStr) specs.push(`<div class="spec-item">📐 ${areaStr}</div>`);
-  if (prop.bhk) specs.push(`<div class="spec-item">🛏️ ${prop.bhk}</div>`);
-  if (prop.length && prop.breadth) specs.push(`<div class="spec-item">📏 ${prop.length}×${prop.breadth} ft</div>`);
-  if (prop.facing) specs.push(`<div class="spec-item">🧭 ${prop.facing}</div>`);
-  if (prop.floor) specs.push(`<div class="spec-item">🏢 Floor ${prop.floor}</div>`);
-  if (prop.roadWidth) specs.push(`<div class="spec-item">🛣️ ${prop.roadWidth}</div>`);
-  if (prop.zone) specs.push(`<div class="spec-item">📋 ${prop.zone}</div>`);
+  if (prop.bhk) specs.push(`<div class="spec-item">🛏️ ${esc(prop.bhk)}</div>`);
+  if (prop.length && prop.breadth) specs.push(`<div class="spec-item">📏 ${esc(prop.length)}×${esc(prop.breadth)} ft</div>`);
+  if (prop.facing) specs.push(`<div class="spec-item">🧭 ${esc(prop.facing)}</div>`);
+  if (prop.floor) specs.push(`<div class="spec-item">🏢 Floor ${esc(prop.floor)}</div>`);
+  if (prop.roadWidth) specs.push(`<div class="spec-item">🛣️ ${esc(prop.roadWidth)}</div>`);
+  if (prop.zone) specs.push(`<div class="spec-item">📋 ${esc(prop.zone)}</div>`);
   if (prop.rera) specs.push(`<div class="spec-item">✅ RERA</div>`);
   if (specs.length === 0) specs.push(`<div class="spec-item">✅ Verified</div>`);
 
   return `
-    <article class="prop-card" data-type="${prop.type || 'plot'}">
+    <article class="prop-card" data-type="${esc(prop.type || 'plot')}">
       <div class="prop-img" style="background-image: linear-gradient(135deg, rgba(13,31,27,0.35), rgba(26,60,52,0.35)), url('${bg}');">
         ${getStatusBadge(prop.status)}
       </div>
       <div class="prop-body">
         <div class="prop-type">${typeLabel}</div>
-        <div class="prop-title">${prop.name || 'Untitled'}</div>
-        <div class="prop-location">📍 ${prop.location || 'Karnataka'}</div>
+        <div class="prop-title">${esc(prop.name || 'Untitled')}</div>
+        <div class="prop-location">📍 ${esc(prop.location || 'Karnataka')}</div>
         <div class="prop-specs">${specs.join('')}</div>
         <div class="prop-footer">
           <div class="prop-price">${formatPropPrice(prop)}</div>
@@ -252,9 +260,9 @@ function renderMaterialsGrid(materials) {
   if (!grid) return;
   grid.innerHTML = materials.map(m => `
     <div class="material-card">
-      <div class="material-icon">${m.icon || '📦'}</div>
-      <div class="material-name">${m.name}</div>
-      <div class="material-price">${m.price || 'Enquiry based'}</div>
+      <div class="material-icon">${esc(m.icon) || '📦'}</div>
+      <div class="material-name">${esc(m.name)}</div>
+      <div class="material-price">${esc(m.price) || 'Enquiry based'}</div>
     </div>
   `).join('');
 }
@@ -290,10 +298,18 @@ const DEFAULT_SETTINGS = {
 function applySiteSettings(settings) {
   window.RAAS_SETTINGS = settings;
 
+  // Safe keys that contain trusted HTML (admin-authored with <br> tags)
+  const htmlKeys = new Set(['address', 'hours']);
+
   document.querySelectorAll('[data-setting]').forEach(el => {
     const key = el.getAttribute('data-setting');
     if (settings[key] !== undefined && settings[key] !== '') {
-      el.innerHTML = settings[key];
+      if (htmlKeys.has(key)) {
+        // Only allow <br> tags, escape everything else
+        el.innerHTML = esc(settings[key]).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+      } else {
+        el.textContent = settings[key];
+      }
     }
   });
 
@@ -355,6 +371,21 @@ async function handleContactSubmit(e) {
   const email = document.getElementById('cf-email').value.trim();
   const interest = document.getElementById('cf-interest').value;
   const message = document.getElementById('cf-message').value.trim();
+  const budgetEl = document.getElementById('cf-budget');
+  const timelineEl = document.getElementById('cf-timeline');
+  const budget = budgetEl ? budgetEl.value : '';
+  const timeline = timelineEl ? timelineEl.value : '';
+
+  // Phone validation: Indian mobile (10 digits, optionally prefixed with +91 / 0)
+  const phoneClean = phone.replace(/[\s\-()]/g, '');
+  const phoneValid = /^(\+?91|0)?[6-9]\d{9}$/.test(phoneClean);
+  if (!phoneValid) {
+    const phoneInput = document.getElementById('cf-phone');
+    phoneInput.setCustomValidity('Please enter a valid 10-digit Indian mobile number');
+    phoneInput.reportValidity();
+    phoneInput.setCustomValidity(''); // reset for next try
+    return false;
+  }
 
   const interestLabels = {
     plots: 'Buying a Plot',
@@ -366,13 +397,21 @@ async function handleContactSubmit(e) {
     other: 'General Enquiry'
   };
 
+  // Save to localStorage for admin enquiries view
+  const enquiry = { name, phone, email, interest, message, budget, timeline, timestamp: Date.now() };
+  try {
+    const existing = JSON.parse(localStorage.getItem('raas_enquiries') || '[]');
+    existing.push(enquiry);
+    localStorage.setItem('raas_enquiries', JSON.stringify(existing));
+  } catch { /* storage full — non-critical */ }
+
   // Save to API (non-blocking, fires email notification if Resend configured)
   apiFetch('/api/health').then(h => {
     if (h && h.backend) {
-      fetch('/api/contact', {
+      fetch(API_BASE + '/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, email, interest, message })
+        body: JSON.stringify(enquiry)
       }).catch(() => {});
     }
   });
@@ -383,12 +422,15 @@ async function handleContactSubmit(e) {
 
 Name: ${name}
 Phone: ${phone}${email ? `\nEmail: ${email}` : ''}
-Interested in: ${interestLabels[interest] || interest}
+Interested in: ${interestLabels[interest] || interest}${budget ? `\nBudget: ${budget}` : ''}${timeline ? `\nTimeline: ${timeline}` : ''}
 
 ${message}`;
 
   const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.phone_bengaluru_raw) || '919019793641';
   window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
+
+  // Reset form and show confirmation
+  e.target.reset();
   return false;
 }
 window.handleContactSubmit = handleContactSubmit;
