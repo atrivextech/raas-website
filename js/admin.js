@@ -99,7 +99,36 @@ const DEFAULT_SETTINGS = {
   stat_rating_num: '4.8',
   about_p1: "RAAS Builders & Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.",
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
-  about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.'
+  about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.',
+  // Construction packages
+  pkg_essential_price: 'From ₹1,650/sqft',
+  pkg_essential_features: 'Basic finishes, Standard fixtures, 2-year warranty',
+  pkg_premium_price: 'From ₹2,200/sqft',
+  pkg_premium_features: 'Modular kitchen, Italian tiles, 5-year warranty',
+  pkg_elite_price: 'From ₹3,200/sqft',
+  pkg_elite_features: 'Full interior design, Smart home ready, Lifetime support',
+  pkg_farmhouse_price: 'Custom Pricing',
+  pkg_farmhouse_features: 'Eco-friendly design, Vastu compliant, Site assessment',
+  // Apartment pricing
+  apt_1bhk_price: '✅ Starting ₹25 Lakhs',
+  apt_1bhk_area: '✅ 450 – 650 sq.ft',
+  apt_23bhk_price: '✅ Starting ₹45 Lakhs',
+  apt_23bhk_area: '✅ 900 – 1600 sq.ft',
+  // Hero showcase
+  hero_title: 'Prime Plot — Thirthahalli Road',
+  hero_location: '📍 Shivamogga District, Karnataka',
+  hero_price: '₹18.5 L',
+  hero_specs: '📐 30×40 ft, 🛣️ 40ft Road, ✅ RERA',
+  // Testimonials
+  test_1_text: '"Bought a plot in Thirthahalli through RAAS. The entire process — from survey verification to registration — was smooth and transparent. Highly recommended."',
+  test_1_name: 'Shivakumar R.',
+  test_1_role: 'Plot Owner, Shivamogga',
+  test_2_text: '"RAAS built our 3 BHK home in Bengaluru from foundation to final interiors. On time, within budget, and the quality exceeded our expectations."',
+  test_2_name: 'Priya K.',
+  test_2_role: 'Homeowner, Bengaluru',
+  test_3_text: '"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."',
+  test_3_name: 'Mohan H.',
+  test_3_role: 'Farmhouse Owner, Sagara'
 };
 
 const DEFAULT_MATERIALS = [
@@ -819,7 +848,36 @@ function loadSettingsIntoForm() {
     's-stat-rating-num': 'stat_rating_num',
     's-about-1': 'about_p1',
     's-about-2': 'about_p2',
-    's-about-3': 'about_p3'
+    's-about-3': 'about_p3',
+    // Construction packages
+    's-pkg-essential-price': 'pkg_essential_price',
+    's-pkg-essential-features': 'pkg_essential_features',
+    's-pkg-premium-price': 'pkg_premium_price',
+    's-pkg-premium-features': 'pkg_premium_features',
+    's-pkg-elite-price': 'pkg_elite_price',
+    's-pkg-elite-features': 'pkg_elite_features',
+    's-pkg-farmhouse-price': 'pkg_farmhouse_price',
+    's-pkg-farmhouse-features': 'pkg_farmhouse_features',
+    // Apartment pricing
+    's-apt-1bhk-price': 'apt_1bhk_price',
+    's-apt-1bhk-area': 'apt_1bhk_area',
+    's-apt-23bhk-price': 'apt_23bhk_price',
+    's-apt-23bhk-area': 'apt_23bhk_area',
+    // Hero showcase
+    's-hero-title': 'hero_title',
+    's-hero-location': 'hero_location',
+    's-hero-price': 'hero_price',
+    's-hero-specs': 'hero_specs',
+    // Testimonials
+    's-test-1-text': 'test_1_text',
+    's-test-1-name': 'test_1_name',
+    's-test-1-role': 'test_1_role',
+    's-test-2-text': 'test_2_text',
+    's-test-2-name': 'test_2_name',
+    's-test-2-role': 'test_2_role',
+    's-test-3-text': 'test_3_text',
+    's-test-3-name': 'test_3_name',
+    's-test-3-role': 'test_3_role'
   };
   Object.entries(map).forEach(([inputId, key]) => {
     const el = document.getElementById(inputId);
@@ -864,7 +922,36 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
     stat_rating_num: getVal('s-stat-rating-num'),
     about_p1: getVal('s-about-1'),
     about_p2: getVal('s-about-2'),
-    about_p3: getVal('s-about-3')
+    about_p3: getVal('s-about-3'),
+    // Construction packages
+    pkg_essential_price: getVal('s-pkg-essential-price'),
+    pkg_essential_features: getVal('s-pkg-essential-features'),
+    pkg_premium_price: getVal('s-pkg-premium-price'),
+    pkg_premium_features: getVal('s-pkg-premium-features'),
+    pkg_elite_price: getVal('s-pkg-elite-price'),
+    pkg_elite_features: getVal('s-pkg-elite-features'),
+    pkg_farmhouse_price: getVal('s-pkg-farmhouse-price'),
+    pkg_farmhouse_features: getVal('s-pkg-farmhouse-features'),
+    // Apartment pricing
+    apt_1bhk_price: getVal('s-apt-1bhk-price'),
+    apt_1bhk_area: getVal('s-apt-1bhk-area'),
+    apt_23bhk_price: getVal('s-apt-23bhk-price'),
+    apt_23bhk_area: getVal('s-apt-23bhk-area'),
+    // Hero showcase
+    hero_title: getVal('s-hero-title'),
+    hero_location: getVal('s-hero-location'),
+    hero_price: getVal('s-hero-price'),
+    hero_specs: getVal('s-hero-specs'),
+    // Testimonials
+    test_1_text: getVal('s-test-1-text'),
+    test_1_name: getVal('s-test-1-name'),
+    test_1_role: getVal('s-test-1-role'),
+    test_2_text: getVal('s-test-2-text'),
+    test_2_name: getVal('s-test-2-name'),
+    test_2_role: getVal('s-test-2-role'),
+    test_3_text: getVal('s-test-3-text'),
+    test_3_name: getVal('s-test-3-name'),
+    test_3_role: getVal('s-test-3-role')
   };
 
   localStorage.setItem('raas_site_settings', JSON.stringify(settings));

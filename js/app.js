@@ -292,7 +292,36 @@ const DEFAULT_SETTINGS = {
   stat_rating_num: '4.8',
   about_p1: "RAAS Builders & Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.",
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
-  about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.'
+  about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.',
+  // Construction packages
+  pkg_essential_price: 'From ₹1,650/sqft',
+  pkg_essential_features: 'Basic finishes, Standard fixtures, 2-year warranty',
+  pkg_premium_price: 'From ₹2,200/sqft',
+  pkg_premium_features: 'Modular kitchen, Italian tiles, 5-year warranty',
+  pkg_elite_price: 'From ₹3,200/sqft',
+  pkg_elite_features: 'Full interior design, Smart home ready, Lifetime support',
+  pkg_farmhouse_price: 'Custom Pricing',
+  pkg_farmhouse_features: 'Eco-friendly design, Vastu compliant, Site assessment',
+  // Apartment pricing
+  apt_1bhk_price: '✅ Starting ₹25 Lakhs',
+  apt_1bhk_area: '✅ 450 – 650 sq.ft',
+  apt_23bhk_price: '✅ Starting ₹45 Lakhs',
+  apt_23bhk_area: '✅ 900 – 1600 sq.ft',
+  // Hero showcase
+  hero_title: 'Prime Plot — Thirthahalli Road',
+  hero_location: '📍 Shivamogga District, Karnataka',
+  hero_price: '₹18.5 L',
+  hero_specs: '📐 30×40 ft, 🛣️ 40ft Road, ✅ RERA',
+  // Testimonials
+  test_1_text: '"Bought a plot in Thirthahalli through RAAS. The entire process — from survey verification to registration — was smooth and transparent. Highly recommended."',
+  test_1_name: 'Shivakumar R.',
+  test_1_role: 'Plot Owner, Shivamogga',
+  test_2_text: '"RAAS built our 3 BHK home in Bengaluru from foundation to final interiors. On time, within budget, and the quality exceeded our expectations."',
+  test_2_name: 'Priya K.',
+  test_2_role: 'Homeowner, Bengaluru',
+  test_3_text: '"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."',
+  test_3_name: 'Mohan H.',
+  test_3_role: 'Farmhouse Owner, Sagara'
 };
 
 function applySiteSettings(settings) {
@@ -321,6 +350,50 @@ function applySiteSettings(settings) {
   if (phoneBtn) {
     phoneBtn.href = `tel:+${settings.phone_bengaluru_raw}`;
   }
+
+  // ─── Dynamic feature lists (comma-separated → individual divs) ───
+  const featureTargets = {
+    'pkg-essential-features': 'pkg_essential_features',
+    'pkg-premium-features': 'pkg_premium_features',
+    'pkg-elite-features': 'pkg_elite_features',
+    'pkg-farmhouse-features': 'pkg_farmhouse_features'
+  };
+  Object.entries(featureTargets).forEach(([elId, key]) => {
+    const el = document.getElementById(elId);
+    if (el && settings[key]) {
+      el.innerHTML = settings[key].split(',').map(f =>
+        `<div class="pack-feature">${esc(f.trim())}</div>`
+      ).join('');
+    }
+  });
+
+  // ─── Hero specs (comma-separated → individual spec divs) ───
+  const heroSpecs = document.getElementById('hero-specs');
+  if (heroSpecs && settings.hero_specs) {
+    heroSpecs.innerHTML = settings.hero_specs.split(',').map(s => {
+      const txt = s.trim();
+      // Split on first space to bold the value part
+      const parts = txt.match(/^([^\s]+)\s+(.+)$/);
+      return parts
+        ? `<div class="hero-prop-spec">${esc(parts[1])} <strong>${esc(parts[2])}</strong></div>`
+        : `<div class="hero-prop-spec">${esc(txt)}</div>`;
+    }).join('');
+  }
+
+  // ─── Testimonial avatars (initials from name) ───
+  [1, 2, 3].forEach(i => {
+    const name = settings[`test_${i}_name`];
+    const avatarEl = document.getElementById(`test-${i}-avatar`);
+    if (avatarEl && name) {
+      const initials = name.split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      avatarEl.textContent = initials;
+    }
+    // Hide empty testimonials
+    const card = document.getElementById(`testimonial-${i}`);
+    if (card) {
+      card.style.display = settings[`test_${i}_text`] ? '' : 'none';
+    }
+  });
 }
 
 function loadSiteSettings() {

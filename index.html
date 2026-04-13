@@ -139,9 +139,9 @@
             <div class="card-badge">AVAILABLE</div>
           </div>
           <div class="hero-prop-body">
-            <div class="hero-prop-title">Prime Plot — Thirthahalli Road</div>
-            <div class="hero-prop-loc">📍 Shivamogga District, Karnataka</div>
-            <div class="hero-prop-specs">
+            <div class="hero-prop-title" data-setting="hero_title">Prime Plot — Thirthahalli Road</div>
+            <div class="hero-prop-loc" data-setting="hero_location">📍 Shivamogga District, Karnataka</div>
+            <div class="hero-prop-specs" id="hero-specs">
               <div class="hero-prop-spec">📐 <strong>30×40 ft</strong></div>
               <div class="hero-prop-spec">🛣️ <strong>40ft Road</strong></div>
               <div class="hero-prop-spec">✅ <strong>RERA</strong></div>
@@ -149,7 +149,7 @@
             <div class="hero-prop-footer">
               <div>
                 <div class="hero-prop-price-label">Starting from</div>
-                <div class="hero-prop-price">₹18.5 L</div>
+                <div class="hero-prop-price" data-setting="hero_price">₹18.5 L</div>
               </div>
               <a href="https://wa.me/919019793641" target="_blank" rel="noopener" class="btn-primary" style="padding:9px 16px;font-size:11px;">💬 WhatsApp</a>
             </div>
@@ -302,8 +302,8 @@
       <h3>1 BHK Apartments</h3>
       <p>Compact and affordable 1 BHK units ideal for young professionals and small families. Smart layouts with modern finishes.</p>
       <ul class="info-list">
-        <li>✅ 450 – 650 sq.ft</li>
-        <li>✅ Starting ₹25 Lakhs</li>
+        <li data-setting="apt_1bhk_area">✅ 450 – 650 sq.ft</li>
+        <li data-setting="apt_1bhk_price">✅ Starting ₹25 Lakhs</li>
         <li>✅ Modular Kitchen</li>
         <li>✅ Covered Parking</li>
       </ul>
@@ -314,8 +314,8 @@
       <h3>2 &amp; 3 BHK Apartments</h3>
       <p>Spacious 2 and 3 BHK apartments with premium amenities. Perfect for growing families seeking comfort and convenience.</p>
       <ul class="info-list">
-        <li>✅ 900 – 1600 sq.ft</li>
-        <li>✅ Starting ₹45 Lakhs</li>
+        <li data-setting="apt_23bhk_area">✅ 900 – 1600 sq.ft</li>
+        <li data-setting="apt_23bhk_price">✅ Starting ₹45 Lakhs</li>
         <li>✅ Swimming Pool &amp; Gym</li>
         <li>✅ Children's Play Area</li>
       </ul>
@@ -356,8 +356,8 @@
       <div class="package-card">
         <div class="pack-badge">Economy</div>
         <div class="pack-name">Essential</div>
-        <div class="pack-price">From ₹1,650/sqft</div>
-        <div class="pack-features">
+        <div class="pack-price" data-setting="pkg_essential_price">From ₹1,650/sqft</div>
+        <div class="pack-features" id="pkg-essential-features">
           <div class="pack-feature">Basic finishes</div>
           <div class="pack-feature">Standard fixtures</div>
           <div class="pack-feature">2-year warranty</div>
@@ -366,8 +366,8 @@
       <div class="package-card gold-card">
         <div class="pack-badge">★ Most Popular</div>
         <div class="pack-name">Premium</div>
-        <div class="pack-price">From ₹2,200/sqft</div>
-        <div class="pack-features">
+        <div class="pack-price" data-setting="pkg_premium_price">From ₹2,200/sqft</div>
+        <div class="pack-features" id="pkg-premium-features">
           <div class="pack-feature">Modular kitchen</div>
           <div class="pack-feature">Italian tiles</div>
           <div class="pack-feature">5-year warranty</div>
@@ -376,8 +376,8 @@
       <div class="package-card">
         <div class="pack-badge">Luxury</div>
         <div class="pack-name">Elite</div>
-        <div class="pack-price">From ₹3,200/sqft</div>
-        <div class="pack-features">
+        <div class="pack-price" data-setting="pkg_elite_price">From ₹3,200/sqft</div>
+        <div class="pack-features" id="pkg-elite-features">
           <div class="pack-feature">Full interior design</div>
           <div class="pack-feature">Smart home ready</div>
           <div class="pack-feature">Lifetime support</div>
@@ -386,8 +386,8 @@
       <div class="package-card">
         <div class="pack-badge">Special</div>
         <div class="pack-name">Farmhouse</div>
-        <div class="pack-price">Custom Pricing</div>
-        <div class="pack-features">
+        <div class="pack-price" data-setting="pkg_farmhouse_price">Custom Pricing</div>
+        <div class="pack-features" id="pkg-farmhouse-features">
           <div class="pack-feature">Eco-friendly design</div>
           <div class="pack-feature">Vastu compliant</div>
           <div class="pack-feature">Site assessment</div>
@@ -491,36 +491,36 @@
   <h2 class="section-h reveal"><em>Stories</em> From Our Customers</h2>
   <div class="divider"></div>
   <div class="testimonials-grid reveal">
-    <div class="testimonial-card">
+    <div class="testimonial-card" id="testimonial-1">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"Bought a plot in Thirthahalli through RAAS. The entire process — from survey verification to registration — was smooth and transparent. Highly recommended."</p>
+      <p class="testimonial-text" data-setting="test_1_text">"Bought a plot in Thirthahalli through RAAS. The entire process — from survey verification to registration — was smooth and transparent. Highly recommended."</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar">SR</div>
+        <div class="testimonial-avatar" id="test-1-avatar">SR</div>
         <div>
-          <div class="testimonial-name">Shivakumar R.</div>
-          <div class="testimonial-role">Plot Owner, Shivamogga</div>
+          <div class="testimonial-name" data-setting="test_1_name">Shivakumar R.</div>
+          <div class="testimonial-role" data-setting="test_1_role">Plot Owner, Shivamogga</div>
         </div>
       </div>
     </div>
-    <div class="testimonial-card">
+    <div class="testimonial-card" id="testimonial-2">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"RAAS built our 3 BHK home in Bengaluru from foundation to final interiors. On time, within budget, and the quality exceeded our expectations."</p>
+      <p class="testimonial-text" data-setting="test_2_text">"RAAS built our 3 BHK home in Bengaluru from foundation to final interiors. On time, within budget, and the quality exceeded our expectations."</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar">PK</div>
+        <div class="testimonial-avatar" id="test-2-avatar">PK</div>
         <div>
-          <div class="testimonial-name">Priya K.</div>
-          <div class="testimonial-role">Homeowner, Bengaluru</div>
+          <div class="testimonial-name" data-setting="test_2_name">Priya K.</div>
+          <div class="testimonial-role" data-setting="test_2_role">Homeowner, Bengaluru</div>
         </div>
       </div>
     </div>
-    <div class="testimonial-card">
+    <div class="testimonial-card" id="testimonial-3">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."</p>
+      <p class="testimonial-text" data-setting="test_3_text">"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar">MH</div>
+        <div class="testimonial-avatar" id="test-3-avatar">MH</div>
         <div>
-          <div class="testimonial-name">Mohan H.</div>
-          <div class="testimonial-role">Farmhouse Owner, Sagara</div>
+          <div class="testimonial-name" data-setting="test_3_name">Mohan H.</div>
+          <div class="testimonial-role" data-setting="test_3_role">Farmhouse Owner, Sagara</div>
         </div>
       </div>
     </div>
