@@ -1148,6 +1148,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .contact-form select,
 .contact-form textarea {
   width: 100%;
+  box-sizing: border-box;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 8px;
@@ -1156,6 +1157,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 14px;
   font-family: inherit;
   transition: border-color 0.2s, background 0.2s;
+}
+/* Make native dropdown options readable (dark text on light OS dropdown) */
+.contact-form select option {
+  background: #fff;
+  color: #1a1a1a;
 }
 .contact-form input:focus,
 .contact-form select:focus,

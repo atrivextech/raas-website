@@ -391,6 +391,8 @@ async function handleContactSubmit(e) {
     plots: 'Buying a Plot',
     land: 'Agricultural Land',
     apartment: 'Buying an Apartment',
+    villa: 'Buying a Villa',
+    commercial: 'Commercial Property',
     construction: 'House Construction',
     interiors: 'Interior Design',
     materials: 'Building Materials',

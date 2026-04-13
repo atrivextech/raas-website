@@ -658,6 +658,7 @@ async function loadEnquiries() {
     const date = enq.timestamp ? new Date(enq.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
     const interestLabel = {
       plots: 'Buying a Plot', land: 'Agricultural Land', apartment: 'Apartment',
+      villa: 'Villa', commercial: 'Commercial Property',
       construction: 'Construction', interiors: 'Interiors', materials: 'Materials', other: 'General'
     }[enq.interest] || esc(enq.interest || '');
 
