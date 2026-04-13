@@ -1178,19 +1178,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .contact-form select {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: #f5f5f5;
+  border: 1px solid rgba(201,168,76,0.35);
   border-radius: 8px;
   padding: 12px 14px;
-  color: #1a1a1a;
+  color: #222 !important;
   font-size: 14px;
   font-family: inherit;
   transition: border-color 0.2s, background 0.2s;
   cursor: pointer;
+  -webkit-appearance: menulist;
+  appearance: menulist;
 }
 .contact-form select option {
-  background: #fff;
-  color: #1a1a1a;
+  background: #fff !important;
+  color: #222 !important;
+  padding: 8px;
 }
 .contact-form input:focus,
 .contact-form textarea:focus {
