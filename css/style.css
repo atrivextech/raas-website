@@ -9,6 +9,7 @@
   --forest2:  #122B25;
   --forest3:  #0D1F1B;
   --gold:     #C9A84C;
+  --gold-text: #8B6914;  /* darker gold for text on light backgrounds — passes WCAG AA */
   --gold2:    #E8C96A;
   --gold3:    #F5E6B8;
   --cream:    #FAF7F2;
@@ -478,7 +479,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin-bottom: 10px;
   line-height: 1.15;
 }
-.section-h em { font-style: italic; color: var(--gold); }
+.section-h em { font-style: italic; color: var(--gold-text); }
 .dark-bg .section-h { color: var(--white); }
 
 .section-sub {
@@ -711,7 +712,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .prop-img {
   position: relative;
-  height: 220px;
+  height: auto; min-height: 200px;
+  aspect-ratio: 16/10;
   overflow: hidden;
   background-size: cover;
   background-position: center;
@@ -731,6 +733,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .prop-badge.available { background: #22c55e; }
 .prop-badge.sold { background: #ef4444; }
+.prop-badge.booked { background: #f59e0b; color: #000; }
+.prop-badge.upcoming { background: #3b82f6; }
 .prop-badge.premium { background: var(--gold); color: var(--forest3); }
 
 .prop-body {
@@ -1323,6 +1327,20 @@ footer {
   transform: translateY(0);
 }
 
+/* ─── FOCUS STATES (accessibility) ────────────────────── */
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.nav-links a:focus-visible { color: var(--gold2); }
+.btn-primary:focus-visible { box-shadow: 0 0 0 3px rgba(201,168,76,0.5); transform: translateY(-2px); }
+.btn-secondary:focus-visible { border-color: var(--gold); color: var(--gold); }
+.svc-card:focus-visible, .info-card:focus-visible, .prop-card:focus-visible, .package-card:focus-visible, .material-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+.pf-chip:focus-visible { box-shadow: 0 0 0 3px rgba(201,168,76,0.4); }
+
 /* ─── MOBILE NAV DRAWER ───────────────────────────────────── */
 @media (max-width: 960px) {
   .nav-toggle { display: flex; }
@@ -1401,4 +1419,15 @@ footer {
   .widget-btn { width: 52px; height: 52px; font-size: 24px; }
   .chat-widget { bottom: 18px; right: 18px; }
   .contact-form, .contact-info-card { padding: 26px 22px; }
+}
+
+/* ─── PRINT ──────────────────────────────────────────── */
+@media print {
+  .nav-bar, .chat-widget, .nav-toggle, footer { display: none !important; }
+  body { background: white; color: black; font-size: 12pt; }
+  .hero-section { min-height: auto; padding: 20px; }
+  .prop-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .section-page, section { padding: 20px 0; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 10pt; color: #666; }
+  .btn-primary, .btn-secondary { border: 1px solid #000; background: none; color: #000; }
 }

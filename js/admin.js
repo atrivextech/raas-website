@@ -1,17 +1,78 @@
 /* ══════════════════════════════════════════════════════════════
-   RAAS Admin — properties + site settings
-   NOTE: client-side only (localStorage). Replace with backend
-   before real launch. Login check is NOT secure — it's a gate.
+   RAAS Admin — properties, materials pricing & site settings
+
+   Dual-mode: tries /api/* serverless endpoints first.
+   Falls back to localStorage when backend env vars are not set.
+   Zero regression — works exactly like before when offline.
 ══════════════════════════════════════════════════════════════ */
 
-// TODO: move these off the client once a backend exists.
+// Fallback credentials (used ONLY when backend is not configured)
 const ADMIN_CREDENTIALS = {
   username: 'admin',
   password: 'raas2025'
 };
 
+// ─── API base (same-origin on both Vercel and AWS with CloudFront) ─
+const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
+
+// ─── API helpers ─────────────────────────────────────────
+let _backendAvailable = null; // null=unknown, true/false after health check
+
+async function checkBackend() {
+  if (_backendAvailable !== null) return _backendAvailable;
+  try {
+    const r = await fetch(API_BASE + '/api/health');
+    if (!r.ok) { _backendAvailable = false; return false; }
+    const data = await r.json();
+    _backendAvailable = data.backend === true;
+  } catch {
+    _backendAvailable = false;
+  }
+  return _backendAvailable;
+}
+
+async function apiPost(path, body) {
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-RAAS-Client': 'web' },
+      credentials: API_BASE ? 'include' : 'same-origin',
+      body: JSON.stringify(body)
+    });
+    return { ok: r.ok, status: r.status, data: await r.json().catch(() => null) };
+  } catch { return { ok: false, status: 0, data: null }; }
+}
+
+async function apiDelete(path) {
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'DELETE',
+      headers: { 'X-RAAS-Client': 'web' },
+      credentials: API_BASE ? 'include' : 'same-origin'
+    });
+    return { ok: r.ok, data: await r.json().catch(() => null) };
+  } catch { return { ok: false, data: null }; }
+}
+
+async function apiGet(path) {
+  try {
+    const r = await fetch(API_BASE + path);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch { return null; }
+}
+
 let uploadedImages = [];
 let uploadedLayout = null;
+let editingPropertyId = null; // null = adding new, number = editing existing
+
+// ─── XSS sanitizer (escape HTML for safe display) ───────
+function esc(str) {
+  if (!str) return '';
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
 
 const DEFAULT_SETTINGS = {
   phone_bengaluru: '+91 90197 93641',
@@ -32,6 +93,41 @@ const DEFAULT_SETTINGS = {
   about_p1: "RAAS Builders & Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.",
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.'
+};
+
+const DEFAULT_MATERIALS = [
+  { icon: '🏖️', name: 'River Sand',       price: 'Enquiry based' },
+  { icon: '🪨', name: 'M-Sand',           price: '₹55–65/cft' },
+  { icon: '🧱', name: 'Bricks',           price: '₹8–12/unit' },
+  { icon: '⚙️', name: 'TMT Steel',        price: 'Wholesale rate' },
+  { icon: '🏗️', name: 'Cement',           price: '₹340–380/bag' },
+  { icon: '🪵', name: 'Granite / Stone',   price: '₹90–140/sqft' }
+];
+
+// ─── Which property types show which fields ──────────────
+const TYPE_FIELD_RULES = {
+  plot:       { bhk: false, floor: false, amenities: false, dimensions: true,  landDetails: true  },
+  land:       { bhk: false, floor: false, amenities: false, dimensions: false, landDetails: true  },
+  apartment:  { bhk: true,  floor: true,  amenities: true,  dimensions: false, landDetails: false },
+  villa:      { bhk: true,  floor: false, amenities: true,  dimensions: true,  landDetails: false },
+  commercial: { bhk: false, floor: true,  amenities: true,  dimensions: false, landDetails: false }
+};
+
+// Default measurement unit per type
+const TYPE_DEFAULT_AREA_UNIT = {
+  plot: 'sqft',
+  land: 'acres',
+  apartment: 'sqft',
+  villa: 'sqft',
+  commercial: 'sqft'
+};
+
+const TYPE_DEFAULT_PRICE_UNIT = {
+  plot: 'lakhs',
+  land: 'per_acre',
+  apartment: 'lakhs',
+  villa: 'lakhs',
+  commercial: 'lakhs'
 };
 
 // ─── Toast ────────────────────────────────────────────────
@@ -60,23 +156,43 @@ function showDashboard() {
   document.getElementById('dashboard-section').style.display = 'block';
   loadPropertiesList();
   loadSettingsIntoForm();
+  loadMaterialsEditor();
+  loadEnquiries();
+  updateDashboardSummary();
 }
 
-document.getElementById('login-form').addEventListener('submit', (e) => {
+document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
   const errorMsg = document.getElementById('error-msg');
+  errorMsg.textContent = '';
+
+  const hasBackend = await checkBackend();
+
+  if (hasBackend) {
+    // Try API login (sets httpOnly cookie)
+    const res = await apiPost('/api/login', { username, password });
+    if (res.ok) {
+      sessionStorage.setItem('raas_admin_logged_in', 'true');
+      showDashboard();
+      return;
+    }
+    errorMsg.textContent = (res.data && res.data.error) || 'Invalid credentials';
+    return;
+  }
+
+  // Fallback: client-side check
   if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
     sessionStorage.setItem('raas_admin_logged_in', 'true');
     showDashboard();
-    errorMsg.textContent = '';
   } else {
     errorMsg.textContent = 'Invalid username or password';
   }
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => {
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await apiDelete('/api/login').catch(() => {}); // clear server cookie
   sessionStorage.removeItem('raas_admin_logged_in');
   showLogin();
   document.getElementById('login-form').reset();
@@ -93,6 +209,55 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
+
+// ─── Property type → conditional fields ───────────────────
+function updateFormFieldsByType() {
+  const type = document.getElementById('prop-type').value;
+  const rules = TYPE_FIELD_RULES[type] || { bhk: true, floor: true, amenities: true, dimensions: true, landDetails: false };
+
+  const rowBhk = document.getElementById('row-bhk');
+  const rowDimensions = document.getElementById('row-dimensions');
+  const rowAmenities = document.getElementById('row-amenities');
+  const rowLandDetails = document.getElementById('row-land-details');
+
+  if (rowBhk) rowBhk.style.display = (rules.bhk || rules.floor) ? '' : 'none';
+  if (rowDimensions) rowDimensions.style.display = rules.dimensions ? '' : 'none';
+  if (rowAmenities) rowAmenities.style.display = rules.amenities ? '' : 'none';
+  if (rowLandDetails) rowLandDetails.style.display = rules.landDetails ? '' : 'none';
+
+  // BHK select visibility within row
+  const bhkGroup = document.getElementById('prop-bhk')?.closest('.form-group');
+  const floorGroup = document.getElementById('prop-floor')?.closest('.form-group');
+  if (bhkGroup) bhkGroup.style.display = rules.bhk ? '' : 'none';
+  if (floorGroup) floorGroup.style.display = rules.floor ? '' : 'none';
+
+  // Set smart default units
+  if (type && TYPE_DEFAULT_AREA_UNIT[type]) {
+    const areaUnit = document.getElementById('prop-area-unit');
+    if (areaUnit) areaUnit.value = TYPE_DEFAULT_AREA_UNIT[type];
+  }
+  if (type && TYPE_DEFAULT_PRICE_UNIT[type]) {
+    const priceUnit = document.getElementById('prop-price-unit');
+    if (priceUnit) priceUnit.value = TYPE_DEFAULT_PRICE_UNIT[type];
+  }
+
+  // Update labels contextually
+  const areaLabel = document.querySelector('label[for="prop-area"]');
+  if (areaLabel) {
+    if (type === 'land') areaLabel.textContent = 'Total Land Area *';
+    else if (type === 'plot') areaLabel.textContent = 'Plot Area *';
+    else if (type === 'apartment') areaLabel.textContent = 'Super Built-up Area *';
+    else if (type === 'villa') areaLabel.textContent = 'Built-up Area *';
+    else areaLabel.textContent = 'Area *';
+  }
+}
+
+const propTypeSelect = document.getElementById('prop-type');
+if (propTypeSelect) {
+  propTypeSelect.addEventListener('change', updateFormFieldsByType);
+  // Set initial state
+  updateFormFieldsByType();
+}
 
 // ─── Property uploads ─────────────────────────────────────
 function handleImageUpload(input) {
@@ -153,47 +318,176 @@ function handleLayoutUpload(input) {
 window.handleImageUpload = handleImageUpload;
 window.handleLayoutUpload = handleLayoutUpload;
 
-// ─── Add property ─────────────────────────────────────────
-document.getElementById('property-form').addEventListener('submit', (e) => {
-  e.preventDefault();
+// ─── Add / Edit property ──────────────────────────────────
+function collectPropertyFromForm() {
+  const type = document.getElementById('prop-type').value;
+  const rules = TYPE_FIELD_RULES[type] || {};
+
   const property = {
-    id: Date.now(),
+    id: editingPropertyId || Date.now(),
     name: document.getElementById('prop-name').value,
-    type: document.getElementById('prop-type').value,
+    type: type,
     location: document.getElementById('prop-location').value,
     price: document.getElementById('prop-price').value,
+    priceUnit: document.getElementById('prop-price-unit').value,
     area: document.getElementById('prop-area').value,
-    bhk: document.getElementById('prop-bhk').value,
-    facing: document.getElementById('prop-facing').value,
-    amenities: document.getElementById('prop-amenities').value,
+    areaUnit: document.getElementById('prop-area-unit').value,
     status: document.getElementById('prop-status').value,
+    facing: document.getElementById('prop-facing').value,
+    rera: document.getElementById('prop-rera').value,
     description: document.getElementById('prop-description').value,
     images: uploadedImages.length > 0 ? uploadedImages.slice() : [],
     layout: uploadedLayout || null
   };
 
-  const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
-  properties.push(property);
-  try {
-    localStorage.setItem('raas_properties', JSON.stringify(properties));
-  } catch (err) {
-    alert('⚠️ Storage limit reached. Try fewer / smaller photos per property until the backend is connected.');
-    return;
+  if (rules.bhk) property.bhk = document.getElementById('prop-bhk').value;
+  if (rules.floor) property.floor = document.getElementById('prop-floor').value;
+  if (rules.amenities) property.amenities = document.getElementById('prop-amenities').value;
+  if (rules.dimensions) {
+    property.length = document.getElementById('prop-length').value;
+    property.breadth = document.getElementById('prop-breadth').value;
   }
+  if (rules.landDetails) {
+    property.roadWidth = document.getElementById('prop-road-width').value;
+    property.zone = document.getElementById('prop-zone').value;
+  }
+  return property;
+}
 
+function resetPropertyForm() {
   document.getElementById('property-form').reset();
   uploadedImages = [];
   uploadedLayout = null;
+  editingPropertyId = null;
   document.getElementById('image-previews').innerHTML = '';
   document.getElementById('layout-preview').innerHTML = '';
   document.getElementById('image-upload-box').querySelector('p').textContent = 'Click to upload photos';
-  document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / layout';
+  document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / site map / layout';
+  // Reset form header
+  const formH2 = document.querySelector('#tab-properties .card h2');
+  if (formH2) formH2.innerHTML = formH2.innerHTML.replace(/<span class="editing-badge">.*?<\/span>/, '');
+  const submitBtn = document.querySelector('#property-form button[type="submit"]');
+  if (submitBtn) submitBtn.textContent = '✅ Add Property';
+  updateFormFieldsByType();
+}
 
+function loadPropertyIntoForm(prop) {
+  editingPropertyId = prop.id;
+  // Basic fields
+  document.getElementById('prop-name').value = prop.name || '';
+  document.getElementById('prop-type').value = prop.type || 'plot';
+  updateFormFieldsByType();
+  document.getElementById('prop-location').value = prop.location || '';
+  document.getElementById('prop-price').value = prop.price || '';
+  document.getElementById('prop-price-unit').value = prop.priceUnit || 'lakhs';
+  document.getElementById('prop-area').value = prop.area || '';
+  document.getElementById('prop-area-unit').value = prop.areaUnit || 'sqft';
+  document.getElementById('prop-status').value = prop.status || 'available';
+  document.getElementById('prop-facing').value = prop.facing || '';
+  document.getElementById('prop-rera').value = prop.rera || '';
+  document.getElementById('prop-description').value = prop.description || '';
+  // Conditional
+  if (prop.bhk) document.getElementById('prop-bhk').value = prop.bhk;
+  if (prop.floor) document.getElementById('prop-floor').value = prop.floor;
+  if (prop.amenities) document.getElementById('prop-amenities').value = prop.amenities;
+  if (prop.length) document.getElementById('prop-length').value = prop.length;
+  if (prop.breadth) document.getElementById('prop-breadth').value = prop.breadth;
+  if (prop.roadWidth) document.getElementById('prop-road-width').value = prop.roadWidth;
+  if (prop.zone) document.getElementById('prop-zone').value = prop.zone;
+  // Images
+  if (prop.images && prop.images.length > 0) {
+    uploadedImages = prop.images.slice();
+    const previews = document.getElementById('image-previews');
+    previews.innerHTML = prop.images.map((src, i) =>
+      `<div class="preview-thumb"><img src="${esc(src)}" alt="Photo ${i+1}"><span class="thumb-label">Photo ${i+1}</span></div>`
+    ).join('');
+    document.getElementById('image-upload-box').querySelector('p').textContent = `${prop.images.length} photo(s) loaded`;
+  }
+  if (prop.layout) {
+    uploadedLayout = prop.layout;
+    document.getElementById('layout-preview').innerHTML = `<div class="layout-thumb"><span>📐 ${esc(prop.layout.name || 'Layout')}</span></div>`;
+  }
+  // Update form header
+  const formH2 = document.querySelector('#tab-properties .card h2');
+  if (formH2 && !formH2.querySelector('.editing-badge')) {
+    formH2.innerHTML += ' <span class="editing-badge">EDITING</span>';
+  }
+  const submitBtn = document.querySelector('#property-form button[type="submit"]');
+  if (submitBtn) submitBtn.textContent = '💾 Save Changes';
+  // Scroll to form
+  document.querySelector('#tab-properties .card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.loadPropertyIntoForm = loadPropertyIntoForm;
+
+document.getElementById('property-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const property = collectPropertyFromForm();
+  const isEdit = !!editingPropertyId;
+
+  let properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
+  if (isEdit) {
+    properties = properties.map(p => p.id === editingPropertyId ? property : p);
+  } else {
+    properties.push(property);
+  }
+
+  try {
+    localStorage.setItem('raas_properties', JSON.stringify(properties));
+  } catch (err) {
+    alert('Storage limit reached. Try fewer / smaller photos per property.');
+    return;
+  }
+
+  if (_backendAvailable) {
+    const res = await apiPost('/api/properties', property);
+    if (!res.ok) showToast('Saved locally. API sync failed.');
+  }
+
+  resetPropertyForm();
   loadPropertiesList();
-  showToast('✅ Property added successfully');
+  updateDashboardSummary();
+  showToast(isEdit ? 'Property updated' : 'Property added');
 });
 
 // ─── Properties list ──────────────────────────────────────
+const PRICE_UNIT_LABELS = {
+  lakhs: 'Lakhs',
+  crores: 'Crores',
+  per_sqft: '/ sq.ft',
+  per_acre: '/ Acre',
+  per_gunta: '/ Gunta',
+  negotiable: '(Negotiable)'
+};
+
+const AREA_UNIT_LABELS = {
+  sqft: 'sq.ft',
+  acres: 'Acres',
+  guntas: 'Guntas',
+  cents: 'Cents',
+  grounds: 'Grounds'
+};
+
+const TYPE_LABELS = {
+  plot: 'Plot / Site',
+  land: 'Agricultural Land',
+  apartment: 'Apartment',
+  villa: 'Villa',
+  commercial: 'Commercial'
+};
+
+function formatPrice(prop) {
+  if (!prop.price) return '₹ —';
+  const unit = PRICE_UNIT_LABELS[prop.priceUnit] || 'Lakhs';
+  if (prop.priceUnit === 'negotiable') return `₹${prop.price} ${unit}`;
+  return `₹${prop.price} ${unit}`;
+}
+
+function formatArea(prop) {
+  if (!prop.area) return '';
+  const unit = AREA_UNIT_LABELS[prop.areaUnit] || 'sq.ft';
+  return `${prop.area} ${unit}`;
+}
+
 function loadPropertiesList() {
   const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
   const listContainer = document.getElementById('properties-list');
@@ -208,26 +502,49 @@ function loadPropertiesList() {
 
   listContainer.innerHTML = properties.map(prop => {
     const thumb = prop.images && prop.images.length > 0
-      ? `<img src="${prop.images[0]}" alt="${prop.name}">`
+      ? `<img src="${esc(prop.images[0])}" alt="${esc(prop.name)}">`
       : `<div class="no-img">🏠</div>`;
 
     const layoutBadge = prop.layout
       ? `<span class="layout-badge">${prop.layout.type && prop.layout.type.includes('pdf') ? '📄 Layout PDF' : '📐 Layout Image'}</span>`
       : '';
 
+    const typeLabel = esc(TYPE_LABELS[prop.type] || prop.type);
+    const areaStr = esc(formatArea(prop));
+    const priceStr = formatPrice(prop);
+    const st = prop.status || 'available';
+
+    // Quick status pills
+    const statuses = ['available', 'booked', 'sold', 'premium'];
+    const statusPills = statuses.map(s =>
+      `<button class="qs-${s}${s === st ? ' qs-active' : ''}" onclick="quickStatus(${prop.id},'${s}')">${s}</button>`
+    ).join('');
+
+    let details3 = '';
+    if (prop.bhk) details3 += `<strong>BHK:</strong> ${esc(prop.bhk)} &nbsp; `;
+    if (prop.facing) details3 += `<strong>Facing:</strong> ${esc(prop.facing)} &nbsp; `;
+    if (prop.floor) details3 += `<strong>Floor:</strong> ${esc(prop.floor)} &nbsp; `;
+    if (prop.length && prop.breadth) details3 += `<strong>Dim:</strong> ${esc(prop.length)}×${esc(prop.breadth)} ft &nbsp; `;
+    if (prop.roadWidth) details3 += `<strong>Road:</strong> ${esc(prop.roadWidth)} &nbsp; `;
+    if (prop.zone) details3 += `<strong>Zone:</strong> ${esc(prop.zone)} &nbsp; `;
+    if (prop.rera) details3 += `<strong>RERA:</strong> ${esc(prop.rera)}`;
+    if (details3) details3 = `<p>${details3}</p>`;
+
     return `
       <div class="property-item">
         ${thumb}
         <div class="property-info">
-          <h3>${prop.name}</h3>
-          <p><strong>Type:</strong> ${prop.type} &nbsp;|&nbsp; <strong>Location:</strong> ${prop.location}</p>
-          <p><strong>Price:</strong> ₹${prop.price} Lakhs &nbsp;|&nbsp; <strong>Status:</strong> ${prop.status}</p>
-          ${prop.area ? `<p><strong>Area:</strong> ${prop.area} sq.ft ${prop.bhk ? '&nbsp;|&nbsp; <strong>BHK:</strong> ' + prop.bhk : ''}</p>` : ''}
-          ${prop.amenities ? `<p><strong>Amenities:</strong> ${prop.amenities}</p>` : ''}
+          <h3>${esc(prop.name)}</h3>
+          <p><strong>Type:</strong> ${typeLabel} &nbsp;|&nbsp; <strong>Location:</strong> ${esc(prop.location)}</p>
+          <p><strong>Price:</strong> ${priceStr}${areaStr ? ` &nbsp;|&nbsp; <strong>Area:</strong> ${areaStr}` : ''}</p>
+          ${details3}
+          ${prop.amenities ? `<p><strong>Amenities:</strong> ${esc(prop.amenities)}</p>` : ''}
           ${layoutBadge}
           ${prop.images && prop.images.length > 1 ? `<p><strong>Photos:</strong> ${prop.images.length} uploaded</p>` : ''}
+          <div class="quick-status">${statusPills}</div>
         </div>
         <div class="property-actions">
+          <button class="btn-edit" onclick="editProperty(${prop.id})">✏️ Edit</button>
           ${prop.layout ? `<button class="btn-view-layout" onclick="viewLayout(${prop.id})">View Layout</button>` : ''}
           <button class="btn-delete" onclick="deleteProperty(${prop.id})">Delete</button>
         </div>
@@ -249,18 +566,201 @@ function viewLayout(id) {
 }
 window.viewLayout = viewLayout;
 
-function deleteProperty(id) {
+async function deleteProperty(id) {
   if (confirm('Are you sure you want to delete this property?')) {
     let properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
     properties = properties.filter(prop => prop.id !== id);
     localStorage.setItem('raas_properties', JSON.stringify(properties));
+    if (_backendAvailable) {
+      await apiDelete(`/api/properties?id=${id}`);
+    }
     loadPropertiesList();
-    showToast('🗑️ Property deleted');
+    showToast('Property deleted');
   }
 }
 window.deleteProperty = deleteProperty;
 
-// ─── Site Settings ────────────────────────────────────────
+// ─── Edit property (load into form) ─────────────────────
+function editProperty(id) {
+  const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
+  const prop = properties.find(p => p.id === id);
+  if (!prop) { showToast('Property not found'); return; }
+  loadPropertyIntoForm(prop);
+}
+window.editProperty = editProperty;
+
+// ─── Quick status change ─────────────────────────────────
+async function quickStatus(id, status) {
+  let properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
+  properties = properties.map(p => p.id === id ? { ...p, status } : p);
+  localStorage.setItem('raas_properties', JSON.stringify(properties));
+
+  if (_backendAvailable) {
+    const prop = properties.find(p => p.id === id);
+    if (prop) apiPost('/api/properties', prop); // fire-and-forget
+  }
+
+  loadPropertiesList();
+  updateDashboardSummary();
+  showToast(`Status → ${status}`);
+}
+window.quickStatus = quickStatus;
+
+// ─── Dashboard summary ───────────────────────────────────
+function updateDashboardSummary() {
+  const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
+  const enquiries = JSON.parse(localStorage.getItem('raas_enquiries') || '[]');
+
+  const counts = { total: properties.length, available: 0, booked: 0, sold: 0, enquiries: enquiries.length };
+  properties.forEach(p => {
+    const s = p.status || 'available';
+    if (s === 'available' || s === 'premium' || s === 'upcoming') counts.available++;
+    else if (s === 'booked') counts.booked++;
+    else if (s === 'sold') counts.sold++;
+  });
+
+  const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+  el('sum-total', counts.total);
+  el('sum-available', counts.available);
+  el('sum-booked', counts.booked);
+  el('sum-sold', counts.sold);
+  el('sum-enquiries', counts.enquiries);
+}
+
+// ─── Enquiries / Leads view ──────────────────────────────
+async function loadEnquiries() {
+  // Try API first
+  let enquiries = null;
+  if (_backendAvailable !== false) {
+    enquiries = await apiGet('/api/contact');
+  }
+  // Fall back to localStorage
+  if (!Array.isArray(enquiries) || enquiries.length === 0) {
+    enquiries = JSON.parse(localStorage.getItem('raas_enquiries') || '[]');
+  }
+
+  const container = document.getElementById('enquiries-list');
+  if (!container) return;
+
+  if (enquiries.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>No enquiries yet. When visitors use the contact form, their messages will appear here.</p>
+      </div>`;
+    return;
+  }
+
+  // Sort newest first
+  enquiries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+  const waPhone = '919019793641';
+  container.innerHTML = enquiries.map(enq => {
+    const date = enq.timestamp ? new Date(enq.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+    const interestLabel = {
+      plots: 'Buying a Plot', land: 'Agricultural Land', apartment: 'Apartment',
+      construction: 'Construction', interiors: 'Interiors', materials: 'Materials', other: 'General'
+    }[enq.interest] || esc(enq.interest || '');
+
+    return `
+      <div class="enquiry-card">
+        <div class="enquiry-header">
+          <strong>${esc(enq.name || 'Unknown')}</strong>
+          ${date ? `<span class="enquiry-date">${date}</span>` : ''}
+        </div>
+        <p><strong>Phone:</strong> ${esc(enq.phone || '—')} &nbsp; <strong>Email:</strong> ${esc(enq.email || '—')}</p>
+        <p><strong>Interest:</strong> ${interestLabel}</p>
+        ${enq.message ? `<p class="enquiry-message">${esc(enq.message)}</p>` : ''}
+        ${enq.budget ? `<p><strong>Budget:</strong> ${esc(enq.budget)}</p>` : ''}
+        ${enq.timeline ? `<p><strong>Timeline:</strong> ${esc(enq.timeline)}</p>` : ''}
+        <div class="enquiry-actions">
+          <a class="btn-wa-reply" href="https://wa.me/${enq.phone ? enq.phone.replace(/\D/g, '') : waPhone}?text=${encodeURIComponent('Hi ' + (enq.name || '') + ', thanks for contacting RAAS Builders!')}" target="_blank" rel="noopener">💬 WhatsApp</a>
+          ${enq.phone ? `<a class="btn-call-reply" href="tel:${esc(enq.phone)}">📞 Call</a>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//   MATERIALS PRICING EDITOR
+// ═══════════════════════════════════════════════════════════
+function getMaterials() {
+  const stored = JSON.parse(localStorage.getItem('raas_materials') || 'null');
+  return stored || DEFAULT_MATERIALS.slice();
+}
+
+function renderMaterialRow(mat, index) {
+  return `
+    <div class="material-edit-row" data-index="${index}">
+      <div class="form-group">
+        <label>Icon</label>
+        <input type="text" class="icon-input mat-icon" value="${mat.icon || ''}" placeholder="🧱">
+      </div>
+      <div class="form-group">
+        <label>Material Name</label>
+        <input type="text" class="mat-name" value="${mat.name || ''}" placeholder="e.g. Cement" required>
+      </div>
+      <div class="form-group">
+        <label>Price / Rate</label>
+        <input type="text" class="mat-price" value="${mat.price || ''}" placeholder="e.g. ₹340–380/bag">
+      </div>
+      <button type="button" class="btn-remove-material" onclick="removeMaterialRow(${index})" title="Remove">✕</button>
+    </div>`;
+}
+
+function loadMaterialsEditor() {
+  const materials = getMaterials();
+  const editor = document.getElementById('materials-editor');
+  if (!editor) return;
+  editor.innerHTML = materials.map((m, i) => renderMaterialRow(m, i)).join('');
+}
+
+function addMaterialRow() {
+  const editor = document.getElementById('materials-editor');
+  if (!editor) return;
+  const idx = editor.querySelectorAll('.material-edit-row').length;
+  editor.insertAdjacentHTML('beforeend', renderMaterialRow({ icon: '', name: '', price: '' }, idx));
+}
+window.addMaterialRow = addMaterialRow;
+
+function removeMaterialRow(index) {
+  const rows = document.querySelectorAll('.material-edit-row');
+  if (rows[index]) rows[index].remove();
+  // Re-index
+  document.querySelectorAll('.material-edit-row').forEach((row, i) => {
+    row.setAttribute('data-index', i);
+    row.querySelector('.btn-remove-material').setAttribute('onclick', `removeMaterialRow(${i})`);
+  });
+}
+window.removeMaterialRow = removeMaterialRow;
+
+function collectMaterialsFromForm() {
+  const rows = document.querySelectorAll('.material-edit-row');
+  const materials = [];
+  rows.forEach(row => {
+    const icon = row.querySelector('.mat-icon').value.trim();
+    const name = row.querySelector('.mat-name').value.trim();
+    const price = row.querySelector('.mat-price').value.trim();
+    if (name) materials.push({ icon, name, price });
+  });
+  return materials;
+}
+
+const materialsForm = document.getElementById('materials-form');
+if (materialsForm) {
+  materialsForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const materials = collectMaterialsFromForm();
+    localStorage.setItem('raas_materials', JSON.stringify(materials));
+    if (_backendAvailable) {
+      await apiPost('/api/materials', materials);
+    }
+    showToast('Materials pricing saved');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//   SITE SETTINGS
+// ═══════════════════════════════════════════════════════════
 function getSettings() {
   const stored = JSON.parse(localStorage.getItem('raas_site_settings') || '{}');
   return { ...DEFAULT_SETTINGS, ...stored };
@@ -292,13 +792,12 @@ function loadSettingsIntoForm() {
     const el = document.getElementById(inputId);
     if (!el) return;
     let val = s[key] || '';
-    // Convert <br> back to newlines for textareas
     if (el.tagName === 'TEXTAREA') val = val.replace(/<br\s*\/?>/gi, '\n');
     el.value = val;
   });
 }
 
-document.getElementById('settings-form').addEventListener('submit', (e) => {
+document.getElementById('settings-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const getVal = (id, asHtml = false) => {
     const el = document.getElementById(id);
@@ -330,7 +829,13 @@ document.getElementById('settings-form').addEventListener('submit', (e) => {
   };
 
   localStorage.setItem('raas_site_settings', JSON.stringify(settings));
-  showToast('💾 Site settings saved');
+  if (_backendAvailable) {
+    await apiPost('/api/settings', settings);
+  }
+  showToast('Site settings saved');
 });
 
-document.addEventListener('DOMContentLoaded', checkAuth);
+document.addEventListener('DOMContentLoaded', () => {
+  checkBackend(); // probe backend early (non-blocking)
+  checkAuth();
+});

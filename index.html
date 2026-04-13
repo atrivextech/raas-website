@@ -7,6 +7,7 @@
 <meta name="keywords" content="RAAS Builders, plots in Shivamogga, apartments Bengaluru, construction Malnad, Thirthahalli plots, real estate Karnataka, RERA approved">
 <meta name="author" content="RAAS Builders & Developers">
 <meta name="theme-color" content="#1A3C34">
+<link rel="canonical" href="https://raasbuilders.com/">
 
 <!-- Open Graph -->
 <meta property="og:title" content="RAAS Builders & Developers — Plots, Apartments, Construction">
@@ -202,6 +203,7 @@
   <div class="prop-filter reveal">
     <button class="pf-chip active" data-filter="all" data-en="All" data-kn="ಎಲ್ಲಾ">All</button>
     <button class="pf-chip" data-filter="plot" data-en="Plots" data-kn="ನಿವೇಶನ">Plots</button>
+    <button class="pf-chip" data-filter="land" data-en="Agri Land" data-kn="ಕೃಷಿ ಭೂಮಿ">Agri Land</button>
     <button class="pf-chip" data-filter="apartment" data-en="Apartments" data-kn="ಅಪಾರ್ಟ್‌ಮೆಂಟ್">Apartments</button>
     <button class="pf-chip" data-filter="villa" data-en="Villas" data-kn="ವಿಲ್ಲಾ">Villas</button>
     <button class="pf-chip" data-filter="commercial" data-en="Commercial" data-kn="ವಾಣಿಜ್ಯ">Commercial</button>
@@ -423,37 +425,8 @@
   <p class="section-sub reveal">Direct wholesale pricing for contractors, builders and individuals. Bulk enquiry — delivered to your site in Shivamogga &amp; Bengaluru.</p>
   <div class="divider"></div>
 
-  <div class="materials-grid reveal">
-    <div class="material-card">
-      <div class="material-icon">🏖️</div>
-      <div class="material-name">River Sand</div>
-      <div class="material-price">Enquiry based</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🪨</div>
-      <div class="material-name">M-Sand</div>
-      <div class="material-price">₹55–65/cft</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🧱</div>
-      <div class="material-name">Bricks</div>
-      <div class="material-price">₹8–12/unit</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">⚙️</div>
-      <div class="material-name">TMT Steel</div>
-      <div class="material-price">Wholesale rate</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🏗️</div>
-      <div class="material-name">Cement</div>
-      <div class="material-price">₹340–380/bag</div>
-    </div>
-    <div class="material-card">
-      <div class="material-icon">🪵</div>
-      <div class="material-name">Granite / Stone</div>
-      <div class="material-price">₹90–140/sqft</div>
-    </div>
+  <div id="materials-grid" class="materials-grid reveal">
+    <!-- Populated by js/app.js from admin-saved materials or defaults -->
   </div>
   <div class="materials-note reveal">
     <a href="#contact" class="btn-primary">📦 Request Bulk Quote</a>
@@ -589,21 +562,22 @@
       <div class="form-row">
         <div class="form-group">
           <label for="cf-name">Your Name</label>
-          <input type="text" id="cf-name" required>
+          <input type="text" id="cf-name" name="name" required>
         </div>
         <div class="form-group">
           <label for="cf-phone">Phone</label>
-          <input type="tel" id="cf-phone" required>
+          <input type="tel" id="cf-phone" name="phone" pattern="[0-9]{10,}" title="Enter 10+ digit phone number" required>
         </div>
       </div>
       <div class="form-group">
         <label for="cf-email">Email (optional)</label>
-        <input type="email" id="cf-email">
+        <input type="email" id="cf-email" name="email">
       </div>
       <div class="form-group">
         <label for="cf-interest">I'm interested in</label>
-        <select id="cf-interest">
-          <option value="plots">Buying a Plot</option>
+        <select id="cf-interest" name="interest">
+          <option value="plots">Buying a Plot / Site</option>
+          <option value="land">Agricultural Land</option>
           <option value="apartment">Buying an Apartment</option>
           <option value="construction">House Construction</option>
           <option value="interiors">Interior Design</option>
@@ -611,9 +585,33 @@
           <option value="other">Something Else</option>
         </select>
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cf-budget">Budget Range</label>
+          <select id="cf-budget" name="budget">
+            <option value="">Select Budget</option>
+            <option value="under-20">Under ₹20 Lakhs</option>
+            <option value="20-40">₹20 – 40 Lakhs</option>
+            <option value="40-70">₹40 – 70 Lakhs</option>
+            <option value="70-1cr">₹70 Lakhs – 1 Crore</option>
+            <option value="above-1cr">Above ₹1 Crore</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cf-timeline">When do you plan to buy?</label>
+          <select id="cf-timeline" name="timeline">
+            <option value="">Select Timeline</option>
+            <option value="immediate">Immediately</option>
+            <option value="1-3months">1 – 3 Months</option>
+            <option value="3-6months">3 – 6 Months</option>
+            <option value="6-12months">6 – 12 Months</option>
+            <option value="exploring">Just Exploring</option>
+          </select>
+        </div>
+      </div>
       <div class="form-group">
         <label for="cf-message">Tell us more</label>
-        <textarea id="cf-message" placeholder="Location, budget, timeline, any questions..."></textarea>
+        <textarea id="cf-message" name="message" placeholder="Location, budget, timeline, any questions..."></textarea>
       </div>
       <button type="submit">Send Enquiry via WhatsApp →</button>
     </form>
