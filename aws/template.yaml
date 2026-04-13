@@ -229,7 +229,7 @@ Resources:
               - HEAD
               - OPTIONS
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad   # CachingDisabled
-            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # AllViewerExceptHostHeader
+            OriginRequestPolicyId: !Ref ApiOriginRequestPolicy
             Compress: true
 
         # Default → S3 (static files, cached)
@@ -265,6 +265,23 @@ Resources:
         # (matches vercel.json headers)
         # Using CloudFront response headers policy
         # Created inline below
+
+  # Custom origin request policy for API — forwards cookies but not Host header
+  ApiOriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Name: !Sub "${AWS::StackName}-api-orp"
+        CookiesConfig:
+          CookieBehavior: all
+        HeadersConfig:
+          HeaderBehavior: whitelist
+          Headers:
+            - Content-Type
+            - X-RAAS-Client
+            - Accept
+        QueryStringsConfig:
+          QueryStringBehavior: all
 
   # Response headers policy (security headers matching vercel.json)
   SecurityHeadersPolicy:

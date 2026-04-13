@@ -26,8 +26,9 @@ async function handle({ method, headers, url, body }) {
     if (!verifySession(headers)) return respond(401, { error: 'Unauthorized' });
     if (!body || !body.name) return respond(400, { error: 'Property name required' });
     body.id = body.id || Date.now();
-    const props = (await store.get(KEY)) || [];
-    props.push(body);
+    let props = (await store.get(KEY)) || [];
+    const idx = props.findIndex(p => String(p.id) === String(body.id));
+    if (idx >= 0) props[idx] = body; else props.push(body);
     await store.set(KEY, props);
     return respond(201, { ok: true, id: body.id });
   }

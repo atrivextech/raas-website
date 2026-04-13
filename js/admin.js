@@ -7,10 +7,17 @@
 ══════════════════════════════════════════════════════════════ */
 
 // Fallback credentials (used ONLY when backend is not configured)
+// ⚠️ In production, set SESSION_SECRET + ADMIN_PASSWORD env vars
+//    so auth happens server-side with httpOnly cookies instead.
 const ADMIN_CREDENTIALS = {
   username: 'admin',
   password: 'raas2025'
 };
+
+// ─── Constants ──────────────────────────────────────────
+const MAX_FILE_SIZE = 2 * 1024 * 1024;     // 2 MB per image
+const MAX_IMAGES    = 8;                     // max photos per property
+const MAX_LAYOUT_SIZE = 5 * 1024 * 1024;    // 5 MB for layout PDF/image
 
 // ─── API base (same-origin on both Vercel and AWS with CloudFront) ─
 const API_BASE = (typeof window !== 'undefined' && window.RAAS_API_BASE) || '';
@@ -264,7 +271,20 @@ function handleImageUpload(input) {
   uploadedImages = [];
   const previews = document.getElementById('image-previews');
   previews.innerHTML = '';
-  const files = Array.from(input.files);
+  let files = Array.from(input.files);
+
+  // Validate count
+  if (files.length > MAX_IMAGES) {
+    showToast(`Maximum ${MAX_IMAGES} photos allowed. First ${MAX_IMAGES} will be used.`);
+    files = files.slice(0, MAX_IMAGES);
+  }
+
+  // Validate sizes
+  const oversized = files.filter(f => f.size > MAX_FILE_SIZE);
+  if (oversized.length > 0) {
+    showToast(`${oversized.length} file(s) exceed 2 MB and were skipped.`);
+    files = files.filter(f => f.size <= MAX_FILE_SIZE);
+  }
 
   files.forEach((file, index) => {
     const reader = new FileReader();
@@ -292,6 +312,12 @@ function handleLayoutUpload(input) {
 
   const file = input.files[0];
   if (!file) return;
+
+  if (file.size > MAX_LAYOUT_SIZE) {
+    showToast('Layout file must be under 5 MB');
+    input.value = '';
+    return;
+  }
 
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -423,6 +449,12 @@ document.getElementById('property-form').addEventListener('submit', async (e) =>
   e.preventDefault();
   const property = collectPropertyFromForm();
   const isEdit = !!editingPropertyId;
+
+  // Validate required fields
+  if (!property.name || !property.name.trim()) { showToast('Property name is required'); return; }
+  if (!property.location || !property.location.trim()) { showToast('Location is required'); return; }
+  if (property.price && isNaN(Number(property.price))) { showToast('Price must be a number'); return; }
+  if (property.area && isNaN(Number(property.area))) { showToast('Area must be a number'); return; }
 
   let properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
   if (isEdit) {
@@ -558,7 +590,7 @@ function viewLayout(id) {
   if (prop && prop.layout) {
     const win = window.open();
     if (prop.layout.type && prop.layout.type.includes('pdf')) {
-      win.document.write(`<iframe src="${prop.layout.data}" width="100%" height="100%" style="border:none;position:absolute;inset:0;"></iframe>`);
+      win.document.write(`<iframe src="${prop.layout.data}" width="100%" height="100%" style="border:none;position:absolute;inset:0;" sandbox="allow-same-origin"></iframe>`);
     } else {
       win.document.write(`<img src="${prop.layout.data}" style="max-width:100%;display:block;margin:auto;">`);
     }
@@ -808,11 +840,17 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
     return v;
   };
 
+  // Validate phone numbers
+  const rawBlr = getVal('s-phone-blr-raw').replace(/\D/g, '');
+  const rawShi = getVal('s-phone-shi-raw').replace(/\D/g, '');
+  if (rawBlr && (rawBlr.length < 10 || rawBlr.length > 13)) { showToast('Invalid Bengaluru phone number'); return; }
+  if (rawShi && (rawShi.length < 10 || rawShi.length > 13)) { showToast('Invalid Shivamogga phone number'); return; }
+
   const settings = {
     phone_bengaluru: getVal('s-phone-blr'),
-    phone_bengaluru_raw: getVal('s-phone-blr-raw').replace(/\D/g, ''),
+    phone_bengaluru_raw: rawBlr,
     phone_shivamogga: getVal('s-phone-shi'),
-    phone_shivamogga_raw: getVal('s-phone-shi-raw').replace(/\D/g, ''),
+    phone_shivamogga_raw: rawShi,
     email: getVal('s-email'),
     address: getVal('s-address', true),
     hours: getVal('s-hours', true),

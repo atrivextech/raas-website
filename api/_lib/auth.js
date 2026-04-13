@@ -13,7 +13,7 @@ const crypto = require('node:crypto');
 const COOKIE_NAME = 'raas_session';
 const TTL_SECONDS = 60 * 60 * 12; // 12 hours
 
-function getSecret() { return process.env.SESSION_SECRET || ''; }
+function getSecret() { return process.env.SESSION_SECRET || null; }
 
 /** True when required env vars are present → backend mode */
 function backendReady() {
@@ -67,7 +67,7 @@ function verifySession(hdrs) {
 function corsHeaders(extra = {}) {
   return {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, X-RAAS-Client',
     ...extra
