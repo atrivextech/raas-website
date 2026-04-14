@@ -128,7 +128,11 @@ const DEFAULT_SETTINGS = {
   test_2_role: 'Homeowner, Bengaluru',
   test_3_text: '"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."',
   test_3_name: 'Mohan H.',
-  test_3_role: 'Farmhouse Owner, Sagara'
+  test_3_role: 'Farmhouse Owner, Sagara',
+  // Interior services
+  int_home_features: '3D Design Preview, Premium Materials, Custom Furniture, On-site Supervision',
+  int_kitchen_features: 'L / U / Island Layouts, Marine-grade Ply, Granite / Quartz Tops, 10-year Warranty',
+  int_wardrobe_features: 'Sliding / Openable, Laminate Finishes, LED Lighting, Lifetime Hardware'
 };
 
 const DEFAULT_MATERIALS = [
@@ -877,7 +881,11 @@ function loadSettingsIntoForm() {
     's-test-2-role': 'test_2_role',
     's-test-3-text': 'test_3_text',
     's-test-3-name': 'test_3_name',
-    's-test-3-role': 'test_3_role'
+    's-test-3-role': 'test_3_role',
+    // Interior services
+    's-int-home-features': 'int_home_features',
+    's-int-kitchen-features': 'int_kitchen_features',
+    's-int-wardrobe-features': 'int_wardrobe_features'
   };
   Object.entries(map).forEach(([inputId, key]) => {
     const el = document.getElementById(inputId);
@@ -888,78 +896,103 @@ function loadSettingsIntoForm() {
   });
 }
 
+// ─── Shared: read field value helper ─────────────────────
+function getFormVal(id, asHtml = false) {
+  const el = document.getElementById(id);
+  if (!el) return undefined;  // field not on current form → skip
+  let v = el.value.trim();
+  if (asHtml) v = v.replace(/\n/g, '<br>');
+  return v;
+}
+
+// ─── Shared: merge partial settings + save ───────────────
+async function savePartialSettings(partial, toastMsg) {
+  const current = getSettings();
+  const merged = { ...current, ...partial };
+  localStorage.setItem('raas_site_settings', JSON.stringify(merged));
+  if (_backendAvailable) {
+    await apiPost('/api/settings', merged);
+  }
+  showToast(toastMsg || 'Settings saved');
+}
+
+// ─── Settings form (contact, stats, about) ───────────────
 document.getElementById('settings-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const getVal = (id, asHtml = false) => {
-    const el = document.getElementById(id);
-    if (!el) return '';
-    let v = el.value.trim();
-    if (asHtml) v = v.replace(/\n/g, '<br>');
-    return v;
-  };
-
-  // Validate phone numbers
-  const rawBlr = getVal('s-phone-blr-raw').replace(/\D/g, '');
-  const rawShi = getVal('s-phone-shi-raw').replace(/\D/g, '');
+  const rawBlr = getFormVal('s-phone-blr-raw').replace(/\D/g, '');
+  const rawShi = getFormVal('s-phone-shi-raw').replace(/\D/g, '');
   if (rawBlr && (rawBlr.length < 10 || rawBlr.length > 13)) { showToast('Invalid Bengaluru phone number'); return; }
   if (rawShi && (rawShi.length < 10 || rawShi.length > 13)) { showToast('Invalid Shivamogga phone number'); return; }
 
-  const settings = {
-    phone_bengaluru: getVal('s-phone-blr'),
+  await savePartialSettings({
+    phone_bengaluru: getFormVal('s-phone-blr'),
     phone_bengaluru_raw: rawBlr,
-    phone_shivamogga: getVal('s-phone-shi'),
+    phone_shivamogga: getFormVal('s-phone-shi'),
     phone_shivamogga_raw: rawShi,
-    email: getVal('s-email'),
-    address: getVal('s-address', true),
-    hours: getVal('s-hours', true),
-    stat_listings: getVal('s-stat-listings'),
-    stat_years: getVal('s-stat-years'),
-    stat_districts: getVal('s-stat-districts'),
-    stat_satisfaction: getVal('s-stat-satisfaction'),
-    stat_listings_num: getVal('s-stat-listings-num'),
-    stat_years_num: getVal('s-stat-years-num'),
-    stat_families_num: getVal('s-stat-families-num'),
-    stat_rating_num: getVal('s-stat-rating-num'),
-    about_p1: getVal('s-about-1'),
-    about_p2: getVal('s-about-2'),
-    about_p3: getVal('s-about-3'),
-    // Construction packages
-    pkg_essential_price: getVal('s-pkg-essential-price'),
-    pkg_essential_features: getVal('s-pkg-essential-features'),
-    pkg_premium_price: getVal('s-pkg-premium-price'),
-    pkg_premium_features: getVal('s-pkg-premium-features'),
-    pkg_elite_price: getVal('s-pkg-elite-price'),
-    pkg_elite_features: getVal('s-pkg-elite-features'),
-    pkg_farmhouse_price: getVal('s-pkg-farmhouse-price'),
-    pkg_farmhouse_features: getVal('s-pkg-farmhouse-features'),
-    // Apartment pricing
-    apt_1bhk_price: getVal('s-apt-1bhk-price'),
-    apt_1bhk_area: getVal('s-apt-1bhk-area'),
-    apt_23bhk_price: getVal('s-apt-23bhk-price'),
-    apt_23bhk_area: getVal('s-apt-23bhk-area'),
-    // Hero showcase
-    hero_title: getVal('s-hero-title'),
-    hero_location: getVal('s-hero-location'),
-    hero_price: getVal('s-hero-price'),
-    hero_specs: getVal('s-hero-specs'),
-    // Testimonials
-    test_1_text: getVal('s-test-1-text'),
-    test_1_name: getVal('s-test-1-name'),
-    test_1_role: getVal('s-test-1-role'),
-    test_2_text: getVal('s-test-2-text'),
-    test_2_name: getVal('s-test-2-name'),
-    test_2_role: getVal('s-test-2-role'),
-    test_3_text: getVal('s-test-3-text'),
-    test_3_name: getVal('s-test-3-name'),
-    test_3_role: getVal('s-test-3-role')
-  };
-
-  localStorage.setItem('raas_site_settings', JSON.stringify(settings));
-  if (_backendAvailable) {
-    await apiPost('/api/settings', settings);
-  }
-  showToast('Site settings saved');
+    email: getFormVal('s-email'),
+    address: getFormVal('s-address', true),
+    hours: getFormVal('s-hours', true),
+    stat_listings: getFormVal('s-stat-listings'),
+    stat_years: getFormVal('s-stat-years'),
+    stat_districts: getFormVal('s-stat-districts'),
+    stat_satisfaction: getFormVal('s-stat-satisfaction'),
+    stat_listings_num: getFormVal('s-stat-listings-num'),
+    stat_years_num: getFormVal('s-stat-years-num'),
+    stat_families_num: getFormVal('s-stat-families-num'),
+    stat_rating_num: getFormVal('s-stat-rating-num'),
+    about_p1: getFormVal('s-about-1'),
+    about_p2: getFormVal('s-about-2'),
+    about_p3: getFormVal('s-about-3')
+  }, 'Site settings saved');
 });
+
+// ─── Pricing form (construction, apartments, interiors) ──
+const pricingForm = document.getElementById('pricing-form');
+if (pricingForm) {
+  pricingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await savePartialSettings({
+      pkg_essential_price: getFormVal('s-pkg-essential-price'),
+      pkg_essential_features: getFormVal('s-pkg-essential-features'),
+      pkg_premium_price: getFormVal('s-pkg-premium-price'),
+      pkg_premium_features: getFormVal('s-pkg-premium-features'),
+      pkg_elite_price: getFormVal('s-pkg-elite-price'),
+      pkg_elite_features: getFormVal('s-pkg-elite-features'),
+      pkg_farmhouse_price: getFormVal('s-pkg-farmhouse-price'),
+      pkg_farmhouse_features: getFormVal('s-pkg-farmhouse-features'),
+      apt_1bhk_price: getFormVal('s-apt-1bhk-price'),
+      apt_1bhk_area: getFormVal('s-apt-1bhk-area'),
+      apt_23bhk_price: getFormVal('s-apt-23bhk-price'),
+      apt_23bhk_area: getFormVal('s-apt-23bhk-area'),
+      int_home_features: getFormVal('s-int-home-features'),
+      int_kitchen_features: getFormVal('s-int-kitchen-features'),
+      int_wardrobe_features: getFormVal('s-int-wardrobe-features')
+    }, 'Pricing saved');
+  });
+}
+
+// ─── Content form (hero showcase, testimonials) ──────────
+const contentForm = document.getElementById('content-form');
+if (contentForm) {
+  contentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await savePartialSettings({
+      hero_title: getFormVal('s-hero-title'),
+      hero_location: getFormVal('s-hero-location'),
+      hero_price: getFormVal('s-hero-price'),
+      hero_specs: getFormVal('s-hero-specs'),
+      test_1_text: getFormVal('s-test-1-text'),
+      test_1_name: getFormVal('s-test-1-name'),
+      test_1_role: getFormVal('s-test-1-role'),
+      test_2_text: getFormVal('s-test-2-text'),
+      test_2_name: getFormVal('s-test-2-name'),
+      test_2_role: getFormVal('s-test-2-role'),
+      test_3_text: getFormVal('s-test-3-text'),
+      test_3_name: getFormVal('s-test-3-name'),
+      test_3_role: getFormVal('s-test-3-role')
+    }, 'Content saved');
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   checkBackend(); // probe backend early (non-blocking)

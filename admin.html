@@ -75,9 +75,11 @@
       <!-- Tabs -->
       <div class="admin-tabs">
         <button class="tab-btn active" data-tab="properties">🏠 Properties</button>
-        <button class="tab-btn" data-tab="materials">🧱 Materials Pricing</button>
+        <button class="tab-btn" data-tab="pricing">💰 Pricing</button>
+        <button class="tab-btn" data-tab="materials">🧱 Materials</button>
+        <button class="tab-btn" data-tab="content">📝 Content</button>
         <button class="tab-btn" data-tab="enquiries">📩 Enquiries</button>
-        <button class="tab-btn" data-tab="settings">⚙️ Site Settings</button>
+        <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
       </div>
 
       <!-- ══════════════════ TAB: PROPERTIES ══════════════════ -->
@@ -297,6 +299,190 @@
         </div>
       </div>
 
+      <!-- ══════════════════ TAB: PRICING ══════════════════ -->
+      <div class="tab-panel" id="tab-pricing">
+        <div class="card">
+          <h2>🏗️ Construction Packages</h2>
+          <div class="card-note">
+            Update pricing per sq.ft and features for each construction package shown on the homepage.
+            Features are comma-separated — they appear as individual bullet points.
+          </div>
+          <form id="pricing-form">
+            <h3>Essential (Economy)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-pkg-essential-price">Price</label>
+                <input type="text" id="s-pkg-essential-price" placeholder="From ₹1,650/sqft">
+              </div>
+              <div class="form-group">
+                <label for="s-pkg-essential-features">Features</label>
+                <input type="text" id="s-pkg-essential-features" placeholder="Basic finishes, Standard fixtures, 2-year warranty">
+              </div>
+            </div>
+            <h3>Premium (Most Popular)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-pkg-premium-price">Price</label>
+                <input type="text" id="s-pkg-premium-price" placeholder="From ₹2,200/sqft">
+              </div>
+              <div class="form-group">
+                <label for="s-pkg-premium-features">Features</label>
+                <input type="text" id="s-pkg-premium-features" placeholder="Modular kitchen, Italian tiles, 5-year warranty">
+              </div>
+            </div>
+            <h3>Elite (Luxury)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-pkg-elite-price">Price</label>
+                <input type="text" id="s-pkg-elite-price" placeholder="From ₹3,200/sqft">
+              </div>
+              <div class="form-group">
+                <label for="s-pkg-elite-features">Features</label>
+                <input type="text" id="s-pkg-elite-features" placeholder="Full interior design, Smart home ready, Lifetime support">
+              </div>
+            </div>
+            <h3>Farmhouse (Special)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-pkg-farmhouse-price">Price</label>
+                <input type="text" id="s-pkg-farmhouse-price" placeholder="Custom Pricing">
+              </div>
+              <div class="form-group">
+                <label for="s-pkg-farmhouse-features">Features</label>
+                <input type="text" id="s-pkg-farmhouse-features" placeholder="Eco-friendly design, Vastu compliant, Site assessment">
+              </div>
+            </div>
+
+            <h2 style="margin-top:32px;">🏢 Apartment Pricing</h2>
+            <div class="card-note">Starting prices and area ranges shown in the Apartments section.</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-apt-1bhk-price">1 BHK Starting Price</label>
+                <input type="text" id="s-apt-1bhk-price" placeholder="✅ Starting ₹25 Lakhs">
+              </div>
+              <div class="form-group">
+                <label for="s-apt-1bhk-area">1 BHK Area Range</label>
+                <input type="text" id="s-apt-1bhk-area" placeholder="✅ 450 – 650 sq.ft">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-apt-23bhk-price">2 & 3 BHK Starting Price</label>
+                <input type="text" id="s-apt-23bhk-price" placeholder="✅ Starting ₹45 Lakhs">
+              </div>
+              <div class="form-group">
+                <label for="s-apt-23bhk-area">2 & 3 BHK Area Range</label>
+                <input type="text" id="s-apt-23bhk-area" placeholder="✅ 900 – 1600 sq.ft">
+              </div>
+            </div>
+
+            <h2 style="margin-top:32px;">🎨 Interior Design Services</h2>
+            <div class="card-note">Update features listed under each interior service on the homepage.</div>
+            <h3>Full Home Interiors</h3>
+            <div class="form-group">
+              <label for="s-int-home-features">Features (comma separated)</label>
+              <input type="text" id="s-int-home-features" placeholder="3D Design Preview, Premium Materials, Custom Furniture, On-site Supervision">
+            </div>
+            <h3>Modular Kitchens</h3>
+            <div class="form-group">
+              <label for="s-int-kitchen-features">Features (comma separated)</label>
+              <input type="text" id="s-int-kitchen-features" placeholder="L / U / Island Layouts, Marine-grade Ply, Granite / Quartz Tops, 10-year Warranty">
+            </div>
+            <h3>Wardrobes & Storage</h3>
+            <div class="form-group">
+              <label for="s-int-wardrobe-features">Features (comma separated)</label>
+              <input type="text" id="s-int-wardrobe-features" placeholder="Sliding / Openable, Laminate Finishes, LED Lighting, Lifetime Hardware">
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top:24px;">💾 Save All Pricing</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ══════════════════ TAB: CONTENT ══════════════════ -->
+      <div class="tab-panel" id="tab-content">
+        <div class="card">
+          <h2>🏠 Hero Showcase Property</h2>
+          <div class="card-note">
+            The featured property card displayed on the homepage hero section. This is the first thing visitors see.
+          </div>
+          <form id="content-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-hero-title">Property Title</label>
+                <input type="text" id="s-hero-title" placeholder="Prime Plot — Thirthahalli Road">
+              </div>
+              <div class="form-group">
+                <label for="s-hero-location">Location</label>
+                <input type="text" id="s-hero-location" placeholder="📍 Shivamogga District, Karnataka">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-hero-price">Price</label>
+                <input type="text" id="s-hero-price" placeholder="₹18.5 L">
+              </div>
+              <div class="form-group">
+                <label for="s-hero-specs">Specs (comma separated)</label>
+                <input type="text" id="s-hero-specs" placeholder="📐 30×40 ft, 🛣️ 40ft Road, ✅ RERA">
+              </div>
+            </div>
+
+            <h2 style="margin-top:32px;">⭐ Customer Testimonials</h2>
+            <div class="card-note">
+              Customer reviews shown on the homepage. Leave all fields blank to hide a testimonial slot.
+            </div>
+            <h3>Testimonial 1</h3>
+            <div class="form-group">
+              <label for="s-test-1-text">Quote</label>
+              <textarea id="s-test-1-text" rows="2" placeholder='"Bought a plot in Thirthahalli through RAAS..."'></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-test-1-name">Name</label>
+                <input type="text" id="s-test-1-name" placeholder="Shivakumar R.">
+              </div>
+              <div class="form-group">
+                <label for="s-test-1-role">Role / Location</label>
+                <input type="text" id="s-test-1-role" placeholder="Plot Owner, Shivamogga">
+              </div>
+            </div>
+            <h3>Testimonial 2</h3>
+            <div class="form-group">
+              <label for="s-test-2-text">Quote</label>
+              <textarea id="s-test-2-text" rows="2" placeholder='"RAAS built our 3 BHK home..."'></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-test-2-name">Name</label>
+                <input type="text" id="s-test-2-name" placeholder="Priya K.">
+              </div>
+              <div class="form-group">
+                <label for="s-test-2-role">Role / Location</label>
+                <input type="text" id="s-test-2-role" placeholder="Homeowner, Bengaluru">
+              </div>
+            </div>
+            <h3>Testimonial 3</h3>
+            <div class="form-group">
+              <label for="s-test-3-text">Quote</label>
+              <textarea id="s-test-3-text" rows="2" placeholder='"We built our farmhouse in Sagara..."'></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="s-test-3-name">Name</label>
+                <input type="text" id="s-test-3-name" placeholder="Mohan H.">
+              </div>
+              <div class="form-group">
+                <label for="s-test-3-role">Role / Location</label>
+                <input type="text" id="s-test-3-role" placeholder="Farmhouse Owner, Sagara">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top:24px;">💾 Save Content</button>
+          </form>
+        </div>
+      </div>
+
       <!-- ══════════════════ TAB: ENQUIRIES ══════════════════ -->
       <div class="tab-panel" id="tab-enquiries">
         <div class="card">
@@ -409,148 +595,6 @@
             <div class="form-group">
               <label for="s-about-3">About — Paragraph 3</label>
               <textarea id="s-about-3" rows="3"></textarea>
-            </div>
-
-            <h2 style="margin-top:32px;">Construction Packages</h2>
-            <div class="card-note">
-              Update pricing per sq.ft and features for each construction package shown on the homepage.
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-pkg-essential-price">Essential Package Price</label>
-                <input type="text" id="s-pkg-essential-price" placeholder="From ₹1,650/sqft">
-              </div>
-              <div class="form-group">
-                <label for="s-pkg-essential-features">Essential Features (comma separated)</label>
-                <input type="text" id="s-pkg-essential-features" placeholder="Basic finishes, Standard fixtures, 2-year warranty">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-pkg-premium-price">Premium Package Price</label>
-                <input type="text" id="s-pkg-premium-price" placeholder="From ₹2,200/sqft">
-              </div>
-              <div class="form-group">
-                <label for="s-pkg-premium-features">Premium Features (comma separated)</label>
-                <input type="text" id="s-pkg-premium-features" placeholder="Modular kitchen, Italian tiles, 5-year warranty">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-pkg-elite-price">Elite Package Price</label>
-                <input type="text" id="s-pkg-elite-price" placeholder="From ₹3,200/sqft">
-              </div>
-              <div class="form-group">
-                <label for="s-pkg-elite-features">Elite Features (comma separated)</label>
-                <input type="text" id="s-pkg-elite-features" placeholder="Full interior design, Smart home ready, Lifetime support">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-pkg-farmhouse-price">Farmhouse Package Price</label>
-                <input type="text" id="s-pkg-farmhouse-price" placeholder="Custom Pricing">
-              </div>
-              <div class="form-group">
-                <label for="s-pkg-farmhouse-features">Farmhouse Features (comma separated)</label>
-                <input type="text" id="s-pkg-farmhouse-features" placeholder="Eco-friendly design, Vastu compliant, Site assessment">
-              </div>
-            </div>
-
-            <h2 style="margin-top:32px;">Apartment Pricing</h2>
-            <div class="card-note">
-              Starting prices and specs shown in the Apartments section.
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-apt-1bhk-price">1 BHK Starting Price</label>
-                <input type="text" id="s-apt-1bhk-price" placeholder="Starting ₹25 Lakhs">
-              </div>
-              <div class="form-group">
-                <label for="s-apt-1bhk-area">1 BHK Area Range</label>
-                <input type="text" id="s-apt-1bhk-area" placeholder="450 – 650 sq.ft">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-apt-23bhk-price">2 & 3 BHK Starting Price</label>
-                <input type="text" id="s-apt-23bhk-price" placeholder="Starting ₹45 Lakhs">
-              </div>
-              <div class="form-group">
-                <label for="s-apt-23bhk-area">2 & 3 BHK Area Range</label>
-                <input type="text" id="s-apt-23bhk-area" placeholder="900 – 1600 sq.ft">
-              </div>
-            </div>
-
-            <h2 style="margin-top:32px;">Hero Showcase Property</h2>
-            <div class="card-note">
-              The featured property card displayed on the homepage hero section.
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-hero-title">Property Title</label>
-                <input type="text" id="s-hero-title" placeholder="Prime Plot — Thirthahalli Road">
-              </div>
-              <div class="form-group">
-                <label for="s-hero-location">Location</label>
-                <input type="text" id="s-hero-location" placeholder="Shivamogga District, Karnataka">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-hero-price">Price</label>
-                <input type="text" id="s-hero-price" placeholder="₹18.5 L">
-              </div>
-              <div class="form-group">
-                <label for="s-hero-specs">Specs (comma separated)</label>
-                <input type="text" id="s-hero-specs" placeholder="📐 30×40 ft, 🛣️ 40ft Road, ✅ RERA">
-              </div>
-            </div>
-
-            <h2 style="margin-top:32px;">Testimonials</h2>
-            <div class="card-note">
-              Customer testimonials shown on the homepage. Leave fields blank to hide a testimonial.
-            </div>
-            <div class="form-group">
-              <label for="s-test-1-text">Testimonial 1 — Quote</label>
-              <textarea id="s-test-1-text" rows="2" placeholder="Bought a plot through RAAS..."></textarea>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-test-1-name">Name</label>
-                <input type="text" id="s-test-1-name" placeholder="Shivakumar R.">
-              </div>
-              <div class="form-group">
-                <label for="s-test-1-role">Role / Location</label>
-                <input type="text" id="s-test-1-role" placeholder="Plot Owner, Shivamogga">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="s-test-2-text">Testimonial 2 — Quote</label>
-              <textarea id="s-test-2-text" rows="2" placeholder="RAAS built our 3 BHK home..."></textarea>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-test-2-name">Name</label>
-                <input type="text" id="s-test-2-name" placeholder="Priya K.">
-              </div>
-              <div class="form-group">
-                <label for="s-test-2-role">Role / Location</label>
-                <input type="text" id="s-test-2-role" placeholder="Homeowner, Bengaluru">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="s-test-3-text">Testimonial 3 — Quote</label>
-              <textarea id="s-test-3-text" rows="2" placeholder="We built our farmhouse..."></textarea>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="s-test-3-name">Name</label>
-                <input type="text" id="s-test-3-name" placeholder="Mohan H.">
-              </div>
-              <div class="form-group">
-                <label for="s-test-3-role">Role / Location</label>
-                <input type="text" id="s-test-3-role" placeholder="Farmhouse Owner, Sagara">
-              </div>
             </div>
 
             <button type="submit" class="btn-primary">💾 Save Site Settings</button>

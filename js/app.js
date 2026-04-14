@@ -321,7 +321,11 @@ const DEFAULT_SETTINGS = {
   test_2_role: 'Homeowner, Bengaluru',
   test_3_text: '"We built our farmhouse in Sagara with RAAS. Their Malnad expertise made a huge difference — they understood the terrain, water sources and local permissions."',
   test_3_name: 'Mohan H.',
-  test_3_role: 'Farmhouse Owner, Sagara'
+  test_3_role: 'Farmhouse Owner, Sagara',
+  // Interior design features
+  int_home_features: '3D Design Preview, Premium Materials, Custom Furniture, On-site Supervision',
+  int_kitchen_features: 'L / U / Island Layouts, Marine-grade Ply, Granite / Quartz Tops, 10-year Warranty',
+  int_wardrobe_features: 'Sliding / Openable, Laminate Finishes, LED Lighting, Lifetime Hardware'
 };
 
 function applySiteSettings(settings) {
@@ -379,6 +383,21 @@ function applySiteSettings(settings) {
         : `<div class="hero-prop-spec">${esc(txt)}</div>`;
     }).join('');
   }
+
+  // ─── Interior feature lists (comma-separated → li items) ───
+  const interiorTargets = {
+    'int-home-features': 'int_home_features',
+    'int-kitchen-features': 'int_kitchen_features',
+    'int-wardrobe-features': 'int_wardrobe_features'
+  };
+  Object.entries(interiorTargets).forEach(([elId, key]) => {
+    const el = document.getElementById(elId);
+    if (el && settings[key]) {
+      el.innerHTML = settings[key].split(',').map(f =>
+        `<li>✅ ${esc(f.trim())}</li>`
+      ).join('');
+    }
+  });
 
   // ─── Testimonial avatars (initials from name) ───
   [1, 2, 3].forEach(i => {
