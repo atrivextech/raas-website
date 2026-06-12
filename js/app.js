@@ -203,6 +203,10 @@ function renderPropertyCard(prop) {
   if (prop.rera) specs.push(`<div class="spec-item">✅ RERA</div>`);
   if (specs.length === 0) specs.push(`<div class="spec-item">✅ Verified</div>`);
 
+  const layoutBtn = prop.layout
+    ? `<button class="prop-layout-btn" onclick="viewPublicLayout(${prop.id})" title="View Layout">${prop.layout.type && prop.layout.type.includes('pdf') ? '📄 Layout PDF' : '📐 View Layout'}</button>`
+    : '';
+
   return `
     <article class="prop-card" data-type="${esc(prop.type || 'plot')}">
       <div class="prop-img" style="background-image: linear-gradient(135deg, rgba(13,31,27,0.35), rgba(26,60,52,0.35)), url('${bg}');">
@@ -213,6 +217,7 @@ function renderPropertyCard(prop) {
         <div class="prop-title">${esc(prop.name || 'Untitled')}</div>
         <div class="prop-location">📍 ${esc(prop.location || 'Karnataka')}</div>
         <div class="prop-specs">${specs.join('')}</div>
+        ${layoutBtn}
         <div class="prop-footer">
           <div class="prop-price">${formatPropPrice(prop)}</div>
           <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" rel="noopener" class="prop-enquire">Enquire</a>
@@ -231,6 +236,21 @@ function displayProperties(list) {
   }
   grid.innerHTML = list.map(renderPropertyCard).join('');
 }
+
+// View layout on public site
+function viewPublicLayout(id) {
+  const properties = getAllProperties();
+  const prop = properties.find(p => p.id === id || p.id === String(id));
+  if (prop && prop.layout && prop.layout.data) {
+    const win = window.open();
+    if (prop.layout.type && prop.layout.type.includes('pdf')) {
+      win.document.write(`<html><head><title>Layout — ${esc(prop.name || 'Property')}</title></head><body style="margin:0;"><iframe src="${prop.layout.data}" width="100%" height="100%" style="border:none;position:absolute;inset:0;" sandbox="allow-same-origin"></iframe></body></html>`);
+    } else {
+      win.document.write(`<html><head><title>Layout — ${esc(prop.name || 'Property')}</title></head><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${prop.layout.data}" style="max-width:100%;max-height:100vh;display:block;"></body></html>`);
+    }
+  }
+}
+window.viewPublicLayout = viewPublicLayout;
 
 function filterProperties(type) {
   // Sync filter from cache
@@ -325,7 +345,10 @@ const DEFAULT_SETTINGS = {
   // Interior design features
   int_home_features: '3D Design Preview, Premium Materials, Custom Furniture, On-site Supervision',
   int_kitchen_features: 'L / U / Island Layouts, Marine-grade Ply, Granite / Quartz Tops, 10-year Warranty',
-  int_wardrobe_features: 'Sliding / Openable, Laminate Finishes, LED Lighting, Lifetime Hardware'
+  int_wardrobe_features: 'Sliding / Openable, Laminate Finishes, LED Lighting, Lifetime Hardware',
+  // RERA & GST
+  rera_number: '',
+  gst_number: ''
 };
 
 function applySiteSettings(settings) {
@@ -345,6 +368,18 @@ function applySiteSettings(settings) {
       }
     }
   });
+
+  // Show/hide RERA & GST rows based on whether values are set
+  const reraRow = document.getElementById('rera-row');
+  const gstRow = document.getElementById('gst-row');
+  const footerReraGst = document.getElementById('footer-rera-gst');
+  const footerRera = document.getElementById('footer-rera');
+  const footerGst = document.getElementById('footer-gst');
+  if (reraRow) reraRow.style.display = settings.rera_number ? '' : 'none';
+  if (gstRow) gstRow.style.display = settings.gst_number ? '' : 'none';
+  if (footerRera) footerRera.style.display = settings.rera_number ? '' : 'none';
+  if (footerGst) footerGst.style.display = settings.gst_number ? '' : 'none';
+  if (footerReraGst) footerReraGst.style.display = (settings.rera_number || settings.gst_number) ? '' : 'none';
 
   const waBtn = document.getElementById('wa-btn');
   if (waBtn) {

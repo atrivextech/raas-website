@@ -820,6 +820,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .prop-enquire:hover { transform: translateY(-2px); }
 
+.prop-layout-btn {
+  display: inline-block;
+  background: rgba(26,60,52,0.08);
+  border: 1px solid rgba(26,60,52,0.15);
+  color: #1A3C34;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 2px 0 6px;
+  transition: background 0.2s;
+}
+.prop-layout-btn:hover { background: rgba(26,60,52,0.15); }
+
 .prop-empty {
   grid-column: 1 / -1;
   text-align: center;
@@ -1301,6 +1316,19 @@ footer {
   transition: color 0.2s;
 }
 .footer-links a:hover { color: var(--gold); }
+
+.footer-rera-gst {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  margin-bottom: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+}
+.footer-rera-gst strong { color: rgba(255,255,255,0.8); }
 
 .footer-bottom {
   display: flex;

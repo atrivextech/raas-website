@@ -582,6 +582,20 @@
           <div class="contact-value" data-setting="hours">Mon – Sat: 9:00 AM – 7:00 PM<br>Sun: By appointment</div>
         </div>
       </div>
+      <div class="contact-item" id="rera-row" style="display:none;">
+        <div class="contact-icon">📋</div>
+        <div>
+          <div class="contact-label">RERA Registration</div>
+          <div class="contact-value" id="rera-display" data-setting="rera_number"></div>
+        </div>
+      </div>
+      <div class="contact-item" id="gst-row" style="display:none;">
+        <div class="contact-icon">🏛️</div>
+        <div>
+          <div class="contact-label">GST Number</div>
+          <div class="contact-value" id="gst-display" data-setting="gst_number"></div>
+        </div>
+      </div>
     </div>
 
     <form class="contact-form reveal" id="contact-form" onsubmit="return handleContactSubmit(event)">
@@ -697,6 +711,11 @@
           <li><a href="admin.html">Admin Login</a></li>
         </ul>
       </div>
+    </div>
+
+    <div id="footer-rera-gst" class="footer-rera-gst" style="display:none;">
+      <span id="footer-rera" style="display:none;">📋 RERA: <strong data-setting="rera_number"></strong></span>
+      <span id="footer-gst" style="display:none;">🏛️ GST: <strong data-setting="gst_number"></strong></span>
     </div>
 
     <div class="footer-bottom">

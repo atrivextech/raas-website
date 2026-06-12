@@ -100,6 +100,11 @@ const DEFAULT_SETTINGS = {
   about_p1: "RAAS Builders & Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.",
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.',
+  // Notifications
+  notify_email: '',
+  // RERA & GST
+  rera_number: '',
+  gst_number: '',
   // Construction packages
   pkg_essential_price: 'From ₹1,650/sqft',
   pkg_essential_features: 'Basic finishes, Standard fixtures, 2-year warranty',
@@ -853,6 +858,11 @@ function loadSettingsIntoForm() {
     's-about-1': 'about_p1',
     's-about-2': 'about_p2',
     's-about-3': 'about_p3',
+    // Notifications
+    's-notify-email': 'notify_email',
+    // RERA & GST
+    's-rera-number': 'rera_number',
+    's-gst-number': 'gst_number',
     // Construction packages
     's-pkg-essential-price': 'pkg_essential_price',
     's-pkg-essential-features': 'pkg_essential_features',
@@ -942,7 +952,10 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
     stat_rating_num: getFormVal('s-stat-rating-num'),
     about_p1: getFormVal('s-about-1'),
     about_p2: getFormVal('s-about-2'),
-    about_p3: getFormVal('s-about-3')
+    about_p3: getFormVal('s-about-3'),
+    notify_email: getFormVal('s-notify-email'),
+    rera_number: getFormVal('s-rera-number'),
+    gst_number: getFormVal('s-gst-number')
   }, 'Site settings saved');
 });
 
