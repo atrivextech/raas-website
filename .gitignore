@@ -1,0 +1,13 @@
+# Secrets — never commit (values live in Vercel / cloud secret manager)
+secrets.md
+.env
+.env.*
+!.env.example
+
+# Dependencies / build
+node_modules/
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
