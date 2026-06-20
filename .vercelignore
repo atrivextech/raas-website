@@ -1,0 +1,20 @@
+# Keep dev docs & artifacts in the repo, but don't deploy them publicly.
+# (Without this, files like RAAS_AgentApp_PRD.md are reachable at the site URL.)
+
+# Internal docs
+*.md
+
+# Old mockups / scratch
+RAAS_Website_Mockup.html
+RealEstate_Website_Mockup.html
+
+# Dev notes (robots.txt and sitemap.xml are intentionally NOT ignored)
+DEPLOYMENT_CHECKLIST.txt
+FEATURES_SUMMARY.txt
+REFRESH_BROWSER_NOW.txt
+
+# AWS deploy tooling (not used by the Vercel deployment)
+aws/
+
+# Tooling
+.claude/
