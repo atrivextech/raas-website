@@ -84,10 +84,10 @@ function esc(str) {
 const DEFAULT_SETTINGS = {
   phone_bengaluru: '+91 90197 93641',
   phone_bengaluru_raw: '919019793641',
-  phone_shivamogga: '+91 82777 55555',
-  phone_shivamogga_raw: '918277755555',
-  email: 'info@raasbuilders.com',
-  address: 'Shivamogga, Karnataka<br>Branch: Bengaluru',
+  phone_shivamogga: '+91 97312 34111',
+  phone_shivamogga_raw: '919731234111',
+  email: 'raasbnd@gmail.com',
+  address: '1st Floor, MSB280, Basavasa Sadhana<br>Chalukyanagar, Shivamogga – 577205',
   hours: 'Mon – Sat: 9:00 AM – 7:00 PM<br>Sun: By appointment',
   stat_listings: '500+',
   stat_years: '14+',
@@ -101,10 +101,10 @@ const DEFAULT_SETTINGS = {
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.',
   // Notifications
-  notify_email: '',
+  notify_email: 'raasbnd@gmail.com',
   // RERA & GST
   rera_number: '',
-  gst_number: '',
+  gst_number: '29BIRPA6776M1ZC',
   // Construction packages
   pkg_essential_price: 'From ₹1,650/sqft',
   pkg_essential_features: 'Basic finishes, Standard fixtures, 2-year warranty',
