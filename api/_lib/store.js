@@ -15,7 +15,11 @@ const http  = require('node:http');
 
 // ═══ Detection ═══════════════════════════════════════════
 function useDynamo()  { return !!process.env.DYNAMODB_TABLE; }
-function useUpstash() { return !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN); }
+// Accept both the native Upstash var names AND the names the Vercel
+// Upstash/KV marketplace integration injects (KV_REST_API_*).
+function upstashUrl()   { return process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || ''; }
+function upstashToken() { return process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || ''; }
+function useUpstash() { return !!(upstashUrl() && upstashToken()); }
 function storageType() {
   if (useDynamo())  return 'dynamodb';
   if (useUpstash()) return 'upstash';
@@ -28,14 +32,14 @@ const memStore = new Map();
 // ═══ Upstash Redis REST ══════════════════════════════════
 function upstashRequest(method, args) {
   return new Promise((resolve, reject) => {
-    const url = new URL(process.env.UPSTASH_REDIS_REST_URL);
+    const url = new URL(upstashUrl());
     const payload = JSON.stringify([method, ...args]);
     const mod = url.protocol === 'https:' ? https : http;
 
     const req = mod.request(url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+        'Authorization': `Bearer ${upstashToken()}`,
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(payload)
       }

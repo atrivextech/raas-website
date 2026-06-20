@@ -660,7 +660,11 @@
         <label for="cf-message">Tell us more</label>
         <textarea id="cf-message" name="message" placeholder="Location, budget, timeline, any questions..."></textarea>
       </div>
-      <button type="submit">Send Enquiry via WhatsApp →</button>
+      <div class="cf-success" id="cf-success" role="status" style="display:none;"></div>
+      <div class="cf-actions">
+        <button type="submit" class="cf-btn-primary">✉️ Send Enquiry</button>
+        <button type="button" class="cf-btn-wa" onclick="sendViaWhatsApp()">💬 Send via WhatsApp</button>
+      </div>
     </form>
   </div>
 </section>

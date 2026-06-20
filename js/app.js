@@ -521,8 +521,20 @@ function toggleLanguage() {
 }
 
 // ─── Contact form → WhatsApp + API ───
-async function handleContactSubmit(e) {
-  e.preventDefault();
+const CONTACT_INTEREST_LABELS = {
+  plots: 'Buying a Plot',
+  land: 'Agricultural Land',
+  apartment: 'Buying an Apartment',
+  villa: 'Buying a Villa',
+  commercial: 'Commercial Property',
+  construction: 'House Construction',
+  interiors: 'Interior Design',
+  materials: 'Building Materials',
+  other: 'General Enquiry'
+};
+
+// Read + validate the contact form. Returns the enquiry object, or null if invalid.
+function collectContactEnquiry() {
   const name = document.getElementById('cf-name').value.trim();
   const phone = document.getElementById('cf-phone').value.trim();
   const email = document.getElementById('cf-email').value.trim();
@@ -535,36 +547,25 @@ async function handleContactSubmit(e) {
 
   // Phone validation: Indian mobile (10 digits, optionally prefixed with +91 / 0)
   const phoneClean = phone.replace(/[\s\-()]/g, '');
-  const phoneValid = /^(\+?91|0)?[6-9]\d{9}$/.test(phoneClean);
-  if (!phoneValid) {
+  if (!/^(\+?91|0)?[6-9]\d{9}$/.test(phoneClean)) {
     const phoneInput = document.getElementById('cf-phone');
     phoneInput.setCustomValidity('Please enter a valid 10-digit Indian mobile number');
     phoneInput.reportValidity();
-    phoneInput.setCustomValidity(''); // reset for next try
-    return false;
+    phoneInput.setCustomValidity('');
+    return null;
   }
 
-  const interestLabels = {
-    plots: 'Buying a Plot',
-    land: 'Agricultural Land',
-    apartment: 'Buying an Apartment',
-    villa: 'Buying a Villa',
-    commercial: 'Commercial Property',
-    construction: 'House Construction',
-    interiors: 'Interior Design',
-    materials: 'Building Materials',
-    other: 'General Enquiry'
-  };
+  return { name, phone, email, interest, message, budget, timeline, timestamp: Date.now() };
+}
 
-  // Save to localStorage for admin enquiries view
-  const enquiry = { name, phone, email, interest, message, budget, timeline, timestamp: Date.now() };
+// Persist to localStorage (admin offline view) + POST to backend (stores + emails owner).
+function saveEnquiry(enquiry) {
   try {
     const existing = JSON.parse(localStorage.getItem('raas_enquiries') || '[]');
     existing.push(enquiry);
     localStorage.setItem('raas_enquiries', JSON.stringify(existing));
   } catch { /* storage full — non-critical */ }
 
-  // Save to API (non-blocking, fires email notification if Resend configured)
   apiFetch('/api/health').then(h => {
     if (h && h.backend) {
       fetch(API_BASE + '/api/contact', {
@@ -574,25 +575,55 @@ async function handleContactSubmit(e) {
       }).catch(() => {});
     }
   });
+}
 
-  // Always open WhatsApp (primary channel)
+function showContactSuccess(viaWhatsapp) {
+  const box = document.getElementById('cf-success');
+  if (!box) return;
+  box.textContent = viaWhatsapp
+    ? 'Opening WhatsApp… Your enquiry has also been sent to our team.'
+    : 'Thank you! Your enquiry has been sent. Our team will contact you shortly.';
+  box.style.display = 'block';
+  clearTimeout(showContactSuccess._t);
+  showContactSuccess._t = setTimeout(() => { box.style.display = 'none'; }, 8000);
+}
+
+// Primary submit → send via email/backend, no WhatsApp popup.
+async function handleContactSubmit(e) {
+  e.preventDefault();
+  const enquiry = collectContactEnquiry();
+  if (!enquiry) return false;
+  saveEnquiry(enquiry);
+  showContactSuccess(false);
+  e.target.reset();
+  return false;
+}
+
+// Secondary action → open WhatsApp (also logs the enquiry so the owner is notified).
+function sendViaWhatsApp() {
+  const enquiry = collectContactEnquiry();
+  if (!enquiry) return false;
+  saveEnquiry(enquiry);
+
+  const { name, phone, email, interest, message, budget, timeline } = enquiry;
   const text =
 `Hi RAAS Builders,
 
 Name: ${name}
 Phone: ${phone}${email ? `\nEmail: ${email}` : ''}
-Interested in: ${interestLabels[interest] || interest}${budget ? `\nBudget: ${budget}` : ''}${timeline ? `\nTimeline: ${timeline}` : ''}
+Interested in: ${CONTACT_INTEREST_LABELS[interest] || interest}${budget ? `\nBudget: ${budget}` : ''}${timeline ? `\nTimeline: ${timeline}` : ''}
 
 ${message}`;
 
   const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.phone_bengaluru_raw) || '919019793641';
   window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
-
-  // Reset form and show confirmation
-  e.target.reset();
+  showContactSuccess(true);
+  const form = document.getElementById('contact-form');
+  if (form) form.reset();
   return false;
 }
 window.handleContactSubmit = handleContactSubmit;
+window.sendViaWhatsApp = sendViaWhatsApp;
 window.toggleLanguage = toggleLanguage;
 
 // ─── Scroll reveal + smooth scroll + mobile nav ───
