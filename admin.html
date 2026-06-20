@@ -655,6 +655,31 @@
             <button type="submit" class="btn-primary">💾 Save Site Settings</button>
           </form>
         </div>
+
+        <div class="card">
+          <h2>🔑 Change Admin Password</h2>
+          <div class="card-note">
+            Change the password you use to log in here. You'll need your current password.
+            Minimum 8 characters. (Username stays <strong>admin</strong>.)
+          </div>
+          <form id="password-form" autocomplete="off">
+            <div class="form-group">
+              <label for="pw-current">Current Password</label>
+              <input type="password" id="pw-current" autocomplete="current-password" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pw-new">New Password</label>
+                <input type="password" id="pw-new" autocomplete="new-password" minlength="8" required>
+              </div>
+              <div class="form-group">
+                <label for="pw-confirm">Confirm New Password</label>
+                <input type="password" id="pw-confirm" autocomplete="new-password" minlength="8" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary">Update Password</button>
+          </form>
+        </div>
       </div>
 
     </div>

@@ -1024,6 +1024,34 @@ if (contentForm) {
   });
 }
 
+// ─── Change password form ────────────────────────────────
+const passwordForm = document.getElementById('password-form');
+if (passwordForm) {
+  passwordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const cur = document.getElementById('pw-current').value;
+    const nw = document.getElementById('pw-new').value;
+    const cf = document.getElementById('pw-confirm').value;
+
+    if (nw.length < 8) { showToast('New password must be at least 8 characters'); return; }
+    if (nw !== cf) { showToast('New passwords do not match'); return; }
+
+    const hasBackend = await checkBackend();
+    if (!hasBackend) {
+      showToast('Password change needs the backend (SESSION_SECRET + ADMIN_PASSWORD) configured.');
+      return;
+    }
+
+    const res = await apiPost('/api/change-password', { currentPassword: cur, newPassword: nw });
+    if (res.ok) {
+      showToast('Password updated. Use your new password next time you log in.');
+      passwordForm.reset();
+    } else {
+      showToast((res.data && res.data.error) || 'Could not update password');
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   checkBackend(); // probe backend early (non-blocking)
   checkAuth();
