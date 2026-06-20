@@ -13,7 +13,7 @@ const crypto = require('node:crypto');
 // ─── Resend ──────────────────────────────────────────────
 function sendViaResend(to, subject, html) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM || 'RAAS Website <noreply@raasbuilders.com>';
+  const from = process.env.RESEND_FROM || 'RAAS Website <noreply@raasdeveloper.com>';
 
   return new Promise((resolve) => {
     const payload = JSON.stringify({ from, to: [to], subject, html });

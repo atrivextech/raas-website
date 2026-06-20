@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /admin
 
-Sitemap: https://raasbuilders.com/sitemap.xml
+Sitemap: https://raasdeveloper.com/sitemap.xml

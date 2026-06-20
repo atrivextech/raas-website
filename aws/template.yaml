@@ -31,7 +31,7 @@ Parameters:
     Type: String
     Default: ''
     Description: >
-      Custom domain (e.g. raasbuilders.com). Leave blank to use
+      Custom domain (e.g. raasdeveloper.com). Leave blank to use
       CloudFront's default *.cloudfront.net domain.
   AcmCertificateArn:
     Type: String

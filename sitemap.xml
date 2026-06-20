@@ -1,56 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   RAAS Builders & Developers — sitemap
-  Replace https://raasbuilders.com/ with the real domain once purchased.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://raasbuilders.com/</loc>
+    <loc>https://raasdeveloper.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#properties</loc>
+    <loc>https://raasdeveloper.com/#properties</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#buy-plots</loc>
+    <loc>https://raasdeveloper.com/#buy-plots</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#apartments</loc>
+    <loc>https://raasdeveloper.com/#apartments</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#constructions</loc>
+    <loc>https://raasdeveloper.com/#constructions</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#interiors</loc>
+    <loc>https://raasdeveloper.com/#interiors</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#materials</loc>
+    <loc>https://raasdeveloper.com/#materials</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#about</loc>
+    <loc>https://raasdeveloper.com/#about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/#contact</loc>
+    <loc>https://raasdeveloper.com/#contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://raasbuilders.com/privacy-policy.html</loc>
+    <loc>https://raasdeveloper.com/privacy-policy.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

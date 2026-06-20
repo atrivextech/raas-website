@@ -78,7 +78,7 @@ async function handle({ method, headers, body }) {
       <p style="margin-top:16px;">
         <a href="https://wa.me/${String(body.phone).replace(/\D/g, '')}?text=${encodeURIComponent('Hi ' + (body.name || '') + ', thanks for contacting RAAS Builders!')}" style="background:#25D366;color:white;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:bold;">💬 Reply on WhatsApp</a>
       </p>
-      <p style="color:#888;font-size:12px;margin-top:16px;">Received at ${enquiry.createdAt} via raasbuilders.com</p>
+      <p style="color:#888;font-size:12px;margin-top:16px;">Received at ${enquiry.createdAt} via raasdeveloper.com</p>
     `;
     await sendEmail(notifyEmail, `🏠 New enquiry from ${escHtml(body.name)} — ${interestLabels[body.interest] || 'General'}`, html);
   }
