@@ -348,7 +348,13 @@ const DEFAULT_SETTINGS = {
   int_wardrobe_features: 'Sliding / Openable, Laminate Finishes, LED Lighting, Lifetime Hardware',
   // RERA & GST
   rera_number: '',
-  gst_number: ''
+  gst_number: '',
+  // Social media
+  social_facebook: '',
+  social_instagram: '',
+  social_youtube: '',
+  social_linkedin: '',
+  social_twitter: ''
 };
 
 function applySiteSettings(settings) {
@@ -380,6 +386,30 @@ function applySiteSettings(settings) {
   if (footerRera) footerRera.style.display = settings.rera_number ? '' : 'none';
   if (footerGst) footerGst.style.display = settings.gst_number ? '' : 'none';
   if (footerReraGst) footerReraGst.style.display = (settings.rera_number || settings.gst_number) ? '' : 'none';
+
+  // Social media icons — show only the ones that have a URL set
+  const socialMap = {
+    'social-facebook': 'social_facebook',
+    'social-instagram': 'social_instagram',
+    'social-youtube': 'social_youtube',
+    'social-linkedin': 'social_linkedin',
+    'social-twitter': 'social_twitter'
+  };
+  let anySocial = false;
+  Object.entries(socialMap).forEach(([elId, key]) => {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const url = settings[key];
+    if (url) {
+      el.href = url;
+      el.style.display = '';
+      anySocial = true;
+    } else {
+      el.style.display = 'none';
+    }
+  });
+  const footerSocial = document.getElementById('footer-social');
+  if (footerSocial) footerSocial.style.display = anySocial ? '' : 'none';
 
   const waBtn = document.getElementById('wa-btn');
   if (waBtn) {

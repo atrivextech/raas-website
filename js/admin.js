@@ -105,6 +105,12 @@ const DEFAULT_SETTINGS = {
   // RERA & GST
   rera_number: '',
   gst_number: '29BIRPA6776M1ZC',
+  // Social media
+  social_facebook: '',
+  social_instagram: '',
+  social_youtube: '',
+  social_linkedin: '',
+  social_twitter: '',
   // Construction packages
   pkg_essential_price: 'From ₹1,650/sqft',
   pkg_essential_features: 'Basic finishes, Standard fixtures, 2-year warranty',
@@ -863,6 +869,12 @@ function loadSettingsIntoForm() {
     // RERA & GST
     's-rera-number': 'rera_number',
     's-gst-number': 'gst_number',
+    // Social media
+    's-social-facebook': 'social_facebook',
+    's-social-instagram': 'social_instagram',
+    's-social-youtube': 'social_youtube',
+    's-social-linkedin': 'social_linkedin',
+    's-social-twitter': 'social_twitter',
     // Construction packages
     's-pkg-essential-price': 'pkg_essential_price',
     's-pkg-essential-features': 'pkg_essential_features',
@@ -955,7 +967,12 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
     about_p3: getFormVal('s-about-3'),
     notify_email: getFormVal('s-notify-email'),
     rera_number: getFormVal('s-rera-number'),
-    gst_number: getFormVal('s-gst-number')
+    gst_number: getFormVal('s-gst-number'),
+    social_facebook: getFormVal('s-social-facebook'),
+    social_instagram: getFormVal('s-social-instagram'),
+    social_youtube: getFormVal('s-social-youtube'),
+    social_linkedin: getFormVal('s-social-linkedin'),
+    social_twitter: getFormVal('s-social-twitter')
   }, 'Site settings saved');
 });
 
