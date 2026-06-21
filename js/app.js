@@ -502,6 +502,28 @@ function applySiteSettings(settings) {
   });
 }
 
+// ─── Public brochures / downloads ───
+async function renderBrochures() {
+  const section = document.getElementById('downloads');
+  const grid = document.getElementById('brochures-grid');
+  if (!section || !grid) return;
+  let items = await apiFetch('/api/brochures');
+  if (!Array.isArray(items) || items.length === 0) { section.style.display = 'none'; return; }
+  items.sort((a, b) => (b.id || 0) - (a.id || 0));
+  grid.innerHTML = items.map(it => {
+    const isPdf = (it.type && it.type.includes('pdf')) || /\.pdf($|\?)/i.test(it.url || '');
+    return `<a class="download-card" href="${esc(it.url)}" target="_blank" rel="noopener" download>
+      <div class="download-icon">${isPdf ? '📄' : '🖼️'}</div>
+      <div class="download-info">
+        <div class="download-title">${esc(it.title)}</div>
+        <div class="download-cat">${esc(it.category || 'General')}</div>
+      </div>
+      <span class="download-arrow">⬇</span>
+    </a>`;
+  }).join('');
+  section.style.display = '';
+}
+
 function loadSiteSettings() {
   // Sync first: localStorage / defaults (instant, no flash)
   const stored = JSON.parse(localStorage.getItem('raas_site_settings') || '{}');
@@ -717,6 +739,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSiteSettings();
   displayProperties(getAllProperties());
   renderMaterialsSection();
+  renderBrochures();
   initFilters();
   initSmoothScroll();
   initReveal();

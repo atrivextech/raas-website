@@ -78,6 +78,7 @@
         <button class="tab-btn" data-tab="pricing">💰 Pricing</button>
         <button class="tab-btn" data-tab="materials">🧱 Materials</button>
         <button class="tab-btn" data-tab="content">📝 Content</button>
+        <button class="tab-btn" data-tab="brochures">📄 Brochures</button>
         <button class="tab-btn" data-tab="enquiries">📩 Enquiries</button>
         <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
       </div>
@@ -480,6 +481,53 @@
 
             <button type="submit" class="btn-primary" style="margin-top:24px;">💾 Save Content</button>
           </form>
+        </div>
+      </div>
+
+      <!-- ══════════════════ TAB: BROCHURES / DOCUMENTS ══════════════════ -->
+      <div class="tab-panel" id="tab-brochures">
+        <div class="card">
+          <h2>Upload Marketing Document</h2>
+          <div class="card-note">
+            Upload brochures, master layouts, price lists or project PDFs/images. They appear in the
+            <strong>Downloads</strong> section on the website for visitors to view or download.
+            Each file must be under <strong>3 MB</strong> (compress large PDFs first).
+          </div>
+          <form id="brochure-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="br-title">Title *</label>
+                <input type="text" id="br-title" placeholder="e.g. RAAS Garden Heights — Master Layout" required>
+              </div>
+              <div class="form-group">
+                <label for="br-category">Category</label>
+                <select id="br-category">
+                  <option value="Brochure">Brochure</option>
+                  <option value="Layout / Site Map">Layout / Site Map</option>
+                  <option value="Price List">Price List</option>
+                  <option value="Floor Plan">Floor Plan</option>
+                  <option value="Project Document">Project Document</option>
+                  <option value="General">General</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>File (PDF or Image) *</label>
+              <div class="upload-box" id="brochure-upload-box" onclick="document.getElementById('br-file').click()">
+                <div class="upload-icon">📄</div>
+                <p>Click to upload a PDF or image</p>
+                <span>PDF, JPG, PNG — under 3 MB</span>
+                <input type="file" id="br-file" accept=".pdf,image/*" style="display:none" onchange="handleBrochureFile(this)">
+              </div>
+              <div id="brochure-file-note" class="card-note" style="display:none;"></div>
+            </div>
+            <button type="submit" class="btn-primary" id="br-submit">⬆️ Upload Document</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Manage Documents</h2>
+          <div id="brochures-list" class="properties-list"></div>
         </div>
       </div>
 

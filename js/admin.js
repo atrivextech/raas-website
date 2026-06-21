@@ -213,6 +213,7 @@ function showDashboard() {
   loadSettingsIntoForm();
   loadMaterialsEditor();
   loadEnquiries();
+  loadBrochures();
   updateDashboardSummary();
 }
 
@@ -1035,6 +1036,124 @@ if (contentForm) {
     }, 'Content saved');
   });
 }
+
+// ═══════════════════════════════════════════════════════════
+//   BROCHURES / MARKETING DOCUMENTS  (stored in Vercel Blob)
+// ═══════════════════════════════════════════════════════════
+const MAX_BROCHURE_SIZE = 3 * 1024 * 1024; // 3 MB raw
+let uploadedBrochure = null; // { name, type, dataBase64 }
+
+function handleBrochureFile(input) {
+  uploadedBrochure = null;
+  const note = document.getElementById('brochure-file-note');
+  const file = input.files[0];
+  if (!file) { if (note) note.style.display = 'none'; return; }
+
+  if (file.size > MAX_BROCHURE_SIZE) {
+    showToast('File must be under 3 MB. Please compress it first.');
+    input.value = '';
+    if (note) note.style.display = 'none';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    uploadedBrochure = { name: file.name, type: file.type, dataBase64: e.target.result };
+    if (note) {
+      note.style.display = '';
+      note.innerHTML = `Selected: <strong>${esc(file.name)}</strong> (${(file.size / 1024).toFixed(0)} KB)`;
+    }
+    document.getElementById('brochure-upload-box').querySelector('p').textContent = `Selected: ${file.name}`;
+  };
+  reader.readAsDataURL(file);
+}
+window.handleBrochureFile = handleBrochureFile;
+
+const brochureForm = document.getElementById('brochure-form');
+if (brochureForm) {
+  brochureForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('br-title').value.trim();
+    const category = document.getElementById('br-category').value;
+    if (!title) { showToast('Title is required'); return; }
+    if (!uploadedBrochure) { showToast('Please choose a file to upload'); return; }
+
+    const hasBackend = await checkBackend();
+    if (!hasBackend) {
+      showToast('Document uploads need the backend + Blob storage configured.');
+      return;
+    }
+
+    const btn = document.getElementById('br-submit');
+    const orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Uploading…';
+
+    // 1. Upload the file to Blob
+    const up = await apiPost('/api/upload', {
+      filename: uploadedBrochure.name,
+      contentType: uploadedBrochure.type,
+      dataBase64: uploadedBrochure.dataBase64,
+      folder: 'brochures'
+    });
+    if (!up.ok || !up.data || !up.data.url) {
+      btn.disabled = false; btn.textContent = orig;
+      showToast((up.data && up.data.error) || 'File upload failed');
+      return;
+    }
+
+    // 2. Save the metadata
+    const res = await apiPost('/api/brochures', {
+      title, category, url: up.data.url, pathname: up.data.pathname, type: uploadedBrochure.type
+    });
+    btn.disabled = false; btn.textContent = orig;
+    if (res.ok) {
+      showToast('Document uploaded');
+      brochureForm.reset();
+      uploadedBrochure = null;
+      const note = document.getElementById('brochure-file-note');
+      if (note) note.style.display = 'none';
+      document.getElementById('brochure-upload-box').querySelector('p').textContent = 'Click to upload a PDF or image';
+      loadBrochures();
+    } else {
+      showToast((res.data && res.data.error) || 'Could not save document');
+    }
+  });
+}
+
+async function loadBrochures() {
+  const container = document.getElementById('brochures-list');
+  if (!container) return;
+  let items = await apiGet('/api/brochures');
+  if (!Array.isArray(items)) items = [];
+
+  if (items.length === 0) {
+    container.innerHTML = `<div class="empty-state"><p>No documents yet. Upload brochures or layouts above — they'll show in the Downloads section on the website.</p></div>`;
+    return;
+  }
+  items.sort((a, b) => (b.id || 0) - (a.id || 0));
+  container.innerHTML = items.map(it => {
+    const isPdf = (it.type && it.type.includes('pdf')) || /\.pdf($|\?)/i.test(it.url || '');
+    return `
+      <div class="property-item">
+        <div class="no-img">${isPdf ? '📄' : '🖼️'}</div>
+        <div class="property-info">
+          <h3>${esc(it.title)}</h3>
+          <p><strong>Category:</strong> ${esc(it.category || 'General')}</p>
+        </div>
+        <div class="property-actions">
+          <a class="btn-view-layout" href="${esc(it.url)}" target="_blank" rel="noopener">View</a>
+          <button class="btn-delete" onclick="deleteBrochure(${it.id})">Delete</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function deleteBrochure(id) {
+  if (!confirm('Delete this document? It will also be removed from the website.')) return;
+  const res = await apiDelete(`/api/brochures?id=${id}`);
+  if (res.ok) { showToast('Document deleted'); loadBrochures(); }
+  else showToast('Could not delete');
+}
+window.deleteBrochure = deleteBrochure;
 
 // ─── Change password form ────────────────────────────────
 const passwordForm = document.getElementById('password-form');

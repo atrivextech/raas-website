@@ -1314,6 +1314,38 @@ footer {
 .footer-contact-item a { color: var(--light); text-decoration: none; }
 .footer-contact-item a:hover { color: var(--gold); }
 
+/* ─── Downloads / Brochures grid ─────────────────────────── */
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.download-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1px solid rgba(26,60,52,0.1);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--charcoal);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.download-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold);
+}
+.download-icon { font-size: 30px; flex: 0 0 auto; }
+.download-info { flex: 1 1 auto; min-width: 0; }
+.download-title { font-weight: 600; font-size: 15px; color: var(--forest); }
+.download-cat { font-size: 12px; color: var(--mid); margin-top: 2px; }
+.download-arrow { font-size: 18px; color: var(--gold-text); flex: 0 0 auto; }
+
 /* ─── Footer social icons ───────────────────────────────── */
 .footer-social { margin-top: 22px; }
 .footer-social-title {
