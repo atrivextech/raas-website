@@ -2,7 +2,7 @@
 const { backendReady, respond } = require('./_lib/auth');
 const { storageType } = require('./_lib/store');
 const { emailProvider } = require('./_lib/email');
-const { blobReady, blobEnvKeys } = require('./_lib/blob');
+const { blobReady } = require('./_lib/blob');
 const { vercelWrap } = require('./_lib/adapter');
 
 async function handle({ method }) {
@@ -14,7 +14,6 @@ async function handle({ method }) {
     storage: storageType(),
     email: emailProvider(),
     blob: blobReady(),
-    blobEnvKeys: blobEnvKeys(),
     timestamp: new Date().toISOString()
   });
 }
