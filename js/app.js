@@ -207,6 +207,14 @@ function renderPropertyCard(prop) {
     ? `<button class="prop-layout-btn" onclick="viewPublicLayout(${prop.id})" title="View Layout">${prop.layout.type && prop.layout.type.includes('pdf') ? '📄 Layout PDF' : '📐 View Layout'}</button>`
     : '';
 
+  const docs = Array.isArray(prop.documents) ? prop.documents : [];
+  const docLinks = docs.length
+    ? `<div class="prop-docs">${docs.map(d => {
+        const isPdf = (d.type && d.type.includes('pdf')) || /\.pdf($|\?)/i.test(d.url || '');
+        return `<a class="prop-doc-link" href="${esc(d.url)}" target="_blank" rel="noopener">${isPdf ? '📄' : '📎'} ${esc(d.title || 'Document')}</a>`;
+      }).join('')}</div>`
+    : '';
+
   return `
     <article class="prop-card" data-type="${esc(prop.type || 'plot')}">
       <div class="prop-img" style="background-image: linear-gradient(135deg, rgba(13,31,27,0.35), rgba(26,60,52,0.35)), url('${bg}');">
@@ -218,6 +226,7 @@ function renderPropertyCard(prop) {
         <div class="prop-location">📍 ${esc(prop.location || 'Karnataka')}</div>
         <div class="prop-specs">${specs.join('')}</div>
         ${layoutBtn}
+        ${docLinks}
         <div class="prop-footer">
           <div class="prop-price">${formatPropPrice(prop)}</div>
           <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" rel="noopener" class="prop-enquire">Enquire</a>

@@ -271,6 +271,23 @@
               <div id="layout-preview" class="layout-preview"></div>
             </div>
 
+            <!-- Additional Documents (multiple, cloud-stored) -->
+            <div class="form-group">
+              <label>Additional Documents — floor plans, brochures, legal (multiple)</label>
+              <div class="card-note" style="margin-bottom:10px;">
+                Stored securely in cloud storage. Each file under <strong>3 MB</strong>.
+                Visitors get view/download links on this property. Add a title, then choose a file.
+              </div>
+              <input type="text" id="prop-doc-title" placeholder="Document title (e.g. Floor Plan, Brochure)" style="margin-bottom:10px;">
+              <div class="upload-box" id="prop-doc-box" onclick="document.getElementById('prop-doc-file').click()">
+                <div class="upload-icon">📎</div>
+                <p>Click to add a document</p>
+                <span>PDF, JPG, PNG — under 3 MB (uploads immediately)</span>
+                <input type="file" id="prop-doc-file" accept=".pdf,image/*" style="display:none" onchange="handlePropertyDocUpload(this)">
+              </div>
+              <div id="prop-docs-list" class="docs-list"></div>
+            </div>
+
             <button type="submit" class="btn-primary">✅ Add Property</button>
           </form>
         </div>

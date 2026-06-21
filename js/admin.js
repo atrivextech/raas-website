@@ -71,6 +71,7 @@ async function apiGet(path) {
 
 let uploadedImages = [];
 let uploadedLayout = null;
+let uploadedDocuments = []; // [{ title, url, type, pathname }] — stored in Vercel Blob
 let editingPropertyId = null; // null = adding new, number = editing existing
 
 // ─── XSS sanitizer (escape HTML for safe display) ───────
@@ -393,6 +394,67 @@ function handleLayoutUpload(input) {
 window.handleImageUpload = handleImageUpload;
 window.handleLayoutUpload = handleLayoutUpload;
 
+// ─── Property documents (multiple, stored in Vercel Blob) ──
+const MAX_PROP_DOC_SIZE = 3 * 1024 * 1024; // 3 MB per document
+
+async function handlePropertyDocUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > MAX_PROP_DOC_SIZE) {
+    showToast('Each document must be under 3 MB. Compress it first.');
+    input.value = ''; return;
+  }
+  const hasBackend = await checkBackend();
+  if (!hasBackend) {
+    showToast('Document uploads need the backend + Blob storage configured.');
+    input.value = ''; return;
+  }
+  const titleEl = document.getElementById('prop-doc-title');
+  const title = (titleEl && titleEl.value.trim()) || file.name;
+  const box = document.getElementById('prop-doc-box');
+  const p = box ? box.querySelector('p') : null;
+  const origP = p ? p.textContent : '';
+  if (p) p.textContent = 'Uploading…';
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const up = await apiPost('/api/upload', {
+      filename: file.name, contentType: file.type, dataBase64: e.target.result, folder: 'properties'
+    });
+    if (p) p.textContent = origP;
+    input.value = '';
+    if (!up.ok || !up.data || !up.data.url) {
+      showToast((up.data && up.data.error) || 'Document upload failed');
+      return;
+    }
+    uploadedDocuments.push({ title, url: up.data.url, type: file.type, pathname: up.data.pathname });
+    if (titleEl) titleEl.value = '';
+    renderPropertyDocsList();
+    showToast('Document added');
+  };
+  reader.readAsDataURL(file);
+}
+window.handlePropertyDocUpload = handlePropertyDocUpload;
+
+function renderPropertyDocsList() {
+  const el = document.getElementById('prop-docs-list');
+  if (!el) return;
+  if (uploadedDocuments.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = uploadedDocuments.map((d, i) => {
+    const isPdf = (d.type && d.type.includes('pdf')) || /\.pdf($|\?)/i.test(d.url || '');
+    return `<div class="doc-chip">
+      <a href="${esc(d.url)}" target="_blank" rel="noopener">${isPdf ? '📄' : '🖼️'} ${esc(d.title || 'Document')}</a>
+      <button type="button" onclick="removePropertyDoc(${i})" title="Remove">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function removePropertyDoc(i) {
+  uploadedDocuments.splice(i, 1);
+  renderPropertyDocsList();
+}
+window.removePropertyDoc = removePropertyDoc;
+
 // ─── Add / Edit property ──────────────────────────────────
 function collectPropertyFromForm() {
   const type = document.getElementById('prop-type').value;
@@ -412,7 +474,8 @@ function collectPropertyFromForm() {
     rera: document.getElementById('prop-rera').value,
     description: document.getElementById('prop-description').value,
     images: uploadedImages.length > 0 ? uploadedImages.slice() : [],
-    layout: uploadedLayout || null
+    layout: uploadedLayout || null,
+    documents: uploadedDocuments.slice()
   };
 
   if (rules.bhk) property.bhk = document.getElementById('prop-bhk').value;
@@ -433,9 +496,14 @@ function resetPropertyForm() {
   document.getElementById('property-form').reset();
   uploadedImages = [];
   uploadedLayout = null;
+  uploadedDocuments = [];
   editingPropertyId = null;
   document.getElementById('image-previews').innerHTML = '';
   document.getElementById('layout-preview').innerHTML = '';
+  const docsList = document.getElementById('prop-docs-list');
+  if (docsList) docsList.innerHTML = '';
+  const docTitle = document.getElementById('prop-doc-title');
+  if (docTitle) docTitle.value = '';
   document.getElementById('image-upload-box').querySelector('p').textContent = 'Click to upload photos';
   document.getElementById('layout-upload-box').querySelector('p').textContent = 'Click to upload floor plan / site map / layout';
   // Reset form header
@@ -482,6 +550,9 @@ function loadPropertyIntoForm(prop) {
     uploadedLayout = prop.layout;
     document.getElementById('layout-preview').innerHTML = `<div class="layout-thumb"><span>📐 ${esc(prop.layout.name || 'Layout')}</span></div>`;
   }
+  // Documents
+  uploadedDocuments = Array.isArray(prop.documents) ? prop.documents.slice() : [];
+  renderPropertyDocsList();
   // Update form header
   const formH2 = document.querySelector('#tab-properties .card h2');
   if (formH2 && !formH2.querySelector('.editing-badge')) {
