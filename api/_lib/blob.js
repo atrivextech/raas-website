@@ -14,7 +14,20 @@ const https = require('node:https');
 const BLOB_HOST = 'blob.vercel-storage.com';
 const API_VERSION = '7';
 
-function blobReady() { return !!process.env.BLOB_READ_WRITE_TOKEN; }
+// The token is normally BLOB_READ_WRITE_TOKEN, but the Vercel integration
+// can inject it under a store-prefixed name. Find it either way.
+function blobTokenValue() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  const key = Object.keys(process.env).find(k => /BLOB_READ_WRITE_TOKEN$/i.test(k));
+  return key ? process.env[key] : '';
+}
+
+function blobReady() { return !!blobTokenValue(); }
+
+/** Debug helper: names (not values) of env vars that look Blob-related. */
+function blobEnvKeys() {
+  return Object.keys(process.env).filter(k => /BLOB/i.test(k));
+}
 
 /**
  * Upload a buffer to Vercel Blob (public). Returns { url, pathname }.
@@ -22,7 +35,7 @@ function blobReady() { return !!process.env.BLOB_READ_WRITE_TOKEN; }
  */
 function uploadToBlob(pathname, contentType, buffer) {
   return new Promise((resolve, reject) => {
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    const token = blobTokenValue();
     if (!token) return reject(new Error('BLOB_READ_WRITE_TOKEN not set'));
 
     // Keep slashes as path separators, encode the rest.
@@ -61,7 +74,7 @@ function uploadToBlob(pathname, contentType, buffer) {
 /** Best-effort delete of a blob by its public URL. Never throws. */
 function deleteBlob(url) {
   return new Promise((resolve) => {
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    const token = blobTokenValue();
     if (!token || !url) return resolve(false);
     const body = JSON.stringify({ urls: [url] });
     const req = https.request({
@@ -81,4 +94,4 @@ function deleteBlob(url) {
   });
 }
 
-module.exports = { blobReady, uploadToBlob, deleteBlob };
+module.exports = { blobReady, blobEnvKeys, uploadToBlob, deleteBlob };
