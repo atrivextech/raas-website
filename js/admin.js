@@ -101,6 +101,9 @@ const DEFAULT_SETTINGS = {
   about_p1: "RAAS Builders & Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.",
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.',
+  about_p1_kn: 'ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಮತ್ತು ಡೆವಲಪರ್ಸ್ ಒಂದು ದಶಕಕ್ಕೂ ಹೆಚ್ಚು ಕಾಲ ಕರ್ನಾಟಕದ ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಅಗತ್ಯಗಳನ್ನು ಪೂರೈಸುತ್ತಿದೆ. ಶಿವಮೊಗ್ಗದಲ್ಲಿ ಸಣ್ಣ ನಿವೇಶನ ಮಧ್ಯಸ್ಥಿಕೆಯಾಗಿ ಆರಂಭವಾದದ್ದು, ಇಂದು ನಿವೇಶನ, ಅಪಾರ್ಟ್‌ಮೆಂಟ್, ನಿರ್ಮಾಣ, ಒಳಾಂಗಣ ಮತ್ತು ಸಗಟು ಸಾಮಗ್ರಿಗಳನ್ನು ಒಳಗೊಂಡ ಸಂಪೂರ್ಣ ಸೇವಾ ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಕಂಪನಿಯಾಗಿ ಬೆಳೆದಿದೆ.',
+  about_p2_kn: 'ಮಲೆನಾಡು ಪ್ರದೇಶದ ಆಳವಾದ ಸ್ಥಳೀಯ ಜ್ಞಾನವನ್ನು ಬೆಂಗಳೂರಿನ ಗ್ರಾಹಕರು ನಿರೀಕ್ಷಿಸುವ ಪ್ರಮಾಣ ಮತ್ತು ವೃತ್ತಿಪರತೆಯೊಂದಿಗೆ ನಾವು ಸಂಯೋಜಿಸುತ್ತೇವೆ. ಪ್ರತಿಯೊಂದು ಯೋಜನೆಯೂ — ಒಂದೇ ನಿವೇಶನ ಮಾರಾಟವಾಗಲಿ ಅಥವಾ ಸಂಪೂರ್ಣ ಮನೆ ನಿರ್ಮಾಣವಾಗಲಿ — ಅದೇ ಮಟ್ಟದ ಕಾಳಜಿ, ಪಾರದರ್ಶಕತೆ ಮತ್ತು ರೇರಾ ಅನುಸರಣೆಯೊಂದಿಗೆ ನಿರ್ವಹಿಸಲಾಗುತ್ತದೆ.',
+  about_p3_kn: 'ನಮ್ಮ ಧ್ಯೇಯ ಸರಳವಾಗಿದೆ: ನಾವು ಸೇವೆ ಸಲ್ಲಿಸುವ ಪ್ರತಿ ಕುಟುಂಬಕ್ಕೆ ಆಸ್ತಿ ಮಾಲೀಕತ್ವ ಮತ್ತು ಮನೆ ನಿರ್ಮಾಣವನ್ನು ಸುಲಭ, ಸುರಕ್ಷಿತ ಮತ್ತು ಲಾಭದಾಯಕವಾಗಿಸುವುದು.',
   // Notifications
   notify_email: 'raasbnd@gmail.com',
   // RERA & GST
@@ -866,6 +869,9 @@ function loadSettingsIntoForm() {
     's-about-1': 'about_p1',
     's-about-2': 'about_p2',
     's-about-3': 'about_p3',
+    's-about-1-kn': 'about_p1_kn',
+    's-about-2-kn': 'about_p2_kn',
+    's-about-3-kn': 'about_p3_kn',
     // Notifications
     's-notify-email': 'notify_email',
     // RERA & GST
@@ -968,6 +974,9 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
     about_p1: getFormVal('s-about-1'),
     about_p2: getFormVal('s-about-2'),
     about_p3: getFormVal('s-about-3'),
+    about_p1_kn: getFormVal('s-about-1-kn'),
+    about_p2_kn: getFormVal('s-about-2-kn'),
+    about_p3_kn: getFormVal('s-about-3-kn'),
     notify_email: getFormVal('s-notify-email'),
     rera_number: getFormVal('s-rera-number'),
     gst_number: getFormVal('s-gst-number'),

@@ -314,6 +314,10 @@ const DEFAULT_SETTINGS = {
   about_p1: "RAAS Builders & Developers has been serving Karnataka's real estate needs for over a decade. What started as a small plot brokerage in Shivamogga has grown into a full-service real estate company spanning plots, apartments, construction, interiors and wholesale materials.",
   about_p2: 'We combine deep local knowledge of the Malnad region with the scale and professionalism that Bengaluru clients expect. Every project — whether a single plot sale or a full-home construction — is handled with the same level of care, transparency and RERA compliance.',
   about_p3: 'Our mission is simple: to make property ownership and home-building straightforward, safe, and rewarding for every family we serve.',
+  // About — Kannada versions (shown when site is in Kannada)
+  about_p1_kn: 'ರಾಸ್ ಬಿಲ್ಡರ್ಸ್ ಮತ್ತು ಡೆವಲಪರ್ಸ್ ಒಂದು ದಶಕಕ್ಕೂ ಹೆಚ್ಚು ಕಾಲ ಕರ್ನಾಟಕದ ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಅಗತ್ಯಗಳನ್ನು ಪೂರೈಸುತ್ತಿದೆ. ಶಿವಮೊಗ್ಗದಲ್ಲಿ ಸಣ್ಣ ನಿವೇಶನ ಮಧ್ಯಸ್ಥಿಕೆಯಾಗಿ ಆರಂಭವಾದದ್ದು, ಇಂದು ನಿವೇಶನ, ಅಪಾರ್ಟ್‌ಮೆಂಟ್, ನಿರ್ಮಾಣ, ಒಳಾಂಗಣ ಮತ್ತು ಸಗಟು ಸಾಮಗ್ರಿಗಳನ್ನು ಒಳಗೊಂಡ ಸಂಪೂರ್ಣ ಸೇವಾ ರಿಯಲ್ ಎಸ್ಟೇಟ್ ಕಂಪನಿಯಾಗಿ ಬೆಳೆದಿದೆ.',
+  about_p2_kn: 'ಮಲೆನಾಡು ಪ್ರದೇಶದ ಆಳವಾದ ಸ್ಥಳೀಯ ಜ್ಞಾನವನ್ನು ಬೆಂಗಳೂರಿನ ಗ್ರಾಹಕರು ನಿರೀಕ್ಷಿಸುವ ಪ್ರಮಾಣ ಮತ್ತು ವೃತ್ತಿಪರತೆಯೊಂದಿಗೆ ನಾವು ಸಂಯೋಜಿಸುತ್ತೇವೆ. ಪ್ರತಿಯೊಂದು ಯೋಜನೆಯೂ — ಒಂದೇ ನಿವೇಶನ ಮಾರಾಟವಾಗಲಿ ಅಥವಾ ಸಂಪೂರ್ಣ ಮನೆ ನಿರ್ಮಾಣವಾಗಲಿ — ಅದೇ ಮಟ್ಟದ ಕಾಳಜಿ, ಪಾರದರ್ಶಕತೆ ಮತ್ತು ರೇರಾ ಅನುಸರಣೆಯೊಂದಿಗೆ ನಿರ್ವಹಿಸಲಾಗುತ್ತದೆ.',
+  about_p3_kn: 'ನಮ್ಮ ಧ್ಯೇಯ ಸರಳವಾಗಿದೆ: ನಾವು ಸೇವೆ ಸಲ್ಲಿಸುವ ಪ್ರತಿ ಕುಟುಂಬಕ್ಕೆ ಆಸ್ತಿ ಮಾಲೀಕತ್ವ ಮತ್ತು ಮನೆ ನಿರ್ಮಾಣವನ್ನು ಸುಲಭ, ಸುರಕ್ಷಿತ ಮತ್ತು ಲಾಭದಾಯಕವಾಗಿಸುವುದು.',
   // Construction packages
   pkg_essential_price: 'From ₹1,650/sqft',
   pkg_essential_features: 'Basic finishes, Standard fixtures, 2-year warranty',
@@ -366,12 +370,15 @@ function applySiteSettings(settings) {
 
   document.querySelectorAll('[data-setting]').forEach(el => {
     const key = el.getAttribute('data-setting');
-    if (settings[key] !== undefined && settings[key] !== '') {
+    // Use the Kannada value (key + '_kn') when the site is in Kannada and one is set.
+    let val = settings[key];
+    if (currentLang === 'kn' && settings[key + '_kn']) val = settings[key + '_kn'];
+    if (val !== undefined && val !== '') {
       if (htmlKeys.has(key)) {
         // Only allow <br> tags, escape everything else
-        el.innerHTML = esc(settings[key]).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+        el.innerHTML = esc(val).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
       } else {
-        el.textContent = settings[key];
+        el.textContent = val;
       }
     }
   });
@@ -527,6 +534,8 @@ function applyLanguage() {
     text.textContent = currentLang === 'en' ? 'EN' : 'ಕನ್ನಡ';
   }
   document.documentElement.lang = currentLang;
+  // Re-apply admin content so bilingual fields (e.g. About) switch too.
+  if (window.RAAS_SETTINGS) applySiteSettings(window.RAAS_SETTINGS);
 }
 
 function toggleLanguage() {
