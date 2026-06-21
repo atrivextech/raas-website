@@ -411,14 +411,27 @@ function applySiteSettings(settings) {
   const footerSocial = document.getElementById('footer-social');
   if (footerSocial) footerSocial.style.display = anySocial ? '' : 'none';
 
+  // All WhatsApp links use the admin-set WhatsApp number (Bengaluru raw phone).
+  const waNumber = settings.phone_bengaluru_raw || '919019793641';
   const waBtn = document.getElementById('wa-btn');
   if (waBtn) {
-    waBtn.href = `https://wa.me/${settings.phone_bengaluru_raw}?text=${encodeURIComponent("Hi RAAS Builders, I'm interested in your properties")}`;
+    waBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hi RAAS Builders, I'm interested in your properties")}`;
+  }
+  const heroWaBtn = document.getElementById('hero-wa-btn');
+  if (heroWaBtn) {
+    heroWaBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hi RAAS Builders, I'm interested in your properties")}`;
   }
   const phoneBtn = document.getElementById('phone-btn');
   if (phoneBtn) {
-    phoneBtn.href = `tel:+${settings.phone_bengaluru_raw}`;
+    phoneBtn.href = `tel:+${waNumber}`;
   }
+  // Keep inline tel: links in sync with their displayed number (href, not just text).
+  document.querySelectorAll('a[data-setting="phone_bengaluru"]').forEach(a => {
+    if (settings.phone_bengaluru_raw) a.href = `tel:+${settings.phone_bengaluru_raw}`;
+  });
+  document.querySelectorAll('a[data-setting="phone_shivamogga"]').forEach(a => {
+    if (settings.phone_shivamogga_raw) a.href = `tel:+${settings.phone_shivamogga_raw}`;
+  });
 
   // ─── Dynamic feature lists (comma-separated → individual divs) ───
   const featureTargets = {
