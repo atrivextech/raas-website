@@ -316,80 +316,83 @@ if (propTypeSelect) {
   updateFormFieldsByType();
 }
 
-// ─── Property uploads ─────────────────────────────────────
-function handleImageUpload(input) {
-  uploadedImages = [];
+// ─── Property uploads (photos + layout → Vercel Blob) ─────
+function readFileAsDataURL(file) {
+  return new Promise((resolve) => {
+    const r = new FileReader();
+    r.onload = (e) => resolve(e.target.result);
+    r.readAsDataURL(file);
+  });
+}
+
+// Upload a file to Blob → returns its public URL.
+// Falls back to a base64 data URL only when the backend isn't available.
+async function uploadFileToBlob(file, folder) {
+  const dataUrl = await readFileAsDataURL(file);
+  const hasBackend = await checkBackend();
+  if (!hasBackend) return dataUrl;
+  const up = await apiPost('/api/upload', {
+    filename: file.name, contentType: file.type, dataBase64: dataUrl, folder: folder || 'properties'
+  });
+  if (up.ok && up.data && up.data.url) return up.data.url;
+  showToast('Cloud upload failed; saved locally for now.');
+  return dataUrl;
+}
+
+async function handleImageUpload(input) {
   const previews = document.getElementById('image-previews');
-  previews.innerHTML = '';
+  const boxP = document.getElementById('image-upload-box').querySelector('p');
   let files = Array.from(input.files);
 
-  // Validate count
   if (files.length > MAX_IMAGES) {
     showToast(`Maximum ${MAX_IMAGES} photos allowed. First ${MAX_IMAGES} will be used.`);
     files = files.slice(0, MAX_IMAGES);
   }
-
-  // Validate sizes
   const oversized = files.filter(f => f.size > MAX_FILE_SIZE);
   if (oversized.length > 0) {
     showToast(`${oversized.length} file(s) exceed 2 MB and were skipped.`);
     files = files.filter(f => f.size <= MAX_FILE_SIZE);
   }
+  if (files.length === 0) return;
 
-  files.forEach((file, index) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadedImages[index] = e.target.result;
-      const img = document.createElement('div');
-      img.className = 'preview-thumb';
-      img.innerHTML = `
-        <img src="${e.target.result}" alt="Preview ${index + 1}">
-        <span class="thumb-label">Photo ${index + 1}</span>
-      `;
-      previews.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
+  uploadedImages = [];
+  previews.innerHTML = '';
+  boxP.textContent = `Uploading ${files.length} photo(s)…`;
 
-  document.getElementById('image-upload-box').querySelector('p').textContent =
-    `${files.length} photo(s) selected`;
+  for (let i = 0; i < files.length; i++) {
+    const url = await uploadFileToBlob(files[i], 'properties/photos');
+    uploadedImages.push(url);
+    const div = document.createElement('div');
+    div.className = 'preview-thumb';
+    div.innerHTML = `<img src="${esc(url)}" alt="Preview ${i + 1}"><span class="thumb-label">Photo ${i + 1}</span>`;
+    previews.appendChild(div);
+    boxP.textContent = `${uploadedImages.length}/${files.length} uploaded`;
+  }
+  boxP.textContent = `${uploadedImages.length} photo(s) ready`;
+  input.value = '';
 }
 
-function handleLayoutUpload(input) {
-  uploadedLayout = null;
+async function handleLayoutUpload(input) {
   const preview = document.getElementById('layout-preview');
-  preview.innerHTML = '';
-
   const file = input.files[0];
   if (!file) return;
-
-  if (file.size > MAX_LAYOUT_SIZE) {
-    showToast('Layout file must be under 5 MB');
+  if (file.size > 3 * 1024 * 1024) {
+    showToast('Layout file must be under 3 MB');
     input.value = '';
     return;
   }
+  preview.innerHTML = '';
+  document.getElementById('layout-upload-box').querySelector('p').textContent = 'Uploading…';
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    uploadedLayout = { name: file.name, type: file.type, data: e.target.result };
-    if (file.type.startsWith('image/')) {
-      preview.innerHTML = `
-        <div class="layout-thumb">
-          <img src="${e.target.result}" alt="Layout">
-          <span>📐 ${file.name}</span>
-        </div>`;
-    } else {
-      preview.innerHTML = `
-        <div class="layout-thumb pdf-thumb">
-          <span class="pdf-icon">📄</span>
-          <span>${file.name}</span>
-        </div>`;
-    }
-  };
-  reader.readAsDataURL(file);
-
-  document.getElementById('layout-upload-box').querySelector('p').textContent =
-    `Selected: ${file.name}`;
+  const url = await uploadFileToBlob(file, 'properties/layouts');
+  uploadedLayout = { name: file.name, type: file.type, url };
+  if (file.type.startsWith('image/')) {
+    preview.innerHTML = `<div class="layout-thumb"><img src="${esc(url)}" alt="Layout"><span>📐 ${esc(file.name)}</span></div>`;
+  } else {
+    preview.innerHTML = `<div class="layout-thumb pdf-thumb"><span class="pdf-icon">📄</span><span>${esc(file.name)}</span></div>`;
+  }
+  document.getElementById('layout-upload-box').querySelector('p').textContent = `Selected: ${file.name}`;
+  input.value = '';
 }
 window.handleImageUpload = handleImageUpload;
 window.handleLayoutUpload = handleLayoutUpload;
@@ -708,11 +711,14 @@ function viewLayout(id) {
   const properties = JSON.parse(localStorage.getItem('raas_properties') || '[]');
   const prop = properties.find(p => p.id === id);
   if (prop && prop.layout) {
+    const src = prop.layout.url || prop.layout.data;
+    if (!src) return;
+    if (prop.layout.url) { window.open(src, '_blank', 'noopener'); return; }
     const win = window.open();
     if (prop.layout.type && prop.layout.type.includes('pdf')) {
-      win.document.write(`<iframe src="${prop.layout.data}" width="100%" height="100%" style="border:none;position:absolute;inset:0;" sandbox="allow-same-origin"></iframe>`);
+      win.document.write(`<iframe src="${src}" width="100%" height="100%" style="border:none;position:absolute;inset:0;" sandbox="allow-same-origin"></iframe>`);
     } else {
-      win.document.write(`<img src="${prop.layout.data}" style="max-width:100%;display:block;margin:auto;">`);
+      win.document.write(`<img src="${src}" style="max-width:100%;display:block;margin:auto;">`);
     }
   }
 }

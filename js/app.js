@@ -250,12 +250,14 @@ function displayProperties(list) {
 function viewPublicLayout(id) {
   const properties = getAllProperties();
   const prop = properties.find(p => p.id === id || p.id === String(id));
-  if (prop && prop.layout && prop.layout.data) {
+  if (prop && prop.layout && (prop.layout.url || prop.layout.data)) {
+    const src = prop.layout.url || prop.layout.data;
+    if (prop.layout.url) { window.open(src, '_blank', 'noopener'); return; }
     const win = window.open();
     if (prop.layout.type && prop.layout.type.includes('pdf')) {
-      win.document.write(`<html><head><title>Layout — ${esc(prop.name || 'Property')}</title></head><body style="margin:0;"><iframe src="${prop.layout.data}" width="100%" height="100%" style="border:none;position:absolute;inset:0;" sandbox="allow-same-origin"></iframe></body></html>`);
+      win.document.write(`<html><head><title>Layout — ${esc(prop.name || 'Property')}</title></head><body style="margin:0;"><iframe src="${src}" width="100%" height="100%" style="border:none;position:absolute;inset:0;" sandbox="allow-same-origin"></iframe></body></html>`);
     } else {
-      win.document.write(`<html><head><title>Layout — ${esc(prop.name || 'Property')}</title></head><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${prop.layout.data}" style="max-width:100%;max-height:100vh;display:block;"></body></html>`);
+      win.document.write(`<html><head><title>Layout — ${esc(prop.name || 'Property')}</title></head><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${src}" style="max-width:100%;max-height:100vh;display:block;"></body></html>`);
     }
   }
 }
