@@ -189,7 +189,7 @@ function renderPropertyCard(prop) {
   const bg = esc(getImage(prop));
   const typeLabel = esc(TYPE_LABEL[prop.type] || prop.type || 'Property');
   const waMsg = encodeURIComponent(`Hi RAAS Builders, I'm interested in ${prop.name} at ${prop.location}. Please share more details.`);
-  const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.phone_bengaluru_raw) || '919019793641';
+  const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.whatsapp_number) || '919731234111';
 
   const specs = [];
   const areaStr = esc(formatPropArea(prop));
@@ -299,6 +299,7 @@ const DEFAULT_SETTINGS = {
   phone_bengaluru_raw: '919019793641',
   phone_shivamogga: '+91 97312 34111',
   phone_shivamogga_raw: '919731234111',
+  whatsapp_number: '919731234111',
   email: 'raasbnd@gmail.com',
   address: '1st Floor, MSB280, Basavasa Sadhana<br>Chalukyanagar, Shivamogga – 577205',
   hours: 'Mon – Sat: 9:00 AM – 7:00 PM<br>Sun: By appointment',
@@ -411,8 +412,8 @@ function applySiteSettings(settings) {
   const footerSocial = document.getElementById('footer-social');
   if (footerSocial) footerSocial.style.display = anySocial ? '' : 'none';
 
-  // All WhatsApp links use the admin-set WhatsApp number (Bengaluru raw phone).
-  const waNumber = settings.phone_bengaluru_raw || '919019793641';
+  // All WhatsApp links use the dedicated admin WhatsApp number.
+  const waNumber = settings.whatsapp_number || '919731234111';
   const waBtn = document.getElementById('wa-btn');
   if (waBtn) {
     waBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hi RAAS Builders, I'm interested in your properties")}`;
@@ -421,9 +422,10 @@ function applySiteSettings(settings) {
   if (heroWaBtn) {
     heroWaBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hi RAAS Builders, I'm interested in your properties")}`;
   }
+  // Floating call button uses the Bengaluru office line.
   const phoneBtn = document.getElementById('phone-btn');
   if (phoneBtn) {
-    phoneBtn.href = `tel:+${waNumber}`;
+    phoneBtn.href = `tel:+${settings.phone_bengaluru_raw || '919019793641'}`;
   }
   // Keep inline tel: links in sync with their displayed number (href, not just text).
   document.querySelectorAll('a[data-setting="phone_bengaluru"]').forEach(a => {
@@ -628,7 +630,7 @@ Interested in: ${CONTACT_INTEREST_LABELS[interest] || interest}${budget ? `\nBud
 
 ${message}`;
 
-  const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.phone_bengaluru_raw) || '919019793641';
+  const waPhone = (window.RAAS_SETTINGS && window.RAAS_SETTINGS.whatsapp_number) || '919731234111';
   window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
   showContactSuccess(true);
   const form = document.getElementById('contact-form');
