@@ -11,3 +11,9 @@ node_modules/
 # OS / editor
 .DS_Store
 Thumbs.db
+
+# Local Claude Code settings (machine-specific)
+.claude/
+
+# Logo iteration backups (working scratch)
+images/brand/_backup_*/
