@@ -114,20 +114,35 @@ handled per route.
 
 ### 5.1 Admin auth (`api/_lib/auth.js`)
 - **HMAC‑signed session cookie** `raas_session`, 12‑hour TTL, zero external deps.
+  Verified with `crypto.timingSafeEqual`.
 - Env: `SESSION_SECRET` (32+ random chars), `ADMIN_PASSWORD`, optional
   `ADMIN_USERNAME` (default `admin`).
 - `backendReady()` gates everything — no secret ⇒ fallback mode.
-- ⚠️ **Password is plaintext env for now** (documented TODO: move to bcrypt).
-- ⚠️ **`js/admin.js` also contains legacy client‑side creds (`admin`/`raas2025`)**
-  for the static demo. This is *not* real security — real auth is server‑side.
-  Remove/disable for any production deployment that has the backend configured.
+- **Password storage (`api/_lib/credentials.js`):** once the admin changes their
+  password from the panel, a **scrypt** hash + random salt is stored in the KV
+  store under `raas_admin_auth`, and `/api/login` verifies against it in constant
+  time. `ADMIN_PASSWORD` is only the **bootstrap** password used until that first
+  change — a stored credential always takes precedence.
+- ⚠️ **`js/admin.js` still contains legacy client‑side creds (`admin`/`raas2025`)**
+  at the top of the file, for the no‑backend static demo. This is *not* real
+  security — real auth is server‑side. Remove/disable for any production
+  deployment that has the backend configured.
 
 ### 5.2 Storage (`api/_lib/store.js`) — first match wins
 1. **DynamoDB** — when `DYNAMODB_TABLE` set (AWS prod).
 2. **Upstash Redis** — when `UPSTASH_REDIS_REST_URL`/`KV_REST_API_URL` set (Vercel).
 3. **In‑memory** — dev fallback (resets on cold start).
 - Public API: `get(key)`, `set(key,val)`, `del(key)`. Values stored as JSON.
-- Keys: `raas_properties`, materials, brochures, settings, etc.
+- **Every key in use** (the complete dataset — useful when inspecting or
+  exporting the store): `raas_properties`, `raas_materials`, `raas_brochures`,
+  `raas_enquiries`, `raas_site_settings`, `raas_admin_auth`.
+  Each holds a single JSON array or object; there is no per-record key.
+
+### 5.4 Admin panel tabs (`admin.html` / `js/admin.js`)
+`properties` · `materials` · `brochures` · `enquiries` · `pricing` · `content` ·
+`settings`. Each tab reads and writes the matching KV key through the API — so
+"a change in the panel didn't stick" almost always means the KV backend is in
+in-memory fallback mode (see runbook).
 
 ### 5.3 Email (`api/_lib/email.js`)
 Contact/enquiry submissions are delivered by email (provider via env). Verify
@@ -184,8 +199,10 @@ Front‑end is static — no build step; deploying = uploading the files.
 ---
 
 ## 9. Known TODOs / hardening
-- Move `ADMIN_PASSWORD` to a hashed secret (bcrypt) instead of plaintext env.
-- Remove the legacy `admin/raas2025` client‑side credentials from `js/admin.js`.
+- Remove the legacy `admin/raas2025` client‑side credentials from `js/admin.js`
+  (top of file) — the only remaining hard‑coded credential.
+- Change the admin password from the panel at least once so login stops relying on
+  the plaintext `ADMIN_PASSWORD` bootstrap and uses the scrypt hash instead.
 - Ensure a persistent KV backend (DynamoDB/Upstash) is configured in production —
   never ship on the in‑memory fallback.
 - Rotate `SESSION_SECRET` if it has ever been exposed.
